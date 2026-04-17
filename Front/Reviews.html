@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flour & Flame | Guest Experience</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Css/Reviews.css">
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">FLOUR & FLAME</a>
+        <nav>
+            <ul>
+                <li><a href="Main.html">Home</a></li>
+                <li><a href="Main.html">Our Story</a></li>
+                <li><a href="Menu.html">Menu</a></li>
+                <li><a href="Reviews.html">Reviews</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="header-text">
+            <p>Customer Testimonials</p>
+            <h1>Guest Experience</h1>
+        </div>
+
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-quote">"The Margherita DOC is easily the best in the city. You can really taste the
+                    quality of the wood-fired oven. An absolute must-visit."</p>
+                <div class="reviewer">
+                    <div class="reviewer-initials">MA</div>
+                    <div class="reviewer-name">Marco A.</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-quote">"I love that they focus on quality ingredients. The lasagna was rich and
+                    authentic. Plus, the alcohol-free mocktails are actually creative and delicious!"</p>
+                <div class="reviewer">
+                    <div class="reviewer-initials">SL</div>
+                    <div class="reviewer-name">Sarah L.</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-quote">"The atmosphere is perfect for a business dinner. Professional service and the
+                    truffle tagliatelle was unforgettable."</p>
+                <div class="reviewer">
+                    <div class="reviewer-initials">JD</div>
+                    <div class="reviewer-name">Julian D.</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-quote">"Finally, a high-end Italian restaurant that understands artisanal drinks! The
+                    Sicilian Sunset is refreshing and looks beautiful."</p>
+                <div class="reviewer">
+                    <div class="reviewer-initials">RK</div>
+                    <div class="reviewer-name">Robert K.</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-quote">"As a student of business, I appreciate the branding here. But as a foodie, I
+                    appreciate that crust! Thin, crispy, and perfectly charred."</p>
+                <div class="reviewer">
+                    <div class="reviewer-initials">AH</div>
+                    <div class="reviewer-name">Ahmed H.</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-quote">"The Tiramisu is life-changing. It's light, creamy, and has just the right
+                    amount of espresso kick. Great spot for dessert enthusiasts."</p>
+                <div class="reviewer">
+                    <div class="reviewer-initials">EM</div>
+                    <div class="reviewer-name">Elena M.</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 80px;">
+            <button class="btn" id="openReview">Write a Review</button>
+        </div>
+    </main>
+
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeReview">&times;</span>
+            <h2 style="color: var(--gold); margin-bottom: 20px;">Share Your Experience</h2>
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="rating-input">
+                        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Your Review</label>
+                    <textarea rows="4" placeholder="Tell us about the food and service..." required></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <h3 style="color: var(--gold);">FLOUR & FLAME</h3>
+        <p>&copy; 2026 FLOUR & FLAME</p>
+    </footer>
+
+    <script src="Jss/Reviews.js"></script>
+</body>
+
+</html>

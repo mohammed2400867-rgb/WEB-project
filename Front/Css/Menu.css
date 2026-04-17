@@ -1,0 +1,62 @@
+    :root {
+            --gold: #d4af37;
+            --carbon: #0a0a0a;
+            --cream: #f4f1ea;
+            --gray: #161616;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--carbon); color: var(--cream); line-height: 1.6; }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0; width: 100%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 6%; background: rgba(10, 10, 10, 0.98); 
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .logo { font-size: 1.6rem; color: var(--gold); text-decoration: none; letter-spacing: 4px; font-weight: 700; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 35px; }
+        nav ul li a { text-decoration: none; color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+        nav ul li a:hover { color: var(--gold); }
+
+        .menu-section { max-width: 1200px; margin: 0 auto; padding: 150px 20px 100px; }
+        .menu-intro { text-align: center; margin-bottom: 70px; }
+        .menu-intro h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold); margin-bottom: 10px; }
+        .menu-intro p { text-transform: uppercase; letter-spacing: 4px; font-size: 0.85rem; color: #777; }
+
+        /* --- FILTERS --- */
+        .filter-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 60px; flex-wrap: wrap; }
+        .filter-btn {
+            background: transparent; border: 1px solid #333; color: var(--cream);
+            padding: 12px 25px; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 2px; font-size: 0.75rem; transition: 0.4s;
+        }
+        .filter-btn.active, .filter-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+
+        /* --- GRID --- */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        
+        .menu-card { background: var(--gray); border: 1px solid #222; overflow: hidden; display: none; transition: 0.3s; }
+        .menu-card.show { display: block; animation: fadeInUp 0.6s ease forwards; }
+
+        .img-box { width: 100%; height: 280px; background: #000; overflow: hidden; position: relative; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .menu-card:hover .img-box img { transform: scale(1.1); }
+
+        .details { padding: 30px; }
+        .details-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+        .details-header h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); }
+        .price { font-weight: 600; font-size: 1.1rem; color: var(--cream); }
+        .desc { font-size: 0.9rem; color: #999; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) { 
+            header { padding: 20px; flex-direction: column; gap: 15px; }
+            nav ul li { margin: 0 10px; }
+            .menu-intro h1 { font-size: 2.8rem; } 
+            .menu-section { padding-top: 180px; }
+        }

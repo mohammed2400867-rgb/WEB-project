@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Flour & Flame | Reservations</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Css/Contact.css">
+</head>
+
+<body>
+
+    <main class="contact-wrapper">
+        <section class="contact-info-section">
+            <h1>Visit Us</h1>
+            <p>Experience the heat of the flame and the tradition of the flour. We welcome walk-ins, but reservations
+                are recommended for weekend dining.</p>
+
+            <div class="info-item">
+                <h3>Location</h3>
+                <p>123 Via della Conciliazione, Gastronomy District</p>
+                <p>Rome, IT 00193</p>
+            </div>
+
+            <div class="info-item">
+                <h3>Hours of Operation</h3>
+                <p>Mon – Thu: 5:00 PM – 10:00 PM</p>
+                <p>Fri – Sun: 4:00 PM – 11:30 PM</p>
+            </div>
+
+            <div class="info-item">
+                <h3>Direct Contact</h3>
+                <p>T: +39 06 1234 5678</p>
+                <p>E: ciao@flourandflame.com</p>
+            </div>
+
+            <div class="map-placeholder">
+                [ Interactive Map Placeholder ]
+            </div>
+        </section>
+
+        <section class="contact-form-section">
+            <div class="booking-card">
+                <h2 style="font-size: 2rem; margin-bottom: 30px;">Make a Reservation</h2>
+                <form action="#">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Mohammed Ashraf" required>
+                    </div>
+
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label>Date</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label>Guests</label>
+                            <select required>
+                                <option value="1">1 Guest</option>
+                                <option value="2" selected>2 Guests</option>
+                                <option value="4">4 Guests</option>
+                                <option value="6">6+ Guests</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Special Requests</label>
+                        <textarea rows="4"
+                            placeholder="Allergies, birthday celebrations, or window seating preferences..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Confirm Availability</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+</body>
+
+</html>
