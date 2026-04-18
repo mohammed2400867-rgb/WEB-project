@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Flour & Flame</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Css/AdminDashboard.css">
+
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>FLOUR & FLAME</h2>
+        <a href="#" class="nav-item active">Dashboard</a>
+        <a href="#" class="nav-item">Reservations</a>
+        <a href="#" class="nav-item">Menu Editor</a>
+        <a href="#" class="nav-item">Reviews</a>
+        <a href="#" class="nav-item">Analytics</a>
+        <a href="Main.html" class="nav-item" style="margin-top: auto; border: 1px solid var(--gold);">View Website</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h1>Executive Overview</h1>
+            <div id="date-display" style="color: var(--gold); font-weight: 600;"></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Today's Bookings</h3>
+                <p>24</p>
+            </div>
+            <div class="stat-card">
+                <h3>Menu Items</h3>
+                <p>11</p>
+            </div>
+            <div class="stat-card">
+                <h3>Average Rating</h3>
+                <p>4.9</p>
+            </div>
+            <div class="stat-card">
+                <h3>Open Tables</h3>
+                <p>8</p>
+            </div>
+        </div>
+
+        <div class="data-panel">
+            <h2>Recent Reservations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Time</th>
+                        <th>Party Size</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Giovanni Rossi</td>
+                        <td>7:30 PM</td>
+                        <td>4 People</td>
+                        <td><span class="status-badge">CONFIRMED</span></td>
+                        <td><button class="btn-action">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td>Lucia Bianchi</td>
+                        <td>8:00 PM</td>
+                        <td>2 People</td>
+                        <td><span class="status-badge">CONFIRMED</span></td>
+                        <td><button class="btn-action">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td>Marco Vieri</td>
+                        <td>8:15 PM</td>
+                        <td>6 People</td>
+                        <td><span class="status-badge">PENDING</span></td>
+                        <td><button class="btn-action">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="Js/AdminDashboard.js"></script>
+</body>
+
+</html>
