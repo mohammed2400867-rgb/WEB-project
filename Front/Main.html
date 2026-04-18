@@ -9,21 +9,24 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="Css/Main.css">
+
 </head>
 
 <body>
 
     <header id="navbar">
-        <a href="#" class="logo">FLOUR & FLAME</a>
+        <a href="Main.html" class="logo">FLOUR & FLAME</a>
         <nav>
-            <ul>
+            <ul id="nav-links">
                 <li><a href="#home">Home</a></li>
-                <li><a href="Login.html">Login</a></li>
+                <li id="login-nav"><a href="Login.html">Login</a></li>
                 <li><a href="#story">Our Story</a></li>
-                <li><a href="Menu.html">Menu</a></li>
+                <li><a href="Menu.html">Order Online <span id="cart-counter" class="cart-count-badge">0</span></a></li>
                 <li><a href="Reviews.html">Reviews</a></li>
-                <li><a href="Contact.html">Contact</a></li>
-                <li><a href="AdminDashboard.html">Admin Dashboard</a></li>
+                <li><a href="Contact.html">Track Order</a></li>
+                <li><a href="AdminDashboard.html" id="admin-link"
+                        style="display: none; color: var(--gold); border: 1px solid var(--gold); padding: 5px 10px; border-radius: 4px;">Admin
+                        Panel</a></li>
             </ul>
         </nav>
     </header>
@@ -33,7 +36,7 @@
             <div class="slide-content">
                 <span>Authentic Italian</span>
                 <h1>Where Fire meets Flavor</h1>
-                <a href="Menu.html" class="btn">View Menu</a>
+                <a href="Menu.html" class="btn">Order Now</a>
             </div>
         </div>
         <div class="slide" style="background-image: url(Pics/1.jpeg);">
@@ -47,7 +50,7 @@
             <div class="slide-content">
                 <span>Join Us</span>
                 <h1>The Atmosphere</h1>
-                <a href="Contact.html" class="btn">Reservations</a>
+                <a href="Contact.html" class="btn">Track Your Order</a>
             </div>
         </div>
     </section>
@@ -77,6 +80,9 @@
             <div class="menu-label">
                 <h3>Margherita DOC</h3>
                 <p>Wood-fired perfection</p>
+                <a href="#" onclick="addToCartMain('Margherita DOC', 18); return false;"
+                    style="color: var(--gold); text-decoration: none; font-size: 0.8rem; font-weight: 600;">+ ADD TO
+                    ORDER</a>
             </div>
         </div>
         <div class="menu-card">
@@ -84,6 +90,9 @@
             <div class="menu-label">
                 <h3>Truffle Tagliatelle</h3>
                 <p>Fresh hand-rolled pasta</p>
+                <a href="#" onclick="addToCartMain('Truffle Tagliatelle', 22); return false;"
+                    style="color: var(--gold); text-decoration: none; font-size: 0.8rem; font-weight: 600;">+ ADD TO
+                    ORDER</a>
             </div>
         </div>
         <div class="menu-card">
@@ -91,6 +100,9 @@
             <div class="menu-label">
                 <h3>Lasagna verdi</h3>
                 <p>The perfect pairing</p>
+                <a href="#" onclick="addToCartMain('Lasagna verdi', 23); return false;"
+                    style="color: var(--gold); text-decoration: none; font-size: 0.8rem; font-weight: 600;">+ ADD TO
+                    ORDER</a>
             </div>
         </div>
         <div class="menu-card">
@@ -98,6 +110,9 @@
             <div class="menu-label">
                 <h3>Classic Tiramisu</h3>
                 <p>Traditional recipe</p>
+                <a href="#" onclick="addToCartMain('Classic Tiramisu', 13); return false;"
+                    style="color: var(--gold); text-decoration: none; font-size: 0.8rem; font-weight: 600;">+ ADD TO
+                    ORDER</a>
             </div>
         </div>
     </section>
@@ -109,7 +124,7 @@
     </footer>
 
     <script src="Jss/Main.js"></script>
-    
+
 </body>
 
 </html>

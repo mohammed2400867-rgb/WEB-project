@@ -1,145 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flour & Flame | Full Menu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="Css/Menu.css">
 </head>
+
 <body>
 
-<header>
-    <a href="index.html" class="logo">FLOUR & FLAME</a>
-    <nav>
-        <ul>
-            <li><a href="Main.html">Home</a></li>
-            <li><a href="Login.html">Login</a></li>
-            <li><a href="Main.html">Our Story</a></li>
-            <li><a href="Menu.html">Menu</a></li>
-            <li><a href="Reviews.html">Reviews</a></li>
-            <li><a href="Contact.html">Contact</a></li>
-            <li><a href="AdminDashboard.html">Admin Dashboard</a></li>
-        </ul>
-    </nav>
-</header>
+    <header>
+        <a href="index.html" class="logo">FLOUR & FLAME</a>
+        <nav>
+            <ul>
+                <li><a href="Main.html">Home</a></li>
+                <li><a href="Login.html">Login</a></li>
+                <li><a href="Main.html">Our Story</a></li>
+                <li><a href="Menu.html">Menu</a></li>
+                <li><a href="TrackOrder.html">Track Order</a></li>
+                <li><a href="Reservation.html">Reservations</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<section class="menu-section">
-    <div class="menu-intro">
-        <p>L'Arte della Cucina</p>
-        <h1>Flour & Flame Menu</h1>
+    <section class="menu-section">
+        <div class="menu-intro">
+            <p>L'Arte della Cucina</p>
+            <h1>Flour & Flame Menu</h1>
+        </div>
+
+        <div class="filter-nav">
+            <button class="filter-btn active" onclick="filterItems('all', event)">All Dishes</button>
+            <button class="filter-btn" onclick="filterItems('pasta', event)">Pasta (Spaghetti & Lasagne)</button>
+            <button class="filter-btn" onclick="filterItems('pizza', event)">Pizza</button>
+            <button class="filter-btn" onclick="filterItems('drinks', event)">Mocktails & Drinks</button>
+            <button class="filter-btn" onclick="filterItems('dessert', event)">Desserts</button>
+        </div>
+
+        <div class="menu-grid" id="main-menu">
+
+            <div class="menu-card pasta show">
+                <div class="img-box"><img src="Pics/1.jpeg" alt="Spaghetti Carbonara"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Spaghetti Carbonara</h3> <span class="price">$19</span>
+                    </div>
+                    <p class="desc">Artisan spaghetti, pecorino romano, farm eggs, and cracked black pepper. No cream, just tradition.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Spaghetti Carbonara', 19)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card pasta show">
+                <div class="img-box"><img src="Pics/2.jpeg" alt="Spaghetti Pomodoro"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Vesuvius Pomodoro</h3> <span class="price">$17</span>
+                    </div>
+                    <p class="desc">Hand-pulled spaghetti tossed with slow-simmered San Marzano tomatoes, garlic, and fresh basil oil.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Vesuvius Pomodoro', 17)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card pasta show">
+                <div class="img-box"><img src="Pics/Lasan.jpeg" alt="Lasagna verdi"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Lasagna verdi</h3> <span class="price">$23</span>
+                    </div>
+                    <p class="desc">Layered fresh pasta sheets with rich beef ragù, velvety béchamel, and aged parmigiano-reggiano.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Lasagna verdi', 23)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card pizza show">
+                <div class="img-box"><img src="Pics/Seg.jpeg" alt="Margherita"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Margherita DOC</h3> <span class="price">$18</span>
+                    </div>
+                    <p class="desc">Stone-oven blistered crust, buffalo mozzarella, tomato pulp, and aromatic basil leaves.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Margherita DOC', 18)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card pizza show">
+                <div class="img-box"><img src="Pics/3.jpeg" alt="Truffle Pizza"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Bianca al Tartufo</h3> <span class="price">$25</span>
+                    </div>
+                    <p class="desc">White base with creamy mascarpone, mozzarella, wild mushrooms, and fresh black truffle shavings.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Bianca al Tartufo', 25)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card pizza show">
+                <div class="img-box"><img src="Pics/5.jpeg" alt="Vegetarian Pizza"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>The Garden Flame</h3> <span class="price">$21</span>
+                    </div>
+                    <p class="desc">Charred peppers, artichokes, caramelized onions, and house-made pesto drizzle.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('The Garden Flame', 21)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card drinks show">
+                <div class="img-box"><img src="Pics/6.jpeg" alt="Sicilian Soda"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Sicilian Sunset</h3> <span class="price">$10</span>
+                    </div>
+                    <p class="desc">Blood orange extraction, sparkling botanical water, and a sprig of scorched rosemary.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Sicilian Sunset', 10)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card drinks show">
+                <div class="img-box"><img src="Pics/7.jpeg" alt="Italian Mocktail"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Limonata Zenzero</h3> <span class="price">$9</span>
+                    </div>
+                    <p class="desc">Zesty Sorrento lemons infused with fresh ginger and local organic honey.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Limonata Zenzero', 9)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card drinks show">
+                <div class="img-box"><img src="Pics/8.jpeg" alt="Coffee"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Espresso Tonic</h3> <span class="price">$8</span>
+                    </div>
+                    <p class="desc">Double shot of dark roast over premium tonic water with a twist of grapefruit peel.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Espresso Tonic', 8)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card dessert show">
+                <div class="img-box"><img src="Pics/Cake.jpeg" alt="Tiramisu"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Classic Tiramisù</h3> <span class="price">$13</span>
+                    </div>
+                    <p class="desc">Espresso-soaked ladyfingers, whipped mascarpone, and a heavy dusting of 70% dark cocoa.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Classic Tiramisù', 13)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card dessert show">
+                <div class="img-box"><img src="Pics/9.jpeg" alt="Panna Cotta"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Vanilla Panna Cotta</h3> <span class="price">$11</span>
+                    </div>
+                    <p class="desc">Silky cream custard served with a tart balsamic-glazed strawberry reduction.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Vanilla Panna Cotta', 11)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="menu-card dessert show">
+                <div class="img-box"><img src="Pics/10.jpeg" alt="Cannoli"></div>
+                <div class="details">
+                    <div class="details-header">
+                        <h3>Sicilian Cannoli</h3> <span class="price">$12</span>
+                    </div>
+                    <p class="desc">Crispy pastry shells filled with sweet ricotta cream, crushed pistachios, and chocolate chips.</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Sicilian Cannoli', 12)">Add to Cart</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="cart-header">
+            <h2>Your Order</h2>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="total">Total: <span id="cart-total">$0.00</span></div>
+            <button class="checkout-btn" onclick="placeOrder()">Place Online Order</button>
+        </div>
     </div>
 
-    <div class="filter-nav">
-        <button class="filter-btn active" onclick="filterItems('all', event)">All Dishes</button>
-        <button class="filter-btn" onclick="filterItems('pasta', event)">Pasta (Spaghetti & Lasagne)</button>
-        <button class="filter-btn" onclick="filterItems('pizza', event)">Pizza</button>
-        <button class="filter-btn" onclick="filterItems('drinks', event)">Mocktails & Drinks</button>
-        <button class="filter-btn" onclick="filterItems('dessert', event)">Desserts</button>
+    <div class="cart-trigger" onclick="toggleCart()">
+        <span class="cart-count">0</span>
+        <i class="icon-cart">🛒</i>
     </div>
 
-    <div class="menu-grid" id="main-menu">
-        
-        <div class="menu-card pasta show">
-            <div class="img-box"><img src="Pics/1.jpeg" alt="Spaghetti Carbonara"></div>
-            <div class="details">
-                <div class="details-header"><h3>Spaghetti Carbonara</h3> <span class="price">$19</span></div>
-                <p class="desc">Artisan spaghetti, pecorino romano, farm eggs, and cracked black pepper. No cream, just tradition.</p>
-            </div>
-        </div>
-
-        <div class="menu-card pasta show">
-            <div class="img-box"><img src="Pics/2.jpeg" alt="Spaghetti Pomodoro"></div>
-            <div class="details">
-                <div class="details-header"><h3>Vesuvius Pomodoro</h3> <span class="price">$17</span></div>
-                <p class="desc">Hand-pulled spaghetti tossed with slow-simmered San Marzano tomatoes, garlic, and fresh basil oil.</p>
-            </div>
-        </div>
-
-        <div class="menu-card pasta show">
-            <div class="img-box"><img src="Pics/Lasan.jpeg" alt="Lasagna verdi"></div>
-            <div class="details">
-                <div class="details-header"><h3>Lasagna verdi</h3> <span class="price">$23</span></div>
-                <p class="desc">Layered fresh pasta sheets with rich beef ragù, velvety béchamel, and aged parmigiano-reggiano.</p>
-            </div>
-        </div>
-
-        <div class="menu-card pizza show">
-            <div class="img-box"><img src="Pics/Seg.jpeg" alt="Margherita"></div>
-            <div class="details">
-                <div class="details-header"><h3>Margherita DOC</h3> <span class="price">$18</span></div>
-                <p class="desc">Stone-oven blistered crust, buffalo mozzarella, tomato pulp, and aromatic basil leaves.</p>
-            </div>
-        </div>
-
-        <div class="menu-card pizza show">
-            <div class="img-box"><img src="Pics/3.jpeg" alt="Truffle Pizza"></div>
-            <div class="details">
-                <div class="details-header"><h3>Bianca al Tartufo</h3> <span class="price">$25</span></div>
-                <p class="desc">White base with creamy mascarpone, mozzarella, wild mushrooms, and fresh black truffle shavings.</p>
-            </div>
-        </div>
-
-        <div class="menu-card pizza show">
-            <div class="img-box"><img src="Pics/5.jpeg" alt="Vegetarian Pizza"></div>
-            <div class="details">
-                <div class="details-header"><h3>The Garden Flame</h3> <span class="price">$21</span></div>
-                <p class="desc">Charred peppers, artichokes, caramelized onions, and house-made pesto drizzle.</p>
-            </div>
-        </div>
-
-        <div class="menu-card drinks show">
-            <div class="img-box"><img src="Pics/6.jpeg" alt="Sicilian Soda"></div>
-            <div class="details">
-                <div class="details-header"><h3>Sicilian Sunset</h3> <span class="price">$10</span></div>
-                <p class="desc">Blood orange extraction, sparkling botanical water, and a sprig of scorched rosemary.</p>
-            </div>
-        </div>
-
-        <div class="menu-card drinks show">
-            <div class="img-box"><img src="Pics/7.jpeg" alt="Italian Mocktail"></div>
-            <div class="details">
-                <div class="details-header"><h3>Limonata Zenzero</h3> <span class="price">$9</span></div>
-                <p class="desc">Zesty Sorrento lemons infused with fresh ginger and local organic honey.</p>
-            </div>
-        </div>
-
-        <div class="menu-card drinks show">
-            <div class="img-box"><img src="Pics/8.jpeg" alt="Coffee"></div>
-            <div class="details">
-                <div class="details-header"><h3>Espresso Tonic</h3> <span class="price">$8</span></div>
-                <p class="desc">Double shot of dark roast over premium tonic water with a twist of grapefruit peel.</p>
-            </div>
-        </div>
-
-        <div class="menu-card dessert show">
-            <div class="img-box"><img src="Pics/Cake.jpeg" alt="Tiramisu"></div>
-            <div class="details">
-                <div class="details-header"><h3>Classic Tiramisù</h3> <span class="price">$13</span></div>
-                <p class="desc">Espresso-soaked ladyfingers, whipped mascarpone, and a heavy dusting of 70% dark cocoa.</p>
-            </div>
-        </div>
-
-        <div class="menu-card dessert show">
-            <div class="img-box"><img src="Pics/9.jpeg" alt="Panna Cotta"></div>
-            <div class="details">
-                <div class="details-header"><h3>Vanilla Panna Cotta</h3> <span class="price">$11</span></div>
-                <p class="desc">Silky cream custard served with a tart balsamic-glazed strawberry reduction.</p>
-            </div>
-        </div>
-
-        <div class="menu-card dessert show">
-            <div class="img-box"><img src="Pics/10.jpeg" alt="Cannoli"></div>
-            <div class="details">
-                <div class="details-header"><h3>Sicilian Cannoli</h3> <span class="price">$12</span></div>
-                <p class="desc">Crispy pastry shells filled with sweet ricotta cream, crushed pistachios, and chocolate chips.</p>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<script src="Jss/Menu.js"></script>
+    <script src="Jss/Menu.js"></script>
 
 </body>
+
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff | Flour & Flame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Css/AdminDashboard.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>FLOUR & FLAME STAFF</h2>
+        <a href="#" class="nav-item active">Orders</a>
+        <a href="Main.html" class="nav-item" style="margin-top: auto; border: 1px solid var(--gold);">View Website</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h1>Active Orders</h1>
+            <div id="date-display" style="color: var(--gold); font-weight: 600;"></div>
+        </div>
+
+        <div class="data-panel">
+            <h2>Order Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Time</th>
+                        <th>Items</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="staff-order-list">
+                    <!-- Orders injected by JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="Jss/StaffDashboard.js"></script>
+</body>
+
+</html>

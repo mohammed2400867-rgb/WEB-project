@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order | Flour & Flame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Css/Contact.css">
+    <style>
+        .track-result { margin-top: 30px; padding: 20px; background: #000; border: 1px solid var(--gold); border-radius: 8px; display: none; }
+        .track-result.active { display: block; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; border: 1px solid var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+    </style>
+</head>
+<body>
+    <header style="position: absolute; top: 0; width: 100%; padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; z-index: 100;">
+        <a href="index.html" class="logo" style="color: var(--gold); text-decoration: none; font-size: 1.6rem; font-weight: 700; letter-spacing: 4px;">FLOUR & FLAME</a>
+        <nav>
+            <ul style="display: flex; list-style: none;">
+                <li style="margin-left: 35px;"><a href="Main.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Home</a></li>
+                <li style="margin-left: 35px;"><a href="Menu.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Menu</a></li>
+                <li style="margin-left: 35px;"><a href="Reservation.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reservations</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contact-wrapper" style="padding-top: 150px; justify-content: center;">
+        <section class="contact-form-section" style="width: 100%; max-width: 600px;">
+            <div class="booking-card">
+                <h2 style="font-size: 2rem; margin-bottom: 20px; text-align: center;">Track Your Order</h2>
+                <p style="text-align: center; margin-bottom: 30px; color: #999;">Enter your Order ID below to check its current status.</p>
+                
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <input type="text" id="order-id-input" placeholder="e.g. ORD-1234" style="flex: 1;">
+                    <button onclick="trackOrder()" class="submit-btn" style="width: auto; padding: 0 30px;">Track</button>
+                </div>
+
+                <div id="track-result" class="track-result">
+                    <!-- Results will be injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="Jss/TrackOrder.js"></script>
+</body>
+</html>
