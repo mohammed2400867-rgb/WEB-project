@@ -12,34 +12,13 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="Css/Login.css">
-    <style>
-        .validation-msg {
-            font-size: 0.8rem;
-            margin-top: 5px;
-            min-height: 1.2rem;
-            display: block;
-        }
-        .strength-bar-container {
-            width: 100%;
-            height: 4px;
-            background: #333;
-            margin-top: 8px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        .strength-bar {
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease, background-color 0.3s ease;
-        }
-    </style>
 </head>
 
 <body>
 
     <div class="login-card">
         <div class="header">
-            <h1><span onclick="document.getElementById('email').value='admin@flourandflame.com'; document.getElementById('password').value='Admin123!'; document.getElementById('passStrengthBar').style.width='100%'; document.getElementById('passStrengthBar').style.backgroundColor='#4CAF50';" style="cursor: pointer; position: relative; z-index: 10;">F</span>LOUR & <span onclick="document.getElementById('email').value='staff@flourandflame.com'; document.getElementById('password').value='Staff123!'; document.getElementById('passStrengthBar').style.width='100%'; document.getElementById('passStrengthBar').style.backgroundColor='#4CAF50';" style="cursor: pointer; position: relative; z-index: 10;">F</span>LAME</h1>
+            <h1><span id="secret-pin-login" class="secret-pin">F</span>LOUR & FLAME</h1>
             <p>Member Access</p>
         </div>
 
@@ -71,8 +50,8 @@
 
         <button id="submitBtn">Sign In</button>
         <div id="status" class="message"></div>
-        <div style="text-align: center; margin-top: 15px;">
-            <a href="#" id="toggleAuthMode" style="color: var(--gold); text-decoration: none; font-size: 0.9rem;">Don't have an account? Sign Up</a>
+        <div class="center-mt-15">
+            <a href="#" id="toggleAuthMode" class="gold-link">Don't have an account? Sign Up</a>
         </div>
     </div>
 

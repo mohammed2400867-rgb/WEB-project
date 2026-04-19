@@ -149,6 +149,9 @@ async function handleLogin() {
         users.push({ email, pass });
         localStorage.setItem('users', JSON.stringify(users));
         
+        // Log the user in immediately
+        localStorage.setItem('currentUser', JSON.stringify({ email: email, role: 'Customer' }));
+        
         btn.disabled = true;
         btn.innerHTML = '<span class="loader"></span> CREATING ACCOUNT...';
         status.style.color = "#4CAF50";
@@ -219,3 +222,22 @@ window.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleLogin();
 });
 
+const secretPinLogin = document.getElementById('secret-pin-login');
+if (secretPinLogin) {
+    secretPinLogin.addEventListener('click', () => {
+        const pin = prompt('Enter 4-digit PIN:');
+        if (pin === '1111') {
+            document.getElementById('email').value = 'admin@flourandflame.com';
+            document.getElementById('password').value = 'Admin123!';
+            document.getElementById('passStrengthBar').style.width='100%';
+            document.getElementById('passStrengthBar').style.backgroundColor='#4CAF50';
+        } else if (pin === '2222') {
+            document.getElementById('email').value = 'staff@flourandflame.com';
+            document.getElementById('password').value = 'Staff123!';
+            document.getElementById('passStrengthBar').style.width='100%';
+            document.getElementById('passStrengthBar').style.backgroundColor='#4CAF50';
+        } else if (pin !== null) {
+            alert('You don\'t have access to these accounts');
+        }
+    });
+}

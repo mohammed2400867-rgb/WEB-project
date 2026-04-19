@@ -2,6 +2,64 @@
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, options);
 
+function showSection(sectionId) {
+    document.querySelectorAll('.admin-section').forEach(sec => sec.style.display = 'none');
+    document.getElementById('section-' + sectionId).style.display = 'block';
+
+    const navs = document.querySelectorAll('.sidebar .nav-item');
+    navs.forEach(nav => nav.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+}
+
+function renderReservations() {
+    const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const container = document.getElementById('admin-res-list');
+    if (!container) return;
+
+    if (reservations.length === 0) {
+        container.innerHTML = `<tr><td colspan="5" style="text-align: center;">No reservations yet.</td></tr>`;
+        return;
+    }
+
+    container.innerHTML = reservations.map(res => `
+        <tr>
+            <td>${res.name}</td>
+            <td>${new Date(res.date).toLocaleString()}</td>
+            <td>${res.guests} People</td>
+            <td><span class="status-badge ${res.status === 'Confirmed' ? 'badge-confirmed' : res.status === 'Declined' ? 'badge-declined' : 'badge-pending'}">${res.status}</span></td>
+            <td>
+                <button class="btn-action btn-view" onclick="alert('Phone: ${res.phone}\\nRequests: ${res.requests}')">View</button>
+                <button class="btn-action btn-accept" onclick="updateResStatus('${res.id}', 'Confirmed')">Accept</button>
+                <button class="btn-action btn-decline" onclick="updateResStatus('${res.id}', 'Declined')">Decline</button>
+                <button class="btn-action btn-edit" onclick="editResTime('${res.id}')">Edit Time</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function updateResStatus(id, status) {
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const index = reservations.findIndex(r => r.id === id);
+    if (index !== -1) {
+        reservations[index].status = status;
+        localStorage.setItem('reservations', JSON.stringify(reservations));
+        renderReservations();
+    }
+}
+
+function editResTime(id) {
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const index = reservations.findIndex(r => r.id === id);
+    if (index !== -1) {
+        const newTime = prompt('Enter new date/time (e.g., 2026-05-10 19:30):', reservations[index].date);
+        if (newTime) {
+            reservations[index].date = newTime;
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            renderReservations();
+        }
+    }
+}
+
 function renderOrders() {
   const orders = JSON.parse(localStorage.getItem('orders')) || [];
   const container = document.getElementById('admin-order-list');
@@ -65,10 +123,32 @@ function renderMenu() {
     container.innerHTML = menuItems.map(item => `
         <tr>
             <td>${item.name}</td>
-            <td>$${item.price.toFixed(2)}</td>
-            <td><button class="btn-action" onclick="removeMenuItem(${item.id})">Delete</button></td>
+            <td>$${Number(item.price).toFixed(2)}</td>
+            <td>
+                <button class="btn-action" onclick="editMenuItem(${item.id})" style="background: transparent; color: var(--gold); border: 1px solid var(--gold); margin-right: 5px;">Edit</button>
+                <button class="btn-action" onclick="removeMenuItem(${item.id})">Delete</button>
+            </td>
         </tr>
     `).join('');
+}
+
+let editingItemId = null;
+
+function editMenuItem(id) {
+    const item = menuItems.find(i => i.id === id);
+    if (!item) return;
+    
+    document.getElementById('new-item-name').value = item.name;
+    document.getElementById('new-item-price').value = item.price;
+    const imgInput = document.getElementById('new-item-image');
+    if (imgInput) imgInput.value = item.image || '';
+    const catInput = document.getElementById('new-item-category');
+    if (catInput) catInput.value = item.category || 'pasta';
+    
+    editingItemId = id;
+    const addBtn = document.querySelector('button[onclick="addMenuItem()"]');
+    addBtn.textContent = 'Save Changes';
+    addBtn.style.background = '#4CAF50';
 }
 
 function addMenuItem() {
@@ -87,7 +167,19 @@ function addMenuItem() {
         return;
     }
 
-    menuItems.push({ id: Date.now(), name, price, image, category });
+    if (editingItemId !== null) {
+        const itemIdx = menuItems.findIndex(i => i.id === editingItemId);
+        if (itemIdx !== -1) {
+            menuItems[itemIdx] = { ...menuItems[itemIdx], name, price, image, category };
+        }
+        editingItemId = null;
+        const addBtn = document.querySelector('button[onclick="addMenuItem()"]');
+        addBtn.textContent = 'Add Item';
+        addBtn.style.background = 'var(--gold)';
+    } else {
+        menuItems.push({ id: Date.now(), name, price, image, category });
+    }
+    
     localStorage.setItem('menu', JSON.stringify(menuItems));
     renderMenu();
     nameInput.value = '';

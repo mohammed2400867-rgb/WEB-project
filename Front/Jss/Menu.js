@@ -1,17 +1,22 @@
+let currentCategory = 'all';
+let currentSort = 'none';
+
 function filterItems(category, event) {
-    const cards = document.querySelectorAll('.menu-card');
+    currentCategory = category;
     const btns = document.querySelectorAll('.filter-btn');
+    if (btns.length > 0) {
+        btns.forEach(btn => btn.classList.remove('active'));
+        if (event) event.currentTarget.classList.add('active');
+    }
+    renderMenu();
+}
 
-    btns.forEach(btn => btn.classList.remove('active'));
-    if (event) event.currentTarget.classList.add('active');
-
-    cards.forEach(card => {
-        if (category === 'all' || card.classList.contains(category)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
+function sortMenu() {
+    const sortSelect = document.getElementById('sort-price');
+    if (sortSelect) {
+        currentSort = sortSelect.value;
+        renderMenu();
+    }
 }
 
 function renderMenu() {
@@ -40,7 +45,15 @@ function renderMenu() {
         localStorage.setItem('menu', JSON.stringify(menuItems));
     }
 
-    menuGrid.innerHTML = menuItems.map((item, idx) => `
+    let filteredItems = menuItems.filter(item => currentCategory === 'all' || item.category === currentCategory);
+
+    if (currentSort === 'low-high') {
+        filteredItems.sort((a, b) => a.price - b.price);
+    } else if (currentSort === 'high-low') {
+        filteredItems.sort((a, b) => b.price - a.price);
+    }
+
+    menuGrid.innerHTML = filteredItems.map((item, idx) => `
         <div class="menu-card ${item.category || 'all'} show">
             <div class="img-box"><img src="${item.image || `Pics/${(idx % 10) + 1}.jpeg`}" alt="${item.name}"></div>
             <div class="details">
@@ -102,14 +115,33 @@ function placeOrder() {
         alert("Your cart is empty.");
         return;
     }
+    
+    const addressInput = document.getElementById('checkout-address');
+    if (addressInput && !addressInput.value.trim()) {
+        alert("Please enter a delivery address.");
+        return;
+    }
+
+    if (window.phoneInput) {
+        if (!window.phoneInput.isValidNumber()) {
+            alert("Please enter a valid phone number for the selected country.");
+            return;
+        }
+    }
+
     const paymentMethod = document.getElementById('payment-method').value;
+    const phoneVal = window.phoneInput ? window.phoneInput.getNumber() : '';
+    const addressVal = addressInput ? addressInput.value.trim() : '';
+
     const newOrder = {
         id: "ORD-" + Math.floor(Math.random() * 10000),
         items: cart,
         total: cart.reduce((sum, item) => sum + item.price, 0),
         status: "Pending",
         timestamp: new Date().toLocaleTimeString(),
-        payment: paymentMethod
+        payment: paymentMethod,
+        address: addressVal,
+        phone: phoneVal
     };
     
     // Save to global orders
@@ -134,3 +166,19 @@ function placeOrder() {
 // Initialize UI
 renderMenu();
 updateCartUI();
+
+document.addEventListener("DOMContentLoaded", () => {
+    const phoneInputField = document.getElementById("checkout-phone");
+    if (phoneInputField && window.intlTelInput) {
+        window.phoneInput = window.intlTelInput(phoneInputField, {
+            initialCountry: "auto",
+            geoIpLookup: function(callback) {
+                fetch("https://ipapi.co/json")
+                    .then(res => res.json())
+                    .then(data => callback(data.country_code))
+                    .catch(() => callback("us"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+    }
+});

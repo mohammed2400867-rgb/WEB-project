@@ -1,22 +1,28 @@
- document.addEventListener("DOMContentLoaded",() => {
-    const form = document.getElementById("reservationForm");
+document.addEventListener("DOMContentLoaded", () => {
+    const contactForm = document.getElementById("contactForm");
+    if (!contactForm) return;
 
-    form.addEventListener("submit", function (e) {
-        e.preventDefault(); // stop page refresh
+    contactForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById("contactName").value;
+        const email = document.getElementById("contactEmail").value;
+        const subject = document.getElementById("contactSubject").value;
+        const message = document.getElementById("contactMessage").value;
 
-        // Get values
-        const name = form.querySelector('input[type="text"]').value;
-        const date = form.querySelector('input[type="date"]').value;
-        const guests = form.querySelector('select').value;
-        const requests = form.querySelector('textarea').value;
+        const newContact = {
+            id: "MSG-" + Math.floor(Math.random() * 10000),
+            name,
+            email,
+            subject,
+            message,
+            timestamp: new Date().toLocaleTimeString()
+        };
 
-        // Simple validation
-        if (name === "" || date === "") {
-            alert("Please fill all required fields!");
-            return;
-        }
+        const messages = JSON.parse(localStorage.getItem("messages")) || [];
+        messages.push(newContact);
+        localStorage.setItem("messages", JSON.stringify(messages));
 
-        // Reset form after submission
-        form.reset();
+        alert(`Thank you, ${name}! Your message has been sent. We will get back to you at ${email} shortly.`);
+        contactForm.reset();
     });
-});

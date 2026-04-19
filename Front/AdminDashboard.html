@@ -22,42 +22,61 @@
 
     <aside class="sidebar">
         <h2>FLOUR & FLAME</h2>
-        <a href="#" class="nav-item active">Dashboard</a>
-        <a href="#" class="nav-item">Reservations</a>
-        <a href="#" class="nav-item">Menu Editor</a>
-        <a href="#" class="nav-item">Reviews</a>
-        <a href="#" class="nav-item">Analytics</a>
-        <a href="Main.html" class="nav-item" style="margin-top: auto; border: 1px solid var(--gold);">View Website</a>
+        <a href="#" class="nav-item active" onclick="showSection('dashboard')">Dashboard</a>
+        <a href="#" class="nav-item" onclick="showSection('reservations')">Reservations</a>
+        <a href="#" class="nav-item" onclick="showSection('menu')">Menu Editor</a>
+        <a href="#" class="nav-item" onclick="showSection('staff')">Staff Management</a>
+        <a href="Main.html" class="nav-item view-website-btn">View Website</a>
     </aside>
 
     <main class="main-content">
         <div class="header">
             <h1>Executive Overview</h1>
-            <div id="date-display" style="color: var(--gold); font-weight: 600;"></div>
+            <div id="date-display" class="date-display"></div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Orders</h3>
-                <p id="stat-total-orders">0</p>
+        <div id="section-dashboard" class="admin-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Orders</h3>
+                    <p id="stat-total-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Orders</h3>
+                    <p id="stat-pending-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Delivered Orders</h3>
+                    <p id="stat-delivered-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Revenue</h3>
+                    <p id="stat-total-revenue">$0.00</p>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>Pending Orders</h3>
-                <p id="stat-pending-orders">0</p>
-            </div>
-            <div class="stat-card">
-                <h3>Delivered Orders</h3>
-                <p id="stat-delivered-orders">0</p>
-            </div>
-            <div class="stat-card">
-                <h3>Total Revenue</h3>
-                <p id="stat-total-revenue">$0.00</p>
+
+            <div class="data-panel mb-30">
+                <h2>Recent Orders</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Time</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-order-list">
+                        <!-- Orders injected by JS -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="data-panel">
-            <h2>Recent Reservations</h2>
-            <table>
+        <div id="section-reservations" class="admin-section" style="display: none;">
+            <div class="data-panel">
+                <h2>Recent Reservations</h2>
+                <table>
                 <thead>
                     <tr>
                         <th>Guest Name</th>
@@ -67,64 +86,29 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Giovanni Rossi</td>
-                        <td>7:30 PM</td>
-                        <td>4 People</td>
-                        <td><span class="status-badge">CONFIRMED</span></td>
-                        <td><button class="btn-action">Edit</button></td>
-                    </tr>
-                    <tr>
-                        <td>Lucia Bianchi</td>
-                        <td>8:00 PM</td>
-                        <td>2 People</td>
-                        <td><span class="status-badge">CONFIRMED</span></td>
-                        <td><button class="btn-action">Edit</button></td>
-                    </tr>
-                    <tr>
-                        <td>Marco Vieri</td>
-                        <td>8:15 PM</td>
-                        <td>6 People</td>
-                        <td><span class="status-badge">PENDING</span></td>
-                        <td><button class="btn-action">Edit</button></td>
-                    </tr>
+                <tbody id="admin-res-list">
                 </tbody>
             </table>
         </div>
-        <div class="data-panel" style="margin-bottom: 30px;">
-            <h2>Recent Orders</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Time</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-order-list">
-                    <!-- Orders injected by JS -->
-                </tbody>
-            </table>
         </div>
 
-        <div class="data-panel" style="margin-bottom: 30px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div id="section-menu" class="admin-section" style="display: none;">
+        <div class="data-panel mb-30">
+            <div class="flex-between-mb20">
                 <h2>Menu Editor</h2>
-                <button class="btn-action" onclick="restoreDefaultMenu()" style="background: transparent; border: 1px solid var(--gold); color: var(--gold);">Undo / Restore Default Menu</button>
+                <button class="btn-action btn-outline-gold" onclick="restoreDefaultMenu()">Undo / Restore Default Menu</button>
             </div>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" id="new-item-name" placeholder="Item Name" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); flex: 1;">
-                <select id="new-item-category" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream);">
+            <div class="flex-gap-mb20">
+                <input type="text" id="new-item-name" placeholder="Item Name" class="admin-input-flex">
+                <select id="new-item-category" class="admin-input">
                     <option value="pasta">Pasta</option>
                     <option value="pizza">Pizza</option>
                     <option value="drinks">Drinks</option>
                     <option value="dessert">Dessert</option>
                 </select>
-                <input type="number" id="new-item-price" placeholder="Price ($)" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100px;">
-                <input type="text" id="new-item-image" placeholder="Image URL (optional)" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); flex: 1;">
-                <button class="btn-action" onclick="addMenuItem()" style="background: var(--gold); color: #000; font-weight: bold;">Add Item</button>
+                <input type="number" id="new-item-price" placeholder="Price ($)" step="0.01" class="admin-input-w100">
+                <input type="text" id="new-item-image" placeholder="Image URL (optional)" class="admin-input-flex">
+                <button class="btn-action btn-gold-bold" onclick="addMenuItem()">Add Item</button>
             </div>
             <table>
                 <thead>
@@ -139,16 +123,19 @@
                 </tbody>
             </table>
         </div>
-        <div class="data-panel" style="margin-bottom: 30px;">
+        </div>
+        
+        <div id="section-staff" class="admin-section" style="display: none;">
+        <div class="data-panel mb-30">
             <h2>Staff Management</h2>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" id="new-staff-name" placeholder="Staff Name" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); flex: 1;">
-                <input type="email" id="new-staff-email" placeholder="staff@flourflame.com" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); flex: 1;">
-                <select id="new-staff-role" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream);">
+            <div class="flex-gap-mb20">
+                <input type="text" id="new-staff-name" placeholder="Staff Name" class="admin-input-flex">
+                <input type="email" id="new-staff-email" placeholder="staff@flourflame.com" class="admin-input-flex">
+                <select id="new-staff-role" class="admin-input">
                     <option value="Staff">Staff</option>
                     <option value="Admin">Admin</option>
                 </select>
-                <button class="btn-action" onclick="addStaff()" style="background: var(--gold); color: #000; font-weight: bold;">Add User</button>
+                <button class="btn-action btn-gold-bold" onclick="addStaff()">Add User</button>
             </div>
             <table>
                 <thead>
@@ -163,6 +150,7 @@
                     <!-- Staff injected by JS -->
                 </tbody>
             </table>
+        </div>
         </div>
     </main>
 

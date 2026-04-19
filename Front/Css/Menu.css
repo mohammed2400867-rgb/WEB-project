@@ -360,3 +360,16 @@
         padding: 10px 15px;
     }
 }
+/* Utility classes from inline styles */
+.sort-select { margin-left: 20px; padding: 10px; background: #111; color: var(--gold); border: 1px solid var(--gold); border-radius: 4px; font-family: 'Poppins', sans-serif; }
+.cart-footer-ext { padding: 10px; border-top: 1px solid #333; margin-top: 15px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-15 { margin-bottom: 15px; }
+.gold-label { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; }
+.checkout-input { width: 100%; padding: 8px; background: #111; color: #fff; border: 1px solid #333; margin-top: 5px; box-sizing: border-box; }
+.checkout-select { width: 100%; padding: 10px; background: #111; color: #fff; border: 1px solid #333; margin-top: 5px; box-sizing: border-box; }
+
+/* Fix intl-tel-input overflowing */
+.iti { width: 100%; margin-top: 5px; }
+.iti__flag-container { z-index: 10; }
+#checkout-phone { padding-left: 50px !important; }

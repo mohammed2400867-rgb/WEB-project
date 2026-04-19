@@ -87,3 +87,10 @@
         .btn:hover { background: var(--gold); color: #000; }
 
         footer { text-align: center; padding: 60px; border-top: 1px solid #222; }
+/* Utility classes from inline styles */
+.centered-box { text-align: center; }
+.mt-80 { margin-top: 80px; }
+.gold-heading { color: var(--gold); }
+.mb-20 { margin-bottom: 20px; }
+.w-100 { width: 100%; }
+.gold-text { color: var(--gold); }

@@ -8,20 +8,21 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="Css/Main.css">
     <link rel="stylesheet" href="Css/Contact.css">
 </head>
 
 <body>
-    <header style="position: absolute; top: 0; width: 100%; padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; z-index: 100;">
-        <a href="index.html" class="logo" style="color: var(--gold); text-decoration: none; font-size: 1.6rem; font-weight: 700; letter-spacing: 4px;">FLOUR & FLAME</a>
+    <header id="navbar">
+        <a href="Main.html" class="logo">FLOUR & FLAME</a>
         <nav>
-            <ul style="display: flex; list-style: none;">
-                <li style="margin-left: 35px;"><a href="Main.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Home</a></li>
-                <li style="margin-left: 35px;"><a href="Menu.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Menu</a></li>
-                <li style="margin-left: 35px;"><a href="TrackOrder.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Track Order</a></li>
-                <li style="margin-left: 35px;"><a href="Reviews.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reviews</a></li>
-                <li style="margin-left: 35px;"><a href="Reservation.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reservations</a></li>
-                <li style="margin-left: 35px;"><a href="Contact.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Contact</a></li>
+            <ul id="nav-links">
+                <li><a href="Main.html">Home</a></li>
+                <li><a href="Menu.html">Menu</a></li>
+                <li><a href="TrackOrder.html">Track Order</a></li>
+                <li><a href="Reviews.html">Reviews</a></li>
+                <li><a href="Reservation.html">Reservations</a></li>
+                <li><a href="Contact.html">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -49,33 +50,35 @@
                 <p>E: ciao@flourandflame.com</p>
             </div>
 
-            <div class="map-placeholder">
-                [ Interactive Map Placeholder ]
+            <div class="map-placeholder map-container">
+                <script src="Jss/Contact.js"></script>
+                <script src="Jss/Auth.js"></script>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2969.6542461109866!2d12.4589965!3d41.90278349999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f605ceeb7bc11%3A0xc66512ce24e2ec80!2sVia%20della%20Conciliazione%2C%20Roma%20RM%2C%20Italy!5e0!3m2!1sen!2sus!4v1713550000000!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </section>
 
         <section class="contact-form-section">
             <div class="booking-card">
-                <h2 style="font-size: 2rem; margin-bottom: 30px;">Send a Message</h2>
-                <form action="#">
+                <h2 class="form-heading">Send a Message</h2>
+                <form id="contactForm" action="#">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" placeholder="Your Name" required>
+                        <input type="text" id="contactName" placeholder="Your Name" required>
                     </div>
 
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" placeholder="hello@example.com" required style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif;">
+                        <input type="email" id="contactEmail" placeholder="hello@example.com" required class="styled-input">
                     </div>
 
                     <div class="form-group">
                         <label>Subject</label>
-                        <input type="text" placeholder="Subject of your message" required style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif;">
+                        <input type="text" id="contactSubject" placeholder="Subject of your message" required class="styled-input">
                     </div>
 
                     <div class="form-group">
                         <label>Message</label>
-                        <textarea rows="5" placeholder="How can we help you?" required></textarea>
+                        <textarea id="contactMessage" rows="5" placeholder="How can we help you?" required></textarea>
                     </div>
 
                     <button type="submit" class="submit-btn">Send Message</button>
