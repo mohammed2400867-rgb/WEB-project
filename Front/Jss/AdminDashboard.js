@@ -17,10 +17,47 @@ function renderOrders() {
     `).join('');
 }
 
-let menuItems = JSON.parse(localStorage.getItem('menu')) || [
-    { id: 1, name: "Spaghetti Carbonara", price: 19 },
-    { id: 2, name: "Margherita DOC", price: 18 }
+function renderAnalytics() {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const totalOrders = orders.length;
+    const pendingOrders = orders.filter(o => o.status === 'Pending').length;
+    const deliveredOrders = orders.filter(o => o.status === 'Delivered').length;
+    const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+
+    const elTotal = document.getElementById('stat-total-orders');
+    const elPending = document.getElementById('stat-pending-orders');
+    const elDelivered = document.getElementById('stat-delivered-orders');
+    const elRevenue = document.getElementById('stat-total-revenue');
+
+    if (elTotal) elTotal.innerText = totalOrders;
+    if (elPending) elPending.innerText = pendingOrders;
+    if (elDelivered) elDelivered.innerText = deliveredOrders;
+    if (elRevenue) elRevenue.innerText = `$${totalRevenue.toFixed(2)}`;
+}
+
+const defaultMenu = [
+    { id: 1, name: "Spaghetti Carbonara", price: 19, category: "pasta" },
+    { id: 2, name: "Vesuvius Pomodoro", price: 17, category: "pasta" },
+    { id: 3, name: "Lasagna verdi", price: 23, category: "pasta" },
+    { id: 4, name: "Margherita DOC", price: 18, category: "pizza" },
+    { id: 5, name: "Bianca al Tartufo", price: 25, category: "pizza" },
+    { id: 6, name: "The Garden Flame", price: 21, category: "pizza" },
+    { id: 7, name: "Sicilian Sunset", price: 10, category: "drinks" },
+    { id: 8, name: "Limonata Zenzero", price: 9, category: "drinks" },
+    { id: 9, name: "Espresso Tonic", price: 8, category: "drinks" },
+    { id: 10, name: "Classic Tiramisù", price: 13, category: "dessert" },
+    { id: 11, name: "Vanilla Panna Cotta", price: 11, category: "dessert" },
+    { id: 12, name: "Sicilian Cannoli", price: 12, category: "dessert" }
 ];
+
+let menuItems = JSON.parse(localStorage.getItem('menu')) || defaultMenu;
+
+function restoreDefaultMenu() {
+    menuItems = [...defaultMenu];
+    localStorage.setItem('menu', JSON.stringify(menuItems));
+    renderMenu();
+    alert("Menu restored to default items!");
+}
 
 function renderMenu() {
     const container = document.getElementById('admin-menu-list');
@@ -37,19 +74,25 @@ function renderMenu() {
 function addMenuItem() {
     const nameInput = document.getElementById('new-item-name');
     const priceInput = document.getElementById('new-item-price');
+    const imageInput = document.getElementById('new-item-image');
+    const categoryInput = document.getElementById('new-item-category');
+    
     const name = nameInput.value.trim();
     const price = parseFloat(priceInput.value);
+    const image = imageInput ? imageInput.value.trim() : "";
+    const category = categoryInput ? categoryInput.value : "pasta";
 
     if(!name || isNaN(price)) {
         alert("Please enter a valid name and price.");
         return;
     }
 
-    menuItems.push({ id: Date.now(), name, price });
+    menuItems.push({ id: Date.now(), name, price, image, category });
     localStorage.setItem('menu', JSON.stringify(menuItems));
     renderMenu();
     nameInput.value = '';
     priceInput.value = '';
+    if (imageInput) imageInput.value = '';
 }
 
 function removeMenuItem(id) {
@@ -92,6 +135,15 @@ function addStaff() {
 
     staffMembers.push({ id: Date.now(), name, email, role });
     localStorage.setItem('staff', JSON.stringify(staffMembers));
+    
+    // Auto-create user account for login
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    if(!users.find(u => u.email === email)) {
+        users.push({ email: email, pass: 'Welcome123!' });
+        localStorage.setItem('users', JSON.stringify(users));
+        alert(`Staff added! They can login with default password: Welcome123!`);
+    }
+
     renderStaff();
     
     nameInput.value = '';
@@ -109,5 +161,6 @@ function removeStaff(id) {
 }
 
 renderOrders();
+renderAnalytics();
 renderMenu();
 renderStaff();

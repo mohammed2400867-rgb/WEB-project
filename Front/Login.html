@@ -12,19 +12,41 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="Css/Login.css">
+    <style>
+        .validation-msg {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            min-height: 1.2rem;
+            display: block;
+        }
+        .strength-bar-container {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            margin-top: 8px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="login-card">
         <div class="header">
-            <h1>FLOUR & FLAME</h1>
+            <h1><span onclick="document.getElementById('email').value='admin@flourandflame.com'; document.getElementById('password').value='Admin123!'; document.getElementById('passStrengthBar').style.width='100%'; document.getElementById('passStrengthBar').style.backgroundColor='#4CAF50';" style="cursor: pointer; position: relative; z-index: 10;">F</span>LOUR & <span onclick="document.getElementById('email').value='staff@flourandflame.com'; document.getElementById('password').value='Staff123!'; document.getElementById('passStrengthBar').style.width='100%'; document.getElementById('passStrengthBar').style.backgroundColor='#4CAF50';" style="cursor: pointer; position: relative; z-index: 10;">F</span>LAME</h1>
             <p>Member Access</p>
         </div>
 
         <div class="form-group">
             <label>Email Address</label>
             <input type="email" id="email" placeholder="email@example.com">
+            <span id="emailError" class="validation-msg"></span>
         </div>
 
         <div class="form-group">
@@ -33,13 +55,28 @@
                 <input type="password" id="password" placeholder="••••••••">
                 <button class="toggle-btn" id="togglePass">SHOW</button>
             </div>
+            <div id="strengthContainer" class="strength-bar-container" style="display: none;">
+                <div id="passStrengthBar" class="strength-bar"></div>
+            </div>
+            <span id="passStrengthText" class="validation-msg" style="display: none;"></span>
+        </div>
+
+        <div class="form-group" id="confirmPassGroup" style="display: none;">
+            <label>Confirm Password</label>
+            <div class="password-container">
+                <input type="password" id="confirmPassword" placeholder="••••••••">
+            </div>
+            <span id="confirmPassError" class="validation-msg"></span>
         </div>
 
         <button id="submitBtn">Sign In</button>
         <div id="status" class="message"></div>
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="#" id="toggleAuthMode" style="color: var(--gold); text-decoration: none; font-size: 0.9rem;">Don't have an account? Sign Up</a>
+        </div>
     </div>
 
-    <script src="Js/Login.js"></script>
+    <script src="Jss/Login.js"></script>
 
 </body>
 

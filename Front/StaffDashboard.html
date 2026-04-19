@@ -7,6 +7,13 @@
     <title>Staff | Flour & Flame</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Css/AdminDashboard.css">
+    <script>
+        const staffUserStr = localStorage.getItem('currentUser');
+        const staffUser = staffUserStr ? JSON.parse(staffUserStr) : null;
+        if (!staffUser || staffUser.role !== 'Staff') {
+            window.location.href = 'Login.html';
+        }
+    </script>
 </head>
 
 <body>

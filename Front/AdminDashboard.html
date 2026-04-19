@@ -9,7 +9,13 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="Css/AdminDashboard.css">
-
+    <script>
+        const adminUserStr = localStorage.getItem('currentUser');
+        const adminUser = adminUserStr ? JSON.parse(adminUserStr) : null;
+        if (!adminUser || adminUser.role !== 'Admin') {
+            window.location.href = 'Login.html';
+        }
+    </script>
 </head>
 
 <body>
@@ -32,20 +38,20 @@
 
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Today's Bookings</h3>
-                <p>24</p>
+                <h3>Total Orders</h3>
+                <p id="stat-total-orders">0</p>
             </div>
             <div class="stat-card">
-                <h3>Menu Items</h3>
-                <p>11</p>
+                <h3>Pending Orders</h3>
+                <p id="stat-pending-orders">0</p>
             </div>
             <div class="stat-card">
-                <h3>Average Rating</h3>
-                <p>4.9</p>
+                <h3>Delivered Orders</h3>
+                <p id="stat-delivered-orders">0</p>
             </div>
             <div class="stat-card">
-                <h3>Open Tables</h3>
-                <p>8</p>
+                <h3>Total Revenue</h3>
+                <p id="stat-total-revenue">$0.00</p>
             </div>
         </div>
 
@@ -104,10 +110,20 @@
         </div>
 
         <div class="data-panel" style="margin-bottom: 30px;">
-            <h2>Menu Editor</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Menu Editor</h2>
+                <button class="btn-action" onclick="restoreDefaultMenu()" style="background: transparent; border: 1px solid var(--gold); color: var(--gold);">Undo / Restore Default Menu</button>
+            </div>
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <input type="text" id="new-item-name" placeholder="Item Name" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); flex: 1;">
+                <select id="new-item-category" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream);">
+                    <option value="pasta">Pasta</option>
+                    <option value="pizza">Pizza</option>
+                    <option value="drinks">Drinks</option>
+                    <option value="dessert">Dessert</option>
+                </select>
                 <input type="number" id="new-item-price" placeholder="Price ($)" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100px;">
+                <input type="text" id="new-item-image" placeholder="Image URL (optional)" style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); flex: 1;">
                 <button class="btn-action" onclick="addMenuItem()" style="background: var(--gold); color: #000; font-weight: bold;">Add Item</button>
             </div>
             <table>

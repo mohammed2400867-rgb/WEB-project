@@ -9,6 +9,16 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="Css/Contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <style>
+        .iti { width: 100%; display: block; }
+        .iti__flag {background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/img/flags.png");}
+        @media (min-resolution: 2x) {
+            .iti__flag {background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/img/flags@2x.png");}
+        }
+        .iti__country-list { background-color: #111; color: #fff; border: 1px solid #333; }
+        .iti__country-list .iti__country.iti__highlight { background-color: rgba(212, 175, 55, 0.2); }
+    </style>
 </head>
 
 <body>
@@ -20,6 +30,9 @@
                 <li style="margin-left: 35px;"><a href="Main.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Home</a></li>
                 <li style="margin-left: 35px;"><a href="Menu.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Menu</a></li>
                 <li style="margin-left: 35px;"><a href="TrackOrder.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Track Order</a></li>
+                <li style="margin-left: 35px;"><a href="Reviews.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reviews</a></li>
+                <li style="margin-left: 35px;"><a href="Reservation.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reservations</a></li>
+                <li style="margin-left: 35px;"><a href="Contact.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -62,6 +75,11 @@
                         <input type="text" placeholder="Mohammed Ashraf" required>
                     </div>
 
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" required style="padding: 10px 10px 10px 50px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif;">
+                    </div>
+
                     <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                         <div class="form-group" style="flex: 1; min-width: 150px;">
                             <label>Date</label>
@@ -90,6 +108,22 @@
         </section>
     </main>
 
+    <script src="Jss/Reservation.js"></script>
+    <script src="Jss/Auth.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script>
+        const phoneInputField = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            initialCountry: "auto",
+            geoIpLookup: function(callback) {
+                fetch("https://ipapi.co/json")
+                    .then(res => res.json())
+                    .then(data => callback(data.country_code))
+                    .catch(() => callback("us"));
+            }
+        });
+    </script>
 </body>
 
 </html>

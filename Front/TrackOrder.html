@@ -10,6 +10,49 @@
         .track-result { margin-top: 30px; padding: 20px; background: #000; border: 1px solid var(--gold); border-radius: 8px; display: none; }
         .track-result.active { display: block; }
         .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; border: 1px solid var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+        
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 2px;
+            background: #333;
+            z-index: 1;
+        }
+        .step {
+            position: relative;
+            z-index: 2;
+            background: var(--carbon);
+            padding: 8px 5px;
+            border-radius: 20px;
+            border: 2px solid #333;
+            color: #777;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-align: center;
+            flex: 1;
+            margin: 0 2px;
+            transition: 0.3s;
+        }
+        .step.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+        .step.completed {
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
     </style>
 </head>
 <body>
@@ -19,13 +62,16 @@
             <ul style="display: flex; list-style: none;">
                 <li style="margin-left: 35px;"><a href="Main.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Home</a></li>
                 <li style="margin-left: 35px;"><a href="Menu.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Menu</a></li>
+                <li style="margin-left: 35px;"><a href="TrackOrder.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Track Order</a></li>
+                <li style="margin-left: 35px;"><a href="Reviews.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reviews</a></li>
                 <li style="margin-left: 35px;"><a href="Reservation.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reservations</a></li>
+                <li style="margin-left: 35px;"><a href="Contact.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="contact-wrapper" style="padding-top: 150px; justify-content: center;">
-        <section class="contact-form-section" style="width: 100%; max-width: 600px;">
+    <main class="contact-wrapper" style="padding-top: 150px; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start;">
+        <section class="contact-form-section" style="flex: 1; min-width: 350px; max-width: 600px;">
             <div class="booking-card">
                 <h2 style="font-size: 2rem; margin-bottom: 20px; text-align: center;">Track Your Order</h2>
                 <p style="text-align: center; margin-bottom: 30px; color: #999;">Enter your Order ID below to check its current status.</p>
@@ -40,8 +86,16 @@
                 </div>
             </div>
         </section>
+
+        <section style="flex: 1; min-width: 350px; max-width: 600px;">
+            <div id="my-active-orders-container" class="booking-card" style="display: none;">
+                <h2 style="font-size: 2rem; margin-bottom: 20px; text-align: center;">My Recent Orders</h2>
+                <div id="active-orders-list"></div>
+            </div>
+        </section>
     </main>
 
     <script src="Jss/TrackOrder.js"></script>
+    <script src="Jss/Auth.js"></script>
 </body>
 </html>

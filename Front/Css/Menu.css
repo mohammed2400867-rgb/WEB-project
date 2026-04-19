@@ -218,22 +218,23 @@
     position: relative; /* Essential to anchor the cart */
 }
 
-.cart-container {
-    position: absolute;
-    top: 20px; /* Adjust based on your 'menu-intro' height */
+.cart-trigger {
+    position: fixed;
+    top: 110px;
     right: 6%;
-    z-index: 100;
+    z-index: 1001;
     display: flex;
     align-items: center;
     gap: 12px;
     background: var(--gray);
     padding: 12px 25px;
     border: 1px solid var(--gold);
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.cart-container:hover {
+.cart-trigger:hover {
     background: rgba(212, 175, 55, 0.1);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -353,11 +354,9 @@
 }
 
 @media (max-width: 768px) {
-    .cart-container {
-        position: fixed; /* Stick to bottom right on mobile for better UX */
-        bottom: 20px;
+    .cart-trigger {
+        top: 20px;
         right: 20px;
-        top: auto;
-        border-radius: 50px;
+        padding: 10px 15px;
     }
 }

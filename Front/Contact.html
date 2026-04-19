@@ -12,12 +12,24 @@
 </head>
 
 <body>
+    <header style="position: absolute; top: 0; width: 100%; padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; z-index: 100;">
+        <a href="index.html" class="logo" style="color: var(--gold); text-decoration: none; font-size: 1.6rem; font-weight: 700; letter-spacing: 4px;">FLOUR & FLAME</a>
+        <nav>
+            <ul style="display: flex; list-style: none;">
+                <li style="margin-left: 35px;"><a href="Main.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Home</a></li>
+                <li style="margin-left: 35px;"><a href="Menu.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Menu</a></li>
+                <li style="margin-left: 35px;"><a href="TrackOrder.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Track Order</a></li>
+                <li style="margin-left: 35px;"><a href="Reviews.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reviews</a></li>
+                <li style="margin-left: 35px;"><a href="Reservation.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Reservations</a></li>
+                <li style="margin-left: 35px;"><a href="Contact.html" style="color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <main class="contact-wrapper">
         <section class="contact-info-section">
-            <h1>Visit Us</h1>
-            <p>Experience the heat of the flame and the tradition of the flour. We welcome walk-ins, but reservations
-                are recommended for weekend dining.</p>
+            <h1>Get In Touch</h1>
+            <p>Have a question, feedback, or special inquiry? We'd love to hear from you. Fill out the form below or reach out directly.</p>
 
             <div class="info-item">
                 <h3>Location</h3>
@@ -44,36 +56,29 @@
 
         <section class="contact-form-section">
             <div class="booking-card">
-                <h2 style="font-size: 2rem; margin-bottom: 30px;">Make a Reservation</h2>
+                <h2 style="font-size: 2rem; margin-bottom: 30px;">Send a Message</h2>
                 <form action="#">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" placeholder="Mohammed Ashraf" required>
-                    </div>
-
-                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                        <div class="form-group" style="flex: 1; min-width: 150px;">
-                            <label>Date</label>
-                            <input type="date" required>
-                        </div>
-                        <div class="form-group" style="flex: 1; min-width: 150px;">
-                            <label>Guests</label>
-                            <select required>
-                                <option value="1">1 Guest</option>
-                                <option value="2" selected>2 Guests</option>
-                                <option value="4">4 Guests</option>
-                                <option value="6">6+ Guests</option>
-                            </select>
-                        </div>
+                        <input type="text" placeholder="Your Name" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Special Requests</label>
-                        <textarea rows="4"
-                            placeholder="Allergies, birthday celebrations, or window seating preferences..."></textarea>
+                        <label>Email Address</label>
+                        <input type="email" placeholder="hello@example.com" required style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif;">
                     </div>
 
-                    <button type="submit" class="submit-btn">Confirm Availability</button>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" placeholder="Subject of your message" required style="padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea rows="5" placeholder="How can we help you?" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send Message</button>
                 </form>
             </div>
         </section>

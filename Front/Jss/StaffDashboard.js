@@ -14,6 +14,7 @@ function renderOrders() {
             <td>${order.items ? order.items.length + ' items' : '0 items'}</td>
             <td>
                 <select onchange="updateStatus('${order.id}', this.value)" style="padding: 5px; background: #000; border: 1px solid var(--gold); color: var(--gold); border-radius: 4px;">
+                    <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
                     <option value="Preparing" ${order.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
                     <option value="Ready" ${order.status === 'Ready' ? 'selected' : ''}>Ready</option>
                     <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
