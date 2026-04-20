@@ -95,4 +95,4 @@
 .w-100 { width: 100%; }
 .gold-text { color: var(--gold); }
 
-@media (max-width: 768px) { header { padding: 15px; flex-direction: column; gap: 10px; } nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; } nav ul li { margin: 5px 10px !important; } nav ul li a { display: inline-block; white-space: nowrap; } }
+@media (max-width: 768px) { header { padding: 5px 2%; flex-direction: column; gap: 2px; } .logo { font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 2px; } nav ul { flex-wrap: wrap; justify-content: center; gap: 3px 8px; } nav ul li { margin: 0 !important; } nav ul li a { display: inline-block; white-space: nowrap; font-size: 0.55rem; letter-spacing: 0; } }
