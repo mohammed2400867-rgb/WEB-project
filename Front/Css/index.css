@@ -236,30 +236,32 @@
 
   @media (max-width: 768px) {
       header {
-          padding: 10px 5%;
+          padding: 5px 2%;
           flex-direction: column;
-          gap: 5px;
+          gap: 2px;
       }
 
       .logo {
-          font-size: 1.3rem;
-          letter-spacing: 2px;
+          font-size: 1.1rem;
+          letter-spacing: 1px;
+          margin-bottom: 2px;
       }
 
       nav ul {
           flex-wrap: wrap;
           justify-content: center;
-          gap: 5px;
+          gap: 3px 8px; /* Tight gaps between links */
       }
 
       nav ul li {
-          margin: 3px 5px !important;
+          margin: 0 !important;
       }
 
       nav ul li a {
           display: inline-block;
           white-space: nowrap;
-          font-size: 0.7rem;
+          font-size: 0.55rem;
+          letter-spacing: 0; /* Removing letter spacing saves a lot of horizontal space */
       }
 
       .section {
