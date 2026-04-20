@@ -250,7 +250,8 @@
       nav ul {
           flex-wrap: wrap;
           justify-content: center;
-          gap: 3px 8px; /* Tight gaps between links */
+          gap: 3px 8px;
+          /* Tight gaps between links */
       }
 
       nav ul li {
@@ -260,8 +261,9 @@
       nav ul li a {
           display: inline-block;
           white-space: nowrap;
-          font-size: 0.55rem;
-          letter-spacing: 0; /* Removing letter spacing saves a lot of horizontal space */
+          font-size: 0.55rem !important;
+          letter-spacing: 0 !important;
+          padding: 2px 4px !important;
       }
 
       .section {

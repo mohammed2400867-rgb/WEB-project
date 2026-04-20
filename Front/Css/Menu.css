@@ -217,8 +217,9 @@
         nav ul li a {
             display: inline-block;
             white-space: nowrap;
-            font-size: 0.55rem;
-            letter-spacing: 0;
+            font-size: 0.55rem !important;
+            letter-spacing: 0 !important;
+            padding: 2px 4px !important;
         }
 
         .menu-intro h1 {
