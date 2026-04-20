@@ -172,8 +172,36 @@
 
       .sidebar {
           width: 100%;
-          padding: 15px;
+          padding: 10px;
           box-sizing: border-box;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 5px;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+      }
+
+      .sidebar h2 {
+          width: 100%;
+          margin-bottom: 5px;
+          font-size: 1rem;
+      }
+
+      .nav-item {
+          padding: 4px 8px;
+          margin-bottom: 0;
+          font-size: 10px;
+          display: inline-block;
+          border-radius: 4px;
+      }
+      
+      .view-website-btn {
+          margin-top: 0;
+      }
+      
+      .main-content {
+          padding: 15px;
       }
   }
 
