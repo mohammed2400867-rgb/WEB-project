@@ -40,10 +40,7 @@
         font-weight: 700;
     }
 
-    nav ul {
-        display: flex;
-        list-style: none;
-    }
+    nav ul { display: flex; list-style: none; flex-wrap: wrap; }
 
     nav ul li {
         margin-left: 35px;
@@ -55,6 +52,7 @@
         font-size: 0.8rem;
         text-transform: uppercase;
         letter-spacing: 2px;
+        white-space: nowrap;
     }
 
     nav ul li a:hover {
@@ -200,9 +198,17 @@
             gap: 15px;
         }
 
-        nav ul li {
-            margin: 0 10px;
+        nav ul {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
         }
+
+        nav ul li {
+            margin: 5px 10px !important;
+        }
+
+        nav ul li a { display: inline-block; white-space: nowrap; }
 
         .menu-intro h1 {
             font-size: 2.8rem;
@@ -373,3 +379,4 @@
 .iti { width: 100%; margin-top: 5px; }
 .iti__flag-container { z-index: 10; }
 #checkout-phone { padding-left: 50px !important; }
+

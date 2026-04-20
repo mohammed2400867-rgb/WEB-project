@@ -176,3 +176,4 @@
 .flex-col { flex: 1; min-width: 150px; }
 
 .styled-input { padding: 10px; background: #000; border: 1px solid var(--border); color: var(--cream); width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+

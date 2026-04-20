@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     contactForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        
+
         const name = document.getElementById("contactName").value;
         const email = document.getElementById("contactEmail").value;
         const subject = document.getElementById("contactSubject").value;
@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messages.push(newContact);
         localStorage.setItem("messages", JSON.stringify(messages));
 
-        alert(`Thank you, ${name}! Your message has been sent. We will get back to you at ${email} shortly.`);
+        alert("Message was successful and we will respond soon");
         contactForm.reset();
     });
+});

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         reservations.push(newReservation);
         localStorage.setItem("reservations", JSON.stringify(reservations));
 
-        alert(`Reservation requested for ${name} on ${date}. Your status is pending Admin approval. Reference: ${newReservation.id}`);
+        alert("Reservation was successful, waiting for response");
         resForm.reset();
     });
 });
