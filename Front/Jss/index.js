@@ -23,15 +23,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (user) {
         // Change "Login" to "Logout"
-        loginNav.innerHTML = `<a href="#" id="logout-btn">Logout (${user.role})</a>`;
-        document.getElementById('logout-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('currentUser');
-            window.location.reload();
-        });
+        if (loginNav) {
+            loginNav.innerHTML = `<a href="#" id="logout-btn">Logout (${user.role})</a>`;
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('token');
+                    window.location.reload();
+                });
+            }
+        }
 
         // Show Dashboard only for Staff and Admin
-        if (user.role === 'admin' || user.role === 'staff') {
+        if (adminNav && (user.role === 'Admin' || user.role === 'Staff')) {
             adminNav.style.display = 'block';
         }
     }
