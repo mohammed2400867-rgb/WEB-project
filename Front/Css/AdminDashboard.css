@@ -17,31 +17,32 @@
 
   /* Sidebar Navigation */
   .sidebar {
-      width: 260px;
+      width: 190px;
       background-color: #000;
       border-right: 1px solid var(--border);
-      padding: 30px 20px;
+      padding: 20px 12px;
       display: flex;
       flex-direction: column;
+      flex-shrink: 0;
   }
 
   .sidebar h2 {
       font-family: 'Playfair Display', serif;
       color: var(--gold);
-      font-size: 1.2rem;
-      margin-bottom: 40px;
+      font-size: 0.85rem;
+      margin-bottom: 22px;
       text-align: center;
       letter-spacing: 1px;
   }
 
   .nav-item {
-      padding: 12px 15px;
+      padding: 8px 11px;
       color: var(--cream);
       text-decoration: none;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      border-radius: 6px;
+      margin-bottom: 4px;
       transition: 0.3s;
-      font-size: 14px;
+      font-size: 12px;
       display: block;
   }
 
