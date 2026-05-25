@@ -2,10 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const resForm = document.getElementById("reservationForm");
     if (!resForm) return;
 
-    resForm.addEventListener("submit", (e) => {
+    resForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // intl-tel-input validation is handled in Reservation.html's existing script but we can check it
         if (window.phoneInput && !window.phoneInput.isValidNumber()) {
             alert("Please enter a valid phone number for the selected country.");
             return;
@@ -17,22 +16,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const guests = document.getElementById("resGuests").value;
         const requests = document.getElementById("resRequests").value;
 
-        const newReservation = {
-            id: "RES-" + Math.floor(Math.random() * 10000),
-            name,
-            phone,
-            date,
-            guests,
-            requests,
-            status: "Pending",
-            timestamp: new Date().toLocaleTimeString()
-        };
-
-        const reservations = JSON.parse(localStorage.getItem("reservations")) || [];
-        reservations.push(newReservation);
-        localStorage.setItem("reservations", JSON.stringify(reservations));
-
-        alert("Reservation was successful, waiting for response");
-        resForm.reset();
+        try {
+            const res = await fetch('/api/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone, date, guests, requests })
+            });
+            if (!res.ok) {
+                const data = await res.json();
+                alert(data.message || 'Failed to submit reservation.');
+                return;
+            }
+            alert("Reservation was successful, waiting for response");
+            resForm.reset();
+        } catch (err) {
+            alert("Server error. Please try again.");
+        }
     });
 });
