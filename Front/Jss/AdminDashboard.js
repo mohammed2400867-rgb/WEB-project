@@ -10,6 +10,8 @@ function showSection(sectionId) {
     const navs = document.querySelectorAll('.sidebar .nav-item');
     navs.forEach(nav => nav.classList.remove('active'));
     event.currentTarget.classList.add('active');
+    if (sectionId === 'orders') loadOrderHistory();
+    if (sectionId === 'reservations') renderReservations();
 }
 
 async function renderReservations() {
@@ -252,6 +254,119 @@ async function removeStaff(id) {
         await fetch(`/api/staff/${id}`, { method: 'DELETE', headers: authHeaders() });
         await fetchStaff();
     } catch (err) { alert('Failed to remove staff.'); }
+}
+
+let allOrdersCache = [];
+
+async function loadOrderHistory() {
+    try {
+        const res = await fetch('/api/orders', { headers: authHeaders() });
+        if (!res.ok) return;
+        allOrdersCache = await res.json();
+    } catch (err) { allOrdersCache = []; }
+    applyOrderFilters();
+}
+
+function applyOrderFilters() {
+    const from = document.getElementById('filter-date-from')?.value;
+    const to = document.getElementById('filter-date-to')?.value;
+    const status = document.getElementById('filter-status')?.value || 'all';
+
+    let filtered = [...allOrdersCache];
+
+    if (from) {
+        const fromDate = new Date(from);
+        fromDate.setHours(0, 0, 0, 0);
+        filtered = filtered.filter(o => new Date(o.createdAt) >= fromDate);
+    }
+    if (to) {
+        const toDate = new Date(to);
+        toDate.setHours(23, 59, 59, 999);
+        filtered = filtered.filter(o => new Date(o.createdAt) <= toDate);
+    }
+    if (status !== 'all') {
+        filtered = filtered.filter(o => o.status === status);
+    }
+
+    renderOrderHistory(filtered);
+}
+
+function clearOrderFilters() {
+    const fromEl = document.getElementById('filter-date-from');
+    const toEl = document.getElementById('filter-date-to');
+    const statusEl = document.getElementById('filter-status');
+    if (fromEl) fromEl.value = '';
+    if (toEl) toEl.value = '';
+    if (statusEl) statusEl.value = 'all';
+    applyOrderFilters();
+}
+
+function renderOrderHistory(orders) {
+    const container = document.getElementById('order-history-list');
+    if (!container) return;
+
+    const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+    const delivered = orders.filter(o => o.status === 'Delivered').length;
+    const pending = orders.filter(o => o.status === 'Pending').length;
+
+    const countEl = document.getElementById('oh-count');
+    const revEl = document.getElementById('oh-revenue');
+    const delEl = document.getElementById('oh-delivered');
+    const pendEl = document.getElementById('oh-pending');
+    if (countEl) countEl.innerText = orders.length;
+    if (revEl) revEl.innerText = `$${totalRevenue.toFixed(2)}`;
+    if (delEl) delEl.innerText = delivered;
+    if (pendEl) pendEl.innerText = pending;
+
+    if (orders.length === 0) {
+        container.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#666; padding:30px;">No orders match the selected filters.</td></tr>`;
+        return;
+    }
+
+    const statusColors = { Pending: '#ffa500', Preparing: '#3b9eff', Ready: '#9c6fff', Delivered: '#4CAF50' };
+
+    container.innerHTML = orders.map(order => `
+        <tr>
+            <td style="font-family: monospace; color: var(--gold);">${order.orderId}</td>
+            <td>${new Date(order.createdAt).toLocaleString()}</td>
+            <td style="color:#ccc; font-size:0.85rem;">${(order.items || []).map(i => i.name).join(', ') || '—'}</td>
+            <td style="text-transform:capitalize;">${order.payment || 'N/A'}</td>
+            <td style="color:#4CAF50; font-weight:600;">$${(order.total || 0).toFixed(2)}</td>
+            <td><span class="status-badge" style="color:${statusColors[order.status] || '#fff'}; border-color:${statusColors[order.status] || '#fff'}; background:${statusColors[order.status] || '#fff'}18;">${order.status}</span></td>
+        </tr>
+    `).join('');
+}
+
+function exportOrdersCSV() {
+    const from = document.getElementById('filter-date-from')?.value;
+    const to = document.getElementById('filter-date-to')?.value;
+    const status = document.getElementById('filter-status')?.value || 'all';
+
+    let filtered = [...allOrdersCache];
+    if (from) { const d = new Date(from); d.setHours(0,0,0,0); filtered = filtered.filter(o => new Date(o.createdAt) >= d); }
+    if (to) { const d = new Date(to); d.setHours(23,59,59,999); filtered = filtered.filter(o => new Date(o.createdAt) <= d); }
+    if (status !== 'all') filtered = filtered.filter(o => o.status === status);
+
+    if (filtered.length === 0) { alert('No orders to export.'); return; }
+
+    const headers = ['Order ID', 'Date & Time', 'Items', 'Payment', 'Total', 'Status'];
+    const rows = filtered.map(o => [
+        o.orderId,
+        new Date(o.createdAt).toLocaleString(),
+        `"${(o.items || []).map(i => i.name).join(', ')}"`,
+        o.payment || 'N/A',
+        `$${(o.total || 0).toFixed(2)}`,
+        o.status
+    ].join(','));
+
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `orders_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
 }
 
 renderOrders();

@@ -24,6 +24,7 @@
         <h2>FLOUR & FLAME</h2>
         <a href="#" class="nav-item active" onclick="showSection('dashboard')">Dashboard</a>
         <a href="#" class="nav-item" onclick="showSection('reservations')">Reservations</a>
+        <a href="#" class="nav-item" onclick="showSection('orders')">Order History</a>
         <a href="#" class="nav-item" onclick="showSection('menu')">Menu Editor</a>
         <a href="#" class="nav-item" onclick="showSection('staff')">Staff Management</a>
         <a href="index.html" class="nav-item view-website-btn">View Website</a>
@@ -69,6 +70,70 @@
                     <tbody id="admin-order-list">
                         <!-- Orders injected by JS -->
                     </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="section-orders" class="admin-section" style="display: none;">
+            <div class="data-panel mb-30">
+                <div class="flex-between-mb20">
+                    <h2>Order History</h2>
+                    <button class="btn-action btn-outline-gold" onclick="exportOrdersCSV()">Export CSV</button>
+                </div>
+
+                <div class="flex-gap-mb20" style="flex-wrap:wrap; align-items:flex-end;">
+                    <div>
+                        <label style="display:block; color:#999; font-size:0.75rem; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px;">From</label>
+                        <input type="date" id="filter-date-from" class="admin-input" oninput="applyOrderFilters()">
+                    </div>
+                    <div>
+                        <label style="display:block; color:#999; font-size:0.75rem; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px;">To</label>
+                        <input type="date" id="filter-date-to" class="admin-input" oninput="applyOrderFilters()">
+                    </div>
+                    <div>
+                        <label style="display:block; color:#999; font-size:0.75rem; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px;">Status</label>
+                        <select id="filter-status" class="admin-input" onchange="applyOrderFilters()">
+                            <option value="all">All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Preparing">Preparing</option>
+                            <option value="Ready">Ready</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                    </div>
+                    <button class="btn-action" onclick="clearOrderFilters()" style="align-self:flex-end;">Clear Filters</button>
+                </div>
+
+                <div style="display:flex; gap:20px; margin-bottom:20px; flex-wrap:wrap;">
+                    <div style="background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:14px 22px; min-width:140px;">
+                        <div style="color:#999; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">Showing</div>
+                        <div id="oh-count" style="color:var(--gold); font-size:1.5rem; font-weight:700;">0</div>
+                    </div>
+                    <div style="background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:14px 22px; min-width:140px;">
+                        <div style="color:#999; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">Revenue</div>
+                        <div id="oh-revenue" style="color:#4CAF50; font-size:1.5rem; font-weight:700;">$0.00</div>
+                    </div>
+                    <div style="background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:14px 22px; min-width:140px;">
+                        <div style="color:#999; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">Delivered</div>
+                        <div id="oh-delivered" style="color:#4CAF50; font-size:1.5rem; font-weight:700;">0</div>
+                    </div>
+                    <div style="background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:14px 22px; min-width:140px;">
+                        <div style="color:#999; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">Pending</div>
+                        <div id="oh-pending" style="color:#ffa500; font-size:1.5rem; font-weight:700;">0</div>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date & Time</th>
+                            <th>Items</th>
+                            <th>Payment</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-history-list"></tbody>
                 </table>
             </div>
         </div>
