@@ -54,3 +54,25 @@
         .auto-width { width: auto; padding: 0 30px; }
         .hidden { display: none; }
 
+
+
+/* Auth nav links - consistent clean style across all pages */
+.auth-nav-item { list-style: none; }
+.auth-nav-link,
+.auth-nav-link:link,
+.auth-nav-link:visited {
+    text-decoration: none !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+    opacity: 0.85;
+    transition: opacity 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+.auth-nav-link:hover { opacity: 1; }

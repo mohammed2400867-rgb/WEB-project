@@ -3,11 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentUserStr = localStorage.getItem("currentUser");
     const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
 
+    const link = (href, label, color) =>
+        `<li class="auth-nav-item"><a href="${href}" class="auth-nav-link" style="color:${color};">${label}</a></li>`;
+
     navLists.forEach(ul => {
         const links = ul.querySelectorAll("a");
         links.forEach(a => {
             const text = a.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
-            if (text === "login" || text === "admin panel" || text === "admin dashboard" || text === "logout") {
+            if (["login","admin panel","admin dashboard","logout","staff panel","kitchen panel","kitchen","my profile"].includes(text)) {
                 if (a.parentElement.tagName.toLowerCase() === 'li') a.parentElement.remove();
                 else a.remove();
             }
@@ -15,18 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (currentUser) {
             if (currentUser.role === 'Admin') {
-                ul.innerHTML += `<li style="margin-left: 35px;"><a href="AdminDashboard.html" style="color: var(--gold); border: 1px solid var(--gold); padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Admin Panel</a></li>`;
-                ul.innerHTML += `<li style="margin-left: 35px;"><a href="KitchenDashboard.html" style="color: #ff9800; border: 1px solid #ff9800; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Kitchen</a></li>`;
+                ul.innerHTML += link('AdminDashboard.html', 'Admin Panel', 'var(--gold)');
+                ul.innerHTML += link('KitchenDashboard.html', 'Kitchen', '#ff9800');
             } else if (currentUser.role === 'Staff') {
-                ul.innerHTML += `<li style="margin-left: 35px;"><a href="StaffDashboard.html" style="color: var(--gold); text-decoration: underline; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Staff Panel</a></li>`;
-                ul.innerHTML += `<li style="margin-left: 35px;"><a href="KitchenDashboard.html" style="color: #ff9800; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Kitchen</a></li>`;
+                ul.innerHTML += link('StaffDashboard.html', 'Staff Panel', 'var(--gold)');
+                ul.innerHTML += link('KitchenDashboard.html', 'Kitchen', '#ff9800');
             } else if (currentUser.role === 'Kitchen') {
-                ul.innerHTML += `<li style="margin-left: 35px;"><a href="KitchenDashboard.html" style="color: #ff9800; border: 1px solid #ff9800; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Kitchen Panel</a></li>`;
+                ul.innerHTML += link('KitchenDashboard.html', 'Kitchen Panel', '#ff9800');
             }
-            ul.innerHTML += `<li style="margin-left: 35px;"><a href="Profile.html" style="color: var(--gold); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">My Profile</a></li>`;
-            ul.innerHTML += `<li style="margin-left: 35px;"><a href="#" onclick="logoutUser()" style="color: #ff4d4d; border: 1px solid #ff4d4d; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Logout</a></li>`;
+            ul.innerHTML += link('Profile.html', 'My Profile', 'var(--gold)');
+            ul.innerHTML += `<li class="auth-nav-item"><a href="#" class="auth-nav-link" style="color:#ff4d4d;" onclick="logoutUser()">Logout</a></li>`;
         } else {
-            ul.innerHTML += `<li style="margin-left: 35px;"><a href="Login.html" style="color: var(--gold); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Login</a></li>`;
+            ul.innerHTML += link('Login.html', 'Login', 'var(--gold)');
         }
     });
 });
