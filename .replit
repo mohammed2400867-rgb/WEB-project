@@ -37,3 +37,8 @@ externalPort = 80
 [deployment]
 deploymentTarget = "static"
 publicDir = "Front"
+
+[userenv]
+
+[userenv.shared]
+MONGO_URI = "mongodb+srv://mohammed2400867_db_user:C2R08sDFPskmBu7j@cluster0.6uzbkci.mongodb.net/flourandflame?appName=Cluster0"
