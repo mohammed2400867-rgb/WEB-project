@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (currentUser.role === 'Kitchen') {
                 ul.innerHTML += `<li style="margin-left: 35px;"><a href="KitchenDashboard.html" style="color: #ff9800; border: 1px solid #ff9800; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Kitchen Panel</a></li>`;
             }
+            ul.innerHTML += `<li style="margin-left: 35px;"><a href="Profile.html" style="color: var(--gold); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">My Profile</a></li>`;
             ul.innerHTML += `<li style="margin-left: 35px;"><a href="#" onclick="logoutUser()" style="color: #ff4d4d; border: 1px solid #ff4d4d; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Logout</a></li>`;
         } else {
             ul.innerHTML += `<li style="margin-left: 35px;"><a href="Login.html" style="color: var(--gold); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Login</a></li>`;
