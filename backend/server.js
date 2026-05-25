@@ -12,6 +12,7 @@ const reservationRoutes = require('./routes/reservationRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const staffRoutes = require('./routes/staffRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+const loyaltyRoutes = require('./routes/loyaltyRoutes');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/reservations', reservationRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/staff', staffRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/loyalty', loyaltyRoutes);
 
 app.use(express.static(path.join(__dirname, '../Front')));
 

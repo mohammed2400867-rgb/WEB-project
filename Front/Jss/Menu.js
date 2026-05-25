@@ -1,5 +1,7 @@
 let currentCategory = 'all';
 let currentSort = 'none';
+let appliedDiscount = 0;
+let pointsToSpend = 0;
 
 function filterItems(category, event) {
     currentCategory = category;
@@ -21,26 +23,18 @@ let allMenuItems = [];
 async function fetchMenu() {
     try {
         const res = await fetch('/api/menu');
-        if (res.ok) {
-            allMenuItems = await res.json();
-        } else {
-            allMenuItems = [];
-        }
-    } catch (err) {
-        allMenuItems = [];
-    }
+        if (res.ok) allMenuItems = await res.json();
+        else allMenuItems = [];
+    } catch (err) { allMenuItems = []; }
     renderMenu();
 }
 
 function renderMenu() {
     const menuGrid = document.getElementById('main-menu');
     if (!menuGrid) return;
-
     let filtered = allMenuItems.filter(item => currentCategory === 'all' || item.category === currentCategory);
-
     if (currentSort === 'low-high') filtered.sort((a, b) => a.price - b.price);
     else if (currentSort === 'high-low') filtered.sort((a, b) => b.price - a.price);
-
     menuGrid.innerHTML = filtered.map((item, idx) => `
         <div class="menu-card ${item.category || 'all'} show">
             <div class="img-box"><img src="${item.image || `Pics/${(idx % 10) + 1}.jpeg`}" alt="${item.name}"></div>
@@ -67,19 +61,28 @@ function addToCart(name, price) {
 function removeFromCart(id) {
     cart = cart.filter(item => item.id !== id);
     localStorage.setItem('cart', JSON.stringify(cart));
+    if (appliedDiscount > 0) {
+        appliedDiscount = 0;
+        pointsToSpend = 0;
+    }
     updateCartUI();
 }
 
 function updateCartUI() {
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    const finalTotal = Math.max(0, subtotal - appliedDiscount);
+
     const counts = document.querySelectorAll('.cart-count');
     counts.forEach(el => el.innerText = cart.length);
+
     const cartItemsContainer = document.getElementById('cart-items');
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = '<p style="text-align: center; color: var(--gold); padding: 20px;">Your cart is empty.</p>';
+        document.getElementById('cart-total').innerText = `$0.00`;
+        updateLoyaltyWidget(subtotal);
         return;
     }
+
     cartItemsContainer.innerHTML = cart.map(item => `
         <div class="cart-item">
             <div>
@@ -89,6 +92,83 @@ function updateCartUI() {
             <button onclick="removeFromCart(${item.id})" style="background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.2em;">&times;</button>
         </div>
     `).join('');
+
+    if (appliedDiscount > 0) {
+        document.getElementById('cart-total').innerHTML =
+            `<span style="text-decoration:line-through; color:#666; font-size:0.9em;">$${subtotal.toFixed(2)}</span> <span style="color:#4CAF50;">$${finalTotal.toFixed(2)}</span>`;
+    } else {
+        document.getElementById('cart-total').innerText = `$${subtotal.toFixed(2)}`;
+    }
+
+    updateLoyaltyWidget(subtotal);
+}
+
+async function updateLoyaltyWidget(subtotal) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const token = localStorage.getItem('token');
+    const widget = document.getElementById('loyalty-widget');
+    if (!widget) return;
+
+    if (!currentUser || !token) {
+        widget.innerHTML = `<div style="border-top:1px solid #222; padding-top:12px; margin-top:8px; font-size:0.8rem; color:#666; text-align:center;">
+            <a href="Login.html" style="color:var(--gold);">Log in</a> to earn & redeem loyalty points
+        </div>`;
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/loyalty/balance', { headers: { 'Authorization': 'Bearer ' + token } });
+        if (!res.ok) { widget.innerHTML = ''; return; }
+        const { points, pointsRequired, redeemValue } = await res.json();
+        const canRedeem = points >= pointsRequired;
+        const pointsEarnable = Math.floor(subtotal);
+
+        widget.innerHTML = `
+            <div style="border-top:1px solid #333; padding-top:14px; margin-top:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="color:#aaa; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px;">⭐ Loyalty Points</span>
+                    <span style="color:var(--gold); font-weight:700; font-size:1rem;">${points} pts</span>
+                </div>
+                ${subtotal > 0 ? `<div style="color:#666; font-size:0.75rem; margin-bottom:8px;">You'll earn <strong style="color:var(--gold);">+${pointsEarnable} pts</strong> on this order</div>` : ''}
+                ${appliedDiscount > 0
+                    ? `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(76,175,80,0.1); border:1px solid #4CAF50; border-radius:6px; padding:8px 12px;">
+                        <span style="color:#4CAF50; font-size:0.85rem;">✓ $${appliedDiscount} discount applied</span>
+                        <button onclick="cancelRedeem()" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:0.8rem; padding:0;">Remove</button>
+                       </div>`
+                    : canRedeem
+                        ? `<button onclick="usePoints()" style="width:100%; background:transparent; border:1px solid var(--gold); color:var(--gold); padding:8px; border-radius:6px; cursor:pointer; font-size:0.82rem; letter-spacing:1px; text-transform:uppercase; transition:all 0.2s;"
+                               onmouseover="this.style.background='var(--gold)';this.style.color='#000'"
+                               onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">
+                               Redeem ${pointsRequired} pts → -$${redeemValue}
+                           </button>`
+                        : `<div style="color:#555; font-size:0.78rem; text-align:center;">${pointsRequired - points} more pts needed to redeem $${redeemValue}</div>`
+                }
+            </div>
+        `;
+    } catch (err) { widget.innerHTML = ''; }
+}
+
+async function usePoints() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    try {
+        const res = await fetch('/api/loyalty/redeem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+            body: JSON.stringify({ units: 1 })
+        });
+        const data = await res.json();
+        if (!res.ok) { alert(data.message || 'Could not redeem points.'); return; }
+        appliedDiscount = data.discount;
+        pointsToSpend = data.pointsToSpend;
+        updateCartUI();
+    } catch (err) { alert('Server error. Please try again.'); }
+}
+
+function cancelRedeem() {
+    appliedDiscount = 0;
+    pointsToSpend = 0;
+    updateCartUI();
 }
 
 function toggleCart() {
@@ -100,17 +180,12 @@ async function placeOrder() {
 
     const addressInput = document.getElementById('checkout-address');
     if (addressInput && !addressInput.value.trim()) { alert("Please enter a delivery address."); return; }
-
-    if (window.phoneInput && !window.phoneInput.isValidNumber()) {
-        alert("Please enter a valid phone number for the selected country.");
-        return;
-    }
+    if (window.phoneInput && !window.phoneInput.isValidNumber()) { alert("Please enter a valid phone number for the selected country."); return; }
 
     const paymentMethod = document.getElementById('payment-method').value;
     const phoneVal = window.phoneInput ? window.phoneInput.getNumber() : '';
     const addressVal = addressInput ? addressInput.value.trim() : '';
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-
+    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     try {
@@ -119,11 +194,12 @@ async function placeOrder() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 items: cart,
-                total,
+                total: subtotal,
                 payment: paymentMethod,
                 address: addressVal,
                 phone: phoneVal,
-                userId: currentUser ? currentUser._id : null
+                userId: currentUser ? currentUser._id : null,
+                pointsToRedeem: pointsToSpend
             })
         });
 
@@ -131,18 +207,25 @@ async function placeOrder() {
 
         const order = await res.json();
 
+        if (order.pointsEarned > 0) {
+            const msg = appliedDiscount > 0
+                ? `Order placed! You saved $${appliedDiscount} and earned +${order.pointsEarned} loyalty points!`
+                : `Order placed! You earned +${order.pointsEarned} loyalty points!`;
+            setTimeout(() => alert(msg), 300);
+        }
+
         const myOrders = JSON.parse(localStorage.getItem('my_active_orders')) || [];
         myOrders.push(order.orderId);
         localStorage.setItem('my_active_orders', JSON.stringify(myOrders));
 
         cart = [];
+        appliedDiscount = 0;
+        pointsToSpend = 0;
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartUI();
         document.getElementById('cart-drawer').classList.remove('active');
         window.location.href = "TrackOrder.html";
-    } catch (err) {
-        alert("Server error. Please try again.");
-    }
+    } catch (err) { alert("Server error. Please try again."); }
 }
 
 updateCartUI();
