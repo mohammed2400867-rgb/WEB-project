@@ -33,17 +33,28 @@ nav {
     font-size: 1.1rem;
     letter-spacing: 2px;
 }
-nav ul { list-style: none; display: flex; gap: 30px; }
-nav ul a {
+nav ul { list-style: none; display: flex; gap: 24px; align-items: center; }
+nav ul li { margin-left: 0 !important; }
+nav ul li a,
+nav ul li a:link,
+nav ul li a:visited {
     color: var(--cream);
-    text-decoration: none;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    text-decoration: none !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
     opacity: 0.8;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, color 0.2s;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 400 !important;
 }
-nav ul a:hover { opacity: 1; color: var(--gold); }
+nav ul li a:hover { opacity: 1; color: var(--gold) !important; }
+nav ul li a[style*="ff4d4d"] { color: #ff4d4d !important; opacity: 1; }
+nav ul li a[style*="ff4d4d"]:hover { color: #ff7070 !important; }
 
 /* Wrapper */
 .profile-wrapper {
