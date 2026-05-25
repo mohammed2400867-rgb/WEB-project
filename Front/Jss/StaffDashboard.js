@@ -39,4 +39,53 @@ async function updateStatus(id, newStatus) {
     } catch (err) { alert('Failed to update order status.'); }
 }
 
+function showToast(message, color) {
+    const existing = document.getElementById('order-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'order-toast';
+    toast.style.cssText = `
+        position: fixed; top: 24px; right: 24px; z-index: 9999;
+        background: #111; border: 1px solid ${color || 'var(--gold)'};
+        color: ${color || 'var(--gold)'}; padding: 16px 24px;
+        border-radius: 8px; font-size: 0.95rem; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        display: flex; align-items: center; gap: 12px;
+        animation: slideIn 0.3s ease;
+    `;
+    toast.innerHTML = `<span style="font-size:1.4rem;">🔔</span><span>${message}</span>`;
+
+    if (!document.getElementById('toast-style')) {
+        const style = document.createElement('style');
+        style.id = 'toast-style';
+        style.textContent = `@keyframes slideIn { from { transform: translateX(110%); opacity:0; } to { transform: translateX(0); opacity:1; } }`;
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(toast);
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+}
+
+function connectSSE() {
+    const evtSource = new EventSource('/api/events');
+
+    evtSource.onmessage = (e) => {
+        try {
+            const data = JSON.parse(e.data);
+            if (data.type === 'new_order') {
+                showToast(`New order ${data.orderId} — ${data.itemCount} item(s) — $${Number(data.total).toFixed(2)}`, 'var(--gold)');
+                renderOrders();
+            } else if (data.type === 'status_update') {
+                renderOrders();
+            }
+        } catch (err) {}
+    };
+
+    evtSource.onerror = () => {
+        evtSource.close();
+        setTimeout(connectSSE, 5000);
+    };
+}
+
 renderOrders();
+connectSSE();

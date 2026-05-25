@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const connectDB = require('./config/db');
 const seedDatabase = require('./seed');
+const { addClient } = require('./sse');
 
 const authRoutes = require('./routes/authRoutes');
 const menuRoutes = require('./routes/menuRoutes');
@@ -15,6 +16,10 @@ const messageRoutes = require('./routes/messageRoutes');
 const app = express();
 
 app.use(express.json());
+
+app.get('/api/events', (req, res) => {
+    addClient(res);
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);

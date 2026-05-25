@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const { broadcast } = require('../sse');
 
 const getOrders = async (req, res) => {
     try {
@@ -37,6 +38,15 @@ const createOrder = async (req, res) => {
         if (!items || !items.length) return res.status(400).json({ message: 'No items in order' });
         const orderId = 'ORD-' + Math.floor(Math.random() * 90000 + 10000);
         const order = await Order.create({ orderId, items, total: Number(total), payment, address, phone, userId: userId || null });
+
+        broadcast({
+            type: 'new_order',
+            orderId: order.orderId,
+            itemCount: order.items.length,
+            total: order.total,
+            payment: order.payment
+        });
+
         res.status(201).json(order);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -49,6 +59,13 @@ const updateOrderStatus = async (req, res) => {
         if (!status) return res.status(400).json({ message: 'Status is required' });
         const order = await Order.findOneAndUpdate({ orderId: req.params.id }, { status }, { new: true, runValidators: true });
         if (!order) return res.status(404).json({ message: 'Order not found' });
+
+        broadcast({
+            type: 'status_update',
+            orderId: order.orderId,
+            status: order.status
+        });
+
         res.json(order);
     } catch (err) {
         res.status(500).json({ message: err.message });
