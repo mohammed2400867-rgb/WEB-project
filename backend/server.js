@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 const seedDatabase = require('./seed');
@@ -16,6 +17,7 @@ const loyaltyRoutes = require('./routes/loyaltyRoutes');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 // Handle malformed JSON bodies
