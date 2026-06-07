@@ -223,11 +223,14 @@ async function submitOrder() {
 
         const order = await res.json();
 
+        const baseMsg = `✅ Order placed! Your Order ID is: ${order.orderId}`;
         if (order.pointsEarned > 0) {
-            const msg = appliedDiscount > 0
-                ? `Order placed! You saved $${appliedDiscount} and earned +${order.pointsEarned} loyalty points!`
-                : `Order placed! You earned +${order.pointsEarned} loyalty points!`;
-            setTimeout(() => alert(msg), 300);
+            const extra = appliedDiscount > 0
+                ? ` You saved $${appliedDiscount} and earned +${order.pointsEarned} loyalty points!`
+                : ` You earned +${order.pointsEarned} loyalty points!`;
+            setTimeout(() => alert(baseMsg + extra), 300);
+        } else {
+            setTimeout(() => alert(baseMsg), 300);
         }
 
         const myOrders = JSON.parse(localStorage.getItem('my_active_orders')) || [];
@@ -240,7 +243,7 @@ async function submitOrder() {
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartUI();
         document.getElementById('cart-drawer').classList.remove('active');
-        window.location.href = "TrackOrder.html";
+        window.location.href = `TrackOrder.html?id=${order.orderId}`;
     } catch (err) { alert("Server error. Please try again."); }
 }
 

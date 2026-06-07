@@ -76,3 +76,60 @@
     white-space: nowrap;
 }
 .auth-nav-link:hover { opacity: 1; }
+
+/* ── Responsive: tablets ── */
+@media (max-width: 768px) {
+    .track-order-wrapper {
+        padding-top: 100px;
+        gap: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .centered-heading {
+        font-size: 1.5rem;
+    }
+}
+
+/* ── Responsive: mobile phones ── */
+@media (max-width: 480px) {
+    .track-order-wrapper {
+        padding-top: 80px;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .flex-section {
+        min-width: 0;      /* remove 350px minimum — allows it to shrink to screen width */
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .centered-heading {
+        font-size: 1.3rem;
+        margin-bottom: 14px;
+    }
+
+    .subtitle {
+        font-size: 0.88rem;
+        margin-bottom: 20px;
+    }
+
+    .inline-flex {
+        flex-direction: column; /* stack input + button on very small screens */
+    }
+
+    .auto-width {
+        width: 100%;
+        padding: 12px 20px;
+    }
+
+    .stepper {
+        margin: 20px 0;
+    }
+
+    .step {
+        font-size: 0.65rem;
+        padding: 6px 3px;
+    }
+}
