@@ -2,14 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const resForm = document.getElementById("reservationForm");
     if (!resForm) return;
 
-    // Set minimum date to today so past dates cannot be selected
+    // Set minimum datetime to right now so past date/time cannot be selected
     const dateInput = document.getElementById("resDate");
     if (dateInput) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateInput.min = `${yyyy}-${mm}-${dd}`;
+        const now = new Date();
+        // Format: YYYY-MM-DDTHH:MM  (datetime-local format)
+        const yyyy = now.getFullYear();
+        const mm   = String(now.getMonth() + 1).padStart(2, '0');
+        const dd   = String(now.getDate()).padStart(2, '0');
+        const hh   = String(now.getHours()).padStart(2, '0');
+        const min  = String(now.getMinutes()).padStart(2, '0');
+        dateInput.min = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
     }
 
     // Initialize phone input within DOMContentLoaded closure to avoid global variables
@@ -40,20 +43,58 @@ document.addEventListener("DOMContentLoaded", () => {
         const phone = phoneInputInstance ? phoneInputInstance.getNumber() : document.getElementById("phone").value;
         const date = document.getElementById("resDate").value;
 
-        // Validate date is not in the past
+        // --- DATE & TIME validation ---
         if (!date) {
-            showToast('Please select a reservation date.', 'error');
-            return;
-        }
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const selectedDate = new Date(date);
-        if (selectedDate < today) {
-            showToast('Please select a future date. Past dates are not allowed.', 'error');
+            showToast('Please select a reservation date and time.', 'error');
             const dateEl = document.getElementById("resDate");
             if (dateEl) { dateEl.style.border = '1px solid #ff4d4d'; dateEl.focus(); }
             return;
         }
+
+        const selectedDate = new Date(date);
+        const now = new Date();
+
+        // Must not be in the past
+        if (selectedDate <= now) {
+            showToast('Please select a future date and time.', 'error');
+            const dateEl = document.getElementById("resDate");
+            if (dateEl) { dateEl.style.border = '1px solid #ff4d4d'; dateEl.focus(); }
+            return;
+        }
+
+        // Check operating hours:
+        // Mon(1)–Thu(4): 5:00 PM – 10:00 PM  →  17:00 – 22:00
+        // Fri(5)–Sun(0): 4:00 PM – 11:30 PM  →  16:00 – 23:30
+        const dayOfWeek = selectedDate.getDay(); // 0=Sun, 1=Mon ... 6=Sat
+        const hours   = selectedDate.getHours();
+        const minutes = selectedDate.getMinutes();
+        const timeInMinutes = hours * 60 + minutes;
+
+        let openTime, closeTime, hoursLabel;
+        const isWeekend = (dayOfWeek === 0 || dayOfWeek >= 5); // Fri, Sat, Sun
+
+        if (isWeekend) {
+            openTime   = 16 * 60;        // 4:00 PM
+            closeTime  = 23 * 60 + 30;   // 11:30 PM
+            hoursLabel = '4:00 PM – 11:30 PM';
+        } else {
+            openTime   = 17 * 60;        // 5:00 PM
+            closeTime  = 22 * 60;        // 10:00 PM
+            hoursLabel = '5:00 PM – 10:00 PM';
+        }
+
+        if (timeInMinutes < openTime || timeInMinutes >= closeTime) {
+            const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            showToast(
+                `We are not open at that time on ${dayNames[dayOfWeek]}. Our hours are ${hoursLabel}.`,
+                'error',
+                6000
+            );
+            const dateEl = document.getElementById("resDate");
+            if (dateEl) { dateEl.style.border = '1px solid #ff4d4d'; dateEl.focus(); }
+            return;
+        }
+
         if (document.getElementById("resDate")) document.getElementById("resDate").style.border = '';
         const guests = document.getElementById("resGuests").value;
         const requests = document.getElementById("resRequests").value;

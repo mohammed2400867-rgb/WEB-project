@@ -33,7 +33,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 30px 6%;
+      padding: 20px 4%;
       transition: 0.4s;
   }
 
@@ -49,24 +49,27 @@
       text-decoration: none;
       letter-spacing: 4px;
       font-weight: 700;
+      white-space: nowrap;   /* prevent logo from wrapping to 2 lines */
+      flex-shrink: 0;        /* never shrink the logo */
   }
 
   nav ul {
       display: flex;
       list-style: none;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;     /* keep all nav items on one line */
+      align-items: center;
   }
 
   nav ul li {
-      margin-left: 35px;
+      margin-left: 20px;     /* reduced from 35px so items fit */
   }
 
   nav ul li a {
       text-decoration: none;
       color: #fff;
-      font-size: 0.8rem;
+      font-size: 0.72rem;    /* slightly smaller so all items fit on one line */
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       white-space: nowrap;
   }
 
