@@ -2,10 +2,10 @@
   "name": "flour-and-flame",
   "version": "1.0.0",
   "description": "Flour & Flame Restaurant Management System",
-  "main": "backend/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "node backend/server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

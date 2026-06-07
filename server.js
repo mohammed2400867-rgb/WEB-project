@@ -49,11 +49,12 @@ app.use('/api/*', (req, res) => {
 });
 
 // Serve static frontend
-app.use(express.static(path.join(__dirname, '../Front')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
 
 // SPA fallback — serve index.html for all non-API routes
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Front', 'index.html'));
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 // Global error handler — catches any unhandled errors passed via next(err)
