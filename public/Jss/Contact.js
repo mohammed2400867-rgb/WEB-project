@@ -44,6 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         fieldClear('contactEmail');
 
+        // Show spinner
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '⏳ Sending...'; }
+
         try {
             const res = await fetch('/api/messages', {
                 method: 'POST',
@@ -59,6 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
             contactForm.reset();
         } catch (err) {
             showToast('Server error. Please try again.', 'error');
+        } finally {
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message'; }
         }
     });
 });

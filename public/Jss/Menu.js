@@ -35,6 +35,15 @@ function renderMenu() {
     let filtered = allMenuItems.filter(item => currentCategory === 'all' || item.category === currentCategory);
     if (currentSort === 'low-high') filtered.sort((a, b) => a.price - b.price);
     else if (currentSort === 'high-low') filtered.sort((a, b) => b.price - a.price);
+    if (filtered.length === 0) {
+        menuGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #888;">
+                <div style="font-size: 3rem; margin-bottom: 16px;">🍽️</div>
+                <p style="font-size: 1.2rem; color: var(--gold); margin-bottom: 8px;">No dishes found</p>
+                <p style="font-size: 0.95rem;">No items in this category yet. Try a different filter.</p>
+            </div>`;
+        return;
+    }
     menuGrid.innerHTML = filtered.map((item, idx) => `
         <div class="menu-card ${item.category || 'all'} show">
             <div class="img-box"><img src="${item.image || `Pics/${(idx % 10) + 1}.jpeg`}" alt="${item.name}"></div>
@@ -208,7 +217,14 @@ async function placeOrder() {
         return;
     }
 
+    // Show spinner on button
+    const btn = document.querySelector('.checkout-btn');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Placing Order...'; }
+
     await submitOrder();
+
+    // Reset button
+    if (btn) { btn.disabled = false; btn.textContent = 'Place Online Order'; }
 }
 
 async function submitOrder() {

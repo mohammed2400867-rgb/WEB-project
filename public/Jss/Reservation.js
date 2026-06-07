@@ -99,6 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const guests = document.getElementById("resGuests").value;
         const requests = document.getElementById("resRequests").value;
 
+        // Show spinner
+        const submitBtn = resForm.querySelector('button[type="submit"]');
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '⏳ Submitting...'; }
+
         try {
             const res = await fetch('/api/reservations', {
                 method: 'POST',
@@ -114,6 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
             resForm.reset();
         } catch (err) {
             showToast('Server error. Please try again.', 'error');
+        } finally {
+            // Always reset button whether success or failure
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Book Table'; }
         }
     });
 });
