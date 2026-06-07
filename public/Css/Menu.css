@@ -191,6 +191,112 @@
         }
     }
 
+    /* ── Order Success Overlay ── */
+    #order-success-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .order-success-box {
+        background: #111;
+        border: 1px solid var(--gold);
+        border-radius: 16px;
+        padding: 48px 40px 40px;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 0 60px rgba(212, 175, 55, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .order-success-box::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .order-success-icon {
+        font-size: 3rem;
+        margin-bottom: 12px;
+        animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+        from { transform: scale(0); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+    }
+
+    .order-success-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        color: var(--gold);
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .order-success-id-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #888;
+        margin-bottom: 8px;
+    }
+
+    .order-success-code {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--cream);
+        background: rgba(212, 175, 55, 0.08);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 8px;
+        padding: 12px 24px;
+        display: inline-block;
+        letter-spacing: 2px;
+        margin-bottom: 16px;
+    }
+
+    .order-success-extra {
+        font-size: 0.88rem;
+        color: #aaa;
+        margin-bottom: 24px;
+        min-height: 20px;
+    }
+
+    .order-success-redirect {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 12px;
+    }
+
+    .order-success-redirect span {
+        color: var(--gold);
+        font-weight: 600;
+    }
+
+    .order-success-bar {
+        width: 100%;
+        height: 3px;
+        background: #222;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .order-success-bar-fill {
+        height: 100%;
+        width: 0%;
+        background: var(--gold);
+        transition: width linear;
+    }
+
     @media (max-width: 768px) {
         header {
             padding: 5px 2%;

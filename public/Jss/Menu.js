@@ -246,15 +246,47 @@ async function submitOrder() {
         updateCartUI();
         document.getElementById('cart-drawer').classList.remove('active');
 
-        // Show confirmation BEFORE redirect so user sees their Order ID
-        const baseMsg = `✅ Order placed!\nYour Order ID: ${order.orderId}\n\nYou will be redirected to Track Order.`;
-        const extraMsg = order.pointsEarned > 0
-            ? (appliedDiscount > 0 ? `\nYou saved $${appliedDiscount} and earned +${order.pointsEarned} loyalty points!` : `\nYou earned +${order.pointsEarned} loyalty points!`)
-            : '';
-        alert(baseMsg + extraMsg);
-
-        window.location.href = `TrackOrder.html?id=${order.orderId}`;
+        // Show in-page success overlay then redirect
+        showOrderSuccess(order);
     } catch (err) { alert("Server error. Please try again."); }
+}
+
+// ===================== ORDER SUCCESS OVERLAY =====================
+function showOrderSuccess(order) {
+    document.getElementById('order-success-code').textContent = order.orderId;
+
+    // Extra message for loyalty points
+    let extra = '';
+    if (order.pointsEarned > 0 && order.discount > 0)
+        extra = `🎉 You saved $${order.discount} and earned +${order.pointsEarned} loyalty points!`;
+    else if (order.pointsEarned > 0)
+        extra = `🎉 You earned +${order.pointsEarned} loyalty points!`;
+    else if (order.discount > 0)
+        extra = `🎉 You saved $${order.discount} with your loyalty points!`;
+    document.getElementById('order-success-extra').textContent = extra;
+
+    document.getElementById('order-success-overlay').style.display = 'flex';
+
+    // Countdown + progress bar
+    let seconds = 4;
+    const countdownEl = document.getElementById('order-countdown');
+    const barFill = document.getElementById('order-success-bar-fill');
+    countdownEl.textContent = seconds;
+
+    // Animate bar to 100% over (seconds * 1000)ms
+    requestAnimationFrame(() => {
+        barFill.style.transition = `width ${seconds}s linear`;
+        barFill.style.width = '100%';
+    });
+
+    const interval = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.href = `TrackOrder.html?id=${order.orderId}`;
+        }
+    }, 1000);
 }
 
 // ===================== CARD MODAL LOGIC =====================

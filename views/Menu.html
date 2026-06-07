@@ -216,6 +216,19 @@
         <i class="icon-cart">🛒</i>
     </div>
 
+    <!-- Order Success Overlay -->
+    <div id="order-success-overlay" style="display:none;">
+        <div class="order-success-box">
+            <div class="order-success-icon">✅</div>
+            <h2 class="order-success-title">Order Placed!</h2>
+            <p class="order-success-id-label">Your Order ID</p>
+            <div class="order-success-code" id="order-success-code">ORD-00000</div>
+            <p id="order-success-extra" class="order-success-extra"></p>
+            <p class="order-success-redirect">Redirecting to Track Order in <span id="order-countdown">3</span>s...</p>
+            <div class="order-success-bar"><div class="order-success-bar-fill" id="order-success-bar-fill"></div></div>
+        </div>
+    </div>
+
     <!-- Credit Card Payment Modal -->
     <div id="card-modal-overlay" style="display:none;" onclick="if(event.target===this)closeCardModal()">
         <div class="card-modal" onclick="event.stopPropagation()">
