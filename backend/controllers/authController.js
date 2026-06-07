@@ -17,12 +17,15 @@ const register = async (req, res) => {
         const staffRecord = await Staff.findOne({ email: email.toLowerCase() });
         if (staffRecord) {
             role = staffRecord.role;
-        } else if (email.toLowerCase().includes('admin')) {
-            role = 'Admin';
-        } else if (email.toLowerCase().includes('staff')) {
-            role = 'Staff';
-        } else if (email.toLowerCase().includes('kitchen')) {
-            role = 'Kitchen';
+        } else if (email.toLowerCase().endsWith('@flourandflame.com')) {
+            const prefix = email.toLowerCase().split('@')[0];
+            if (prefix === 'admin') {
+                role = 'Admin';
+            } else if (prefix === 'staff') {
+                role = 'Staff';
+            } else if (prefix === 'kitchen') {
+                role = 'Kitchen';
+            }
         }
 
         const user = await User.create({ email, password, role });
