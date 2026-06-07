@@ -4,12 +4,12 @@ document.getElementById('date-display').innerText = new Date().toLocaleDateStrin
 function getToken() { return localStorage.getItem('token'); }
 function authHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }; }
 
-function showSection(sectionId) {
+function showSection(sectionId, event) {
     document.querySelectorAll('.admin-section').forEach(sec => sec.style.display = 'none');
     document.getElementById('section-' + sectionId).style.display = 'block';
     const navs = document.querySelectorAll('.sidebar .nav-item');
     navs.forEach(nav => nav.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    if (event && event.currentTarget) event.currentTarget.classList.add('active');
     if (sectionId === 'orders') loadOrderHistory();
     if (sectionId === 'reservations') renderReservations();
 }

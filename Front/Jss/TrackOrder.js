@@ -83,4 +83,17 @@ async function loadActiveOrders() {
     } catch (err) {}
 }
 
-document.addEventListener('DOMContentLoaded', loadActiveOrders);
+document.addEventListener('DOMContentLoaded', () => {
+    loadActiveOrders();
+
+    // Auto-fill and auto-track if ?id= is present in the URL (e.g. from Profile page "Track" button)
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('id');
+    if (orderId) {
+        const input = document.getElementById('order-id-input');
+        if (input) {
+            input.value = orderId;
+            trackOrder();
+        }
+    }
+});
