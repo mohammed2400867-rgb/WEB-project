@@ -170,22 +170,83 @@ async function handleLogin() {
 btn.addEventListener('click', handleLogin);
 window.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
 
+// ── PIN Overlay ──
+let pinValue = '';
+
 const secretPinLogin = document.getElementById('secret-pin-login');
 if (secretPinLogin) {
     secretPinLogin.addEventListener('click', () => {
-        const pin = prompt('Enter 4-digit PIN:');
-        if (pin === '1111') {
-            document.getElementById('email').value = 'admin@flourandflame.com';
-            document.getElementById('password').value = 'Admin123!';
-            document.getElementById('passStrengthBar').style.width = '100%';
-            document.getElementById('passStrengthBar').style.backgroundColor = '#4CAF50';
-        } else if (pin === '2222') {
-            document.getElementById('email').value = 'staff@flourandflame.com';
-            document.getElementById('password').value = 'Staff123!';
-            document.getElementById('passStrengthBar').style.width = '100%';
-            document.getElementById('passStrengthBar').style.backgroundColor = '#4CAF50';
-        } else if (pin !== null) {
-            alert('You don\'t have access to these accounts');
-        }
+        pinValue = '';
+        updatePinDots();
+        document.getElementById('pin-error').textContent = '';
+        document.getElementById('pin-subtitle').textContent = 'Enter your 4-digit PIN';
+        document.getElementById('admin-pin-overlay').style.display = 'flex';
     });
 }
+
+function closeAdminPin() {
+    pinValue = '';
+    updatePinDots();
+    document.getElementById('pin-error').textContent = '';
+    document.getElementById('admin-pin-overlay').style.display = 'none';
+}
+
+function pinPress(digit) {
+    if (pinValue.length >= 4) return;
+    pinValue += digit;
+    updatePinDots();
+    if (pinValue.length === 4) setTimeout(checkPin, 120);
+}
+
+function pinDelete() {
+    pinValue = pinValue.slice(0, -1);
+    updatePinDots();
+    document.getElementById('pin-error').textContent = '';
+}
+
+function updatePinDots() {
+    for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById('pin-dot-' + i);
+        dot.classList.remove('filled', 'error');
+        if (i < pinValue.length) dot.classList.add('filled');
+    }
+}
+
+function checkPin() {
+    const PINS = { '1111': { email: 'admin@flourandflame.com', password: 'Admin123!' },
+                   '2222': { email: 'staff@flourandflame.com', password: 'Staff123!' } };
+
+    if (!PINS[pinValue]) {
+        // Wrong PIN
+        for (let i = 0; i < 4; i++) {
+            const dot = document.getElementById('pin-dot-' + i);
+            dot.classList.remove('filled');
+            dot.classList.add('error');
+        }
+        document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
+        const modal = document.getElementById('pin-modal');
+        modal.classList.add('shake');
+        modal.addEventListener('animationend', () => modal.classList.remove('shake'), { once: true });
+        setTimeout(() => { pinValue = ''; updatePinDots(); }, 700);
+        return;
+    }
+
+    // Correct — fill credentials and auto-submit
+    const creds = PINS[pinValue];
+    document.getElementById('admin-pin-overlay').style.display = 'none';
+    document.getElementById('email').value = creds.email;
+    document.getElementById('password').value = creds.password;
+    document.getElementById('passStrengthBar').style.width = '100%';
+    document.getElementById('passStrengthBar').style.backgroundColor = '#4CAF50';
+    pinValue = '';
+    handleLogin();
+}
+
+// Keyboard support while PIN overlay is open
+document.addEventListener('keydown', (e) => {
+    const overlay = document.getElementById('admin-pin-overlay');
+    if (!overlay || overlay.style.display === 'none') return;
+    if (e.key >= '0' && e.key <= '9') pinPress(e.key);
+    else if (e.key === 'Backspace') pinDelete();
+    else if (e.key === 'Escape') closeAdminPin();
+});
