@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff | Flour & Flame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Css/AdminDashboard.css">
+    <script>
+        const staffUserStr = localStorage.getItem('currentUser');
+        const staffUser = staffUserStr ? JSON.parse(staffUserStr) : null;
+        if (!staffUser || staffUser.role !== 'Staff') {
+            window.location.href = 'Login.html';
+        }
+    </script>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>FLOUR & FLAME STAFF</h2>
+        <a href="#" class="nav-item active">Orders</a>
+        <a href="index.html" class="nav-item view-website-btn">View Website</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h1>Active Orders</h1>
+            <div id="date-display" class="date-display"></div>
+        </div>
+
+        <div class="data-panel">
+            <h2>Order Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Time</th>
+                        <th>Items</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="staff-order-list">
+                    <!-- Orders injected by JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="Jss/StaffDashboard.js"></script>
+</body>
+
+</html>

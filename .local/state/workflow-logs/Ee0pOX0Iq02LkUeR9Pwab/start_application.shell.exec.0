@@ -1,0 +1,18 @@
+Serving HTTP on 0.0.0.0 port 5000 (http://0.0.0.0:5000/) ...
+127.0.0.1 - - [25/May/2026 15:06:36] "GET /Pics/1.jpeg HTTP/1.1" 200 -
+127.0.0.1 - - [25/May/2026 15:06:36] "GET /Pics/9.jpeg HTTP/1.1" 200 -
+127.0.0.1 - - [25/May/2026 15:06:36] "GET /Pics/5.jpeg HTTP/1.1" 200 -
+127.0.0.1 - - [25/May/2026 15:06:36] code 404, message File not found
+127.0.0.1 - - [25/May/2026 15:06:36] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [25/May/2026 15:06:36] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Css/index.css HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Jss/index.js HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/5.jpeg HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/9.jpeg HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/1.jpeg HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/Main.jpeg HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Jss/Auth.js HTTP/1.1" 200 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/Seg.jpeg HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/Pasta%202.jpeg HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/Lasan.jpeg HTTP/1.1" 304 -
+127.0.0.1 - - [25/May/2026 15:06:37] "GET /Pics/Cake.jpeg HTTP/1.1" 304 -
