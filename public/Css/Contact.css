@@ -25,6 +25,11 @@
             font-family: 'Playfair Display', serif;
         }
 
+        /* Fix: force header dark background on all inner pages (it's transparent on homepage hero) */
+        #navbar {
+            background: rgba(10, 10, 10, 0.98) !important;
+        }
+
         .contact-wrapper {
             display: flex;
             min-height: 100vh;
