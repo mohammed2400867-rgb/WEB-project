@@ -2,16 +2,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const resForm = document.getElementById("reservationForm");
     if (!resForm) return;
 
+    // Initialize phone input within DOMContentLoaded closure to avoid global variables
+    const phoneInputField = document.getElementById("phone");
+    let phoneInputInstance = null;
+    if (phoneInputField && window.intlTelInput) {
+        phoneInputInstance = window.intlTelInput(phoneInputField, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            initialCountry: "auto",
+            geoIpLookup: function (callback) {
+                fetch("https://ipapi.co/json")
+                    .then(res => res.json())
+                    .then(data => callback(data.country_code))
+                    .catch(() => callback("us"));
+            }
+        });
+    }
+
     resForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        if (window.phoneInput && !window.phoneInput.isValidNumber()) {
+        if (phoneInputInstance && !phoneInputInstance.isValidNumber()) {
             alert("Please enter a valid phone number for the selected country.");
             return;
         }
 
         const name = document.getElementById("resName").value;
-        const phone = window.phoneInput ? window.phoneInput.getNumber() : document.getElementById("phone").value;
+        const phone = phoneInputInstance ? phoneInputInstance.getNumber() : document.getElementById("phone").value;
         const date = document.getElementById("resDate").value;
         const guests = document.getElementById("resGuests").value;
         const requests = document.getElementById("resRequests").value;
