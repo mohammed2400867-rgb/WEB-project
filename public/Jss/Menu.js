@@ -158,11 +158,11 @@ async function usePoints() {
             body: JSON.stringify({ units: 1 })
         });
         const data = await res.json();
-        if (!res.ok) { alert(data.message || 'Could not redeem points.'); return; }
+        if (!res.ok) { showToast(data.message || 'Could not redeem points.', 'error'); return; }
         appliedDiscount = data.discount;
         pointsToSpend = data.pointsToSpend;
         updateCartUI();
-    } catch (err) { alert('Server error. Please try again.'); }
+    } catch (err) { showToast('Server error. Please try again.', 'error'); }
 }
 
 function cancelRedeem() {
@@ -176,11 +176,25 @@ function toggleCart() {
 }
 
 async function placeOrder() {
-    if (cart.length === 0) { alert("Your cart is empty."); return; }
+    if (cart.length === 0) { showToast('Your cart is empty. Add items before ordering.', 'warning'); return; }
 
     const addressInput = document.getElementById('checkout-address');
-    if (addressInput && !addressInput.value.trim()) { alert("Please enter a delivery address."); return; }
-    if (window.phoneInput && !window.phoneInput.isValidNumber()) { alert("Please enter a valid phone number for the selected country."); return; }
+    const addressVal = addressInput ? addressInput.value.trim() : '';
+    if (!addressVal) {
+        showToast('Please enter a delivery address.', 'error');
+        if (addressInput) { addressInput.style.border = '1px solid #ff4d4d'; addressInput.focus(); }
+        return;
+    }
+    if (!/[a-zA-Z]/.test(addressVal)) {
+        showToast('Please enter a valid address (must include street name, not just numbers).', 'error');
+        if (addressInput) { addressInput.style.border = '1px solid #ff4d4d'; addressInput.focus(); }
+        return;
+    }
+    if (addressInput) addressInput.style.border = '';
+    if (window.phoneInput && !window.phoneInput.isValidNumber()) {
+        showToast('Please enter a valid phone number for the selected country.', 'error');
+        return;
+    }
 
     const paymentMethod = document.getElementById('payment-method').value;
 
@@ -190,6 +204,7 @@ async function placeOrder() {
         const finalTotal = Math.max(0, subtotal - appliedDiscount);
         document.getElementById('card-pay-amount').textContent = `$${finalTotal.toFixed(2)}`;
         document.getElementById('card-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // lock background scroll
         return;
     }
 
@@ -222,7 +237,7 @@ async function submitOrder() {
         if (!res.ok) {
             const errData = await res.json().catch(() => ({}));
             console.error('[Order] POST failed:', res.status, errData);
-            alert(`Failed to place order. (${res.status}: ${errData.message || 'Unknown error'})`);
+            showToast(`Failed to place order: ${errData.message || 'Unknown error'}`, 'error');
             return;
         }
 
@@ -231,7 +246,7 @@ async function submitOrder() {
 
         if (!order.orderId) {
             console.error('[Order] No orderId in response:', order);
-            alert('Order was placed but no Order ID was returned. Please contact support.');
+            showToast('Order placed but no ID returned. Please contact support.', 'warning');
             return;
         }
 
@@ -248,7 +263,7 @@ async function submitOrder() {
 
         // Show in-page success overlay then redirect
         showOrderSuccess(order);
-    } catch (err) { alert("Server error. Please try again."); }
+    } catch (err) { showToast('Server error. Please try again.', 'error'); }
 }
 
 // ===================== ORDER SUCCESS OVERLAY =====================
@@ -293,6 +308,7 @@ function showOrderSuccess(order) {
 
 function closeCardModal() {
     document.getElementById('card-modal-overlay').style.display = 'none';
+    document.body.style.overflow = ''; // restore background scroll
     document.getElementById('card-number').value = '';
     document.getElementById('card-name').value = '';
     document.getElementById('card-expiry').value = '';
@@ -426,6 +442,7 @@ async function submitCardPayment() {
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     document.getElementById('card-modal-overlay').style.display = 'none';
+    document.body.style.overflow = ''; // restore background scroll
     await submitOrder();
 }
 

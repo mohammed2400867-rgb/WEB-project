@@ -135,5 +135,5 @@ function addToCartMain(name, price) {
         cartCounter.innerText = cart.length;
     }
     
-    alert(`Added ${name} to cart!`);
+    showToast(`${name} added to cart! 🛒`, 'success', 2500);
 }

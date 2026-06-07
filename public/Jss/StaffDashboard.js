@@ -36,7 +36,7 @@ async function updateStatus(id, newStatus) {
     try {
         await fetch(`/api/orders/${id}/status`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify({ status: newStatus }) });
         renderOrders();
-    } catch (err) { alert('Failed to update order status.'); }
+    } catch (err) { showToast('Failed to update order status.', 'error'); }
 }
 
 function showToast(message, color) {

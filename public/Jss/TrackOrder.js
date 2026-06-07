@@ -3,7 +3,7 @@ async function trackOrder() {
     // Auto-add ORD- prefix if user typed only the numbers (e.g. "98355" instead of "ORD-98355")
     if (/^\d+$/.test(input)) input = 'ORD-' + input;
     const resultDiv = document.getElementById('track-result');
-    if (!input) { alert("Please enter an Order ID."); return; }
+    if (!input) { showToast('Please enter an Order ID.', 'warning'); return; }
 
     try {
         console.log('[Track] Searching for order ID:', input);

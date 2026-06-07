@@ -18,13 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             if (!res.ok) {
                 const data = await res.json();
-                alert(data.message || 'Failed to send message.');
+                showToast(data.message || 'Failed to send message.', 'error');
                 return;
             }
-            alert("Message was successful and we will respond soon");
+            showToast('Message sent! We will respond soon.', 'success');
             contactForm.reset();
         } catch (err) {
-            alert("Server error. Please try again.");
+            showToast('Server error. Please try again.', 'error');
         }
     });
 });

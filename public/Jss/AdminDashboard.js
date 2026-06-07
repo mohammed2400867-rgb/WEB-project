@@ -29,7 +29,7 @@ async function renderReservations() {
                 <td>${res.guests} People</td>
                 <td><span class="status-badge ${res.status === 'Confirmed' ? 'badge-confirmed' : res.status === 'Declined' ? 'badge-declined' : 'badge-pending'}">${res.status}</span></td>
                 <td>
-                    <button class="btn-action btn-view" onclick="alert('Phone: ${res.phone}\\nRequests: ${res.requests || 'None'}')">View</button>
+                    <button class="btn-action btn-view" onclick="showToast('📞 ${res.phone} | Requests: ${res.requests || 'None'}', 'info', 6000)">View</button>
                     <button class="btn-action btn-accept" onclick="updateResStatus('${res.reservationId}', 'Confirmed')">Accept</button>
                     <button class="btn-action btn-decline" onclick="updateResStatus('${res.reservationId}', 'Declined')">Decline</button>
                     <button class="btn-action btn-edit" onclick="editResTime('${res.reservationId}')">Edit Time</button>
@@ -45,7 +45,7 @@ async function updateResStatus(id, status) {
     try {
         await fetch(`/api/reservations/${id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify({ status }) });
         renderReservations();
-    } catch (err) { alert('Failed to update reservation.'); }
+    } catch (err) { showToast('Failed to update reservation.', 'error'); }
 }
 
 async function editResTime(id) {
@@ -54,7 +54,7 @@ async function editResTime(id) {
         try {
             await fetch(`/api/reservations/${id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify({ date: newTime }) });
             renderReservations();
-        } catch (err) { alert('Failed to update reservation time.'); }
+        } catch (err) { showToast('Failed to update reservation time.', 'error'); }
     }
 }
 
@@ -135,8 +135,8 @@ async function restoreDefaultMenu() {
             await fetch('/api/menu', { method: 'POST', headers: authHeaders(), body: JSON.stringify(item) });
         }
         await fetchAdminMenu();
-        alert("Menu restored to default items!");
-    } catch (err) { alert('Failed to restore menu.'); }
+        showToast('Menu restored to default items!', 'success');
+    } catch (err) { showToast('Failed to restore menu.', 'error'); }
 }
 
 function renderMenu() {
@@ -224,7 +224,7 @@ async function addMenuItem() {
     const price = parseFloat(priceInput.value);
     const image = imageInput ? imageInput.value.trim() : "";
     const category = categoryInput ? categoryInput.value : "pasta";
-    if (!name || isNaN(price)) { alert("Please enter a valid name and price."); return; }
+    if (!name || isNaN(price)) { showToast('Please enter a valid item name and price.', 'warning'); return; }
 
     try {
         if (editingItemId !== null) {
@@ -240,7 +240,7 @@ async function addMenuItem() {
         nameInput.value = '';
         priceInput.value = '';
         resetImageInput();
-    } catch (err) { alert('Failed to save menu item.'); }
+    } catch (err) { showToast('Failed to save menu item.', 'error'); }
 }
 
 async function removeMenuItem(id) {
@@ -248,7 +248,7 @@ async function removeMenuItem(id) {
     try {
         await fetch(`/api/menu/${id}`, { method: 'DELETE', headers: authHeaders() });
         await fetchAdminMenu();
-    } catch (err) { alert('Failed to delete menu item.'); }
+    } catch (err) { showToast('Failed to delete menu item.', 'error'); }
 }
 
 let staffMembers = [];
@@ -281,17 +281,17 @@ async function addStaff() {
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
     const role = roleInput.value;
-    if (!name || !email) { alert("Please enter a valid name and email."); return; }
+    if (!name || !email) { showToast('Please enter a valid name and email.', 'warning'); return; }
 
     try {
         const res = await fetch('/api/staff', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ name, email, role }) });
         const data = await res.json();
-        if (!res.ok) { alert(data.message || 'Failed to add staff.'); return; }
-        alert(data.message || 'Staff added successfully!');
+        if (!res.ok) { showToast(data.message || 'Failed to add staff.', 'error'); return; }
+        showToast(data.message || 'Staff member added successfully!', 'success');
         await fetchStaff();
         nameInput.value = '';
         emailInput.value = '';
-    } catch (err) { alert('Failed to add staff.'); }
+    } catch (err) { showToast('Failed to add staff.', 'error'); }
 }
 
 async function removeStaff(id) {
@@ -299,7 +299,8 @@ async function removeStaff(id) {
     try {
         await fetch(`/api/staff/${id}`, { method: 'DELETE', headers: authHeaders() });
         await fetchStaff();
-    } catch (err) { alert('Failed to remove staff.'); }
+        showToast('Staff member removed.', 'info');
+    } catch (err) { showToast('Failed to remove staff.', 'error'); }
 }
 
 let allOrdersCache = [];
@@ -393,7 +394,7 @@ function exportOrdersCSV() {
     if (to) { const d = new Date(to); d.setHours(23,59,59,999); filtered = filtered.filter(o => new Date(o.createdAt) <= d); }
     if (status !== 'all') filtered = filtered.filter(o => o.status === status);
 
-    if (filtered.length === 0) { alert('No orders to export.'); return; }
+    if (filtered.length === 0) { showToast('No orders to export.', 'warning'); return; }
 
     const headers = ['Order ID', 'Date & Time', 'Items', 'Payment', 'Total', 'Status'];
     const rows = filtered.map(o => [
