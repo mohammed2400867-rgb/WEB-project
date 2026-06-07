@@ -1,16 +1,23 @@
 async function trackOrder() {
-    const input = document.getElementById('order-id-input').value.trim();
+    let input = document.getElementById('order-id-input').value.trim();
+    // Auto-add ORD- prefix if user typed only the numbers (e.g. "98355" instead of "ORD-98355")
+    if (/^\d+$/.test(input)) input = 'ORD-' + input;
     const resultDiv = document.getElementById('track-result');
     if (!input) { alert("Please enter an Order ID."); return; }
 
     try {
+        console.log('[Track] Searching for order ID:', input);
         const res = await fetch(`/api/orders/${input}`);
+        console.log('[Track] Response status:', res.status);
         if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            console.warn('[Track] Not found:', errData);
             resultDiv.innerHTML = `<p style="color: #ff4d4d; text-align: center;">Order not found. Please check your Order ID.</p>`;
             resultDiv.classList.add('active');
             return;
         }
         const order = await res.json();
+        console.log('[Track] Order data:', order);
 
         const itemsHtml = (order.items || []).map(item => `
             <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 10px 0;">

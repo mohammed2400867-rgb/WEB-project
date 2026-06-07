@@ -219,18 +219,20 @@ async function submitOrder() {
             })
         });
 
-        if (!res.ok) { alert("Failed to place order. Please try again."); return; }
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            console.error('[Order] POST failed:', res.status, errData);
+            alert(`Failed to place order. (${res.status}: ${errData.message || 'Unknown error'})`);
+            return;
+        }
 
         const order = await res.json();
+        console.log('[Order] Created successfully:', order);
 
-        const baseMsg = `✅ Order placed! Your Order ID is: ${order.orderId}`;
-        if (order.pointsEarned > 0) {
-            const extra = appliedDiscount > 0
-                ? ` You saved $${appliedDiscount} and earned +${order.pointsEarned} loyalty points!`
-                : ` You earned +${order.pointsEarned} loyalty points!`;
-            setTimeout(() => alert(baseMsg + extra), 300);
-        } else {
-            setTimeout(() => alert(baseMsg), 300);
+        if (!order.orderId) {
+            console.error('[Order] No orderId in response:', order);
+            alert('Order was placed but no Order ID was returned. Please contact support.');
+            return;
         }
 
         const myOrders = JSON.parse(localStorage.getItem('my_active_orders')) || [];
@@ -243,6 +245,14 @@ async function submitOrder() {
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartUI();
         document.getElementById('cart-drawer').classList.remove('active');
+
+        // Show confirmation BEFORE redirect so user sees their Order ID
+        const baseMsg = `✅ Order placed!\nYour Order ID: ${order.orderId}\n\nYou will be redirected to Track Order.`;
+        const extraMsg = order.pointsEarned > 0
+            ? (appliedDiscount > 0 ? `\nYou saved $${appliedDiscount} and earned +${order.pointsEarned} loyalty points!` : `\nYou earned +${order.pointsEarned} loyalty points!`)
+            : '';
+        alert(baseMsg + extraMsg);
+
         window.location.href = `TrackOrder.html?id=${order.orderId}`;
     } catch (err) { alert("Server error. Please try again."); }
 }
