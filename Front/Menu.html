@@ -262,8 +262,24 @@
                         <span id="card-expiry-error" class="card-error"></span>
                     </div>
                     <div class="card-field">
-                        <label class="card-label">CVV</label>
-                        <input type="password" id="card-cvv" class="card-input" placeholder="•••" maxlength="4" oninput="validateCvv(this)" autocomplete="cc-csc">
+                        <label class="card-label cvv-label">
+                            CVV
+                            <span class="cvv-help-icon" onmouseenter="showCvvTip()" onmouseleave="hideCvvTip()">?
+                                <div class="cvv-tooltip" id="cvv-tooltip">
+                                    <div class="cvv-tooltip-card">
+                                        <div class="cvv-tooltip-stripe"></div>
+                                        <div class="cvv-tooltip-sig">
+                                            <span class="cvv-tooltip-digits">123</span>
+                                        </div>
+                                    </div>
+                                    <p>3-digit code on the<br>back of your card</p>
+                                </div>
+                            </span>
+                        </label>
+                        <div class="cvv-input-wrapper">
+                            <input type="password" id="card-cvv" class="card-input cvv-input" placeholder="•••" maxlength="4" oninput="validateCvv(this)" autocomplete="cc-csc">
+                            <span class="cvv-lock-icon">🔒</span>
+                        </div>
                         <span id="card-cvv-error" class="card-error"></span>
                     </div>
                 </div>

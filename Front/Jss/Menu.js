@@ -323,6 +323,16 @@ function formatExpiry(input) {
     }
 }
 
+function showCvvTip() {
+    const tip = document.getElementById('cvv-tooltip');
+    if (tip) tip.classList.add('visible');
+}
+
+function hideCvvTip() {
+    const tip = document.getElementById('cvv-tooltip');
+    if (tip) tip.classList.remove('visible');
+}
+
 function validateCvv(input) {
     const val = input.value.replace(/\D/g, '');
     input.value = val;
