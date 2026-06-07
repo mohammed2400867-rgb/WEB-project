@@ -154,6 +154,45 @@ function renderMenu() {
     `).join('');
 }
 
+// ── Image upload handler ──
+async function handleImageSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    // Show preview instantly
+    const preview = document.getElementById('image-preview');
+    const labelText = document.getElementById('upload-label-text');
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'inline-block';
+    labelText.textContent = '⏳ Uploading...';
+
+    // Upload to server
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+        const res = await fetch('/api/menu/upload', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + getToken() },
+            body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) { labelText.textContent = '❌ Upload failed'; return; }
+        document.getElementById('new-item-image').value = data.path;
+        labelText.textContent = '✅ ' + file.name;
+    } catch (err) {
+        labelText.textContent = '❌ Upload error';
+    }
+}
+
+function resetImageInput() {
+    document.getElementById('new-item-image-file').value = '';
+    document.getElementById('new-item-image').value = '';
+    document.getElementById('upload-label-text').textContent = '📁 Choose Image';
+    const preview = document.getElementById('image-preview');
+    preview.style.display = 'none';
+    preview.src = '';
+}
+
 function editMenuItem(id) {
     const item = menuItems.find(i => i._id === id);
     if (!item) return;
@@ -161,6 +200,13 @@ function editMenuItem(id) {
     document.getElementById('new-item-price').value = item.price;
     const imgInput = document.getElementById('new-item-image');
     if (imgInput) imgInput.value = item.image || '';
+    // Show existing image preview
+    if (item.image) {
+        const preview = document.getElementById('image-preview');
+        preview.src = item.image;
+        preview.style.display = 'inline-block';
+        document.getElementById('upload-label-text').textContent = '📁 Replace Image';
+    }
     const catInput = document.getElementById('new-item-category');
     if (catInput) catInput.value = item.category || 'pasta';
     editingItemId = id;
@@ -193,7 +239,7 @@ async function addMenuItem() {
         await fetchAdminMenu();
         nameInput.value = '';
         priceInput.value = '';
-        if (imageInput) imageInput.value = '';
+        resetImageInput();
     } catch (err) { alert('Failed to save menu item.'); }
 }
 

@@ -172,7 +172,14 @@
                     <option value="dessert">Dessert</option>
                 </select>
                 <input type="number" id="new-item-price" placeholder="Price ($)" step="0.01" class="admin-input-w100">
-                <input type="text" id="new-item-image" placeholder="Image URL (optional)" class="admin-input-flex">
+                <div class="upload-wrapper">
+                    <label class="upload-label" id="upload-label" for="new-item-image-file">
+                        <span id="upload-label-text">📁 Choose Image</span>
+                    </label>
+                    <input type="file" id="new-item-image-file" accept="image/*" style="display:none" onchange="handleImageSelect(this)">
+                    <input type="hidden" id="new-item-image">
+                    <img id="image-preview" src="" alt="" style="display:none; width:48px; height:48px; object-fit:cover; border-radius:6px; border:1px solid #333;">
+                </div>
                 <button class="btn-action btn-gold-bold" onclick="addMenuItem()">Add Item</button>
             </div>
             <table>
