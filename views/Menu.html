@@ -255,33 +255,32 @@
                     <input type="text" id="card-name" class="card-input" placeholder="Name as on card" maxlength="26" oninput="updateCardName(this)" autocomplete="cc-name">
                     <span id="card-name-error" class="card-error"></span>
                 </div>
-                <div class="card-field-row">
-                    <div class="card-field">
-                        <label class="card-label">Expiry Date</label>
-                        <input type="text" id="card-expiry" class="card-input" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" autocomplete="cc-exp">
-                        <span id="card-expiry-error" class="card-error"></span>
-                    </div>
-                    <div class="card-field">
-                        <label class="card-label cvv-label">
-                            CVV
-                            <span class="cvv-help-icon" onmouseenter="showCvvTip()" onmouseleave="hideCvvTip()">?
-                                <div class="cvv-tooltip" id="cvv-tooltip">
-                                    <div class="cvv-tooltip-card">
-                                        <div class="cvv-tooltip-stripe"></div>
-                                        <div class="cvv-tooltip-sig">
-                                            <span class="cvv-tooltip-digits">123</span>
-                                        </div>
+                <div class="card-field">
+                    <label class="card-label">Expiry Date</label>
+                    <input type="text" id="card-expiry" class="card-input" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" autocomplete="cc-exp">
+                    <span id="card-expiry-error" class="card-error"></span>
+                </div>
+
+                <div class="card-field">
+                    <label class="card-label cvv-label">
+                        CVV
+                        <span class="cvv-help-icon" onmouseenter="showCvvTip()" onmouseleave="hideCvvTip()">?
+                            <div class="cvv-tooltip" id="cvv-tooltip">
+                                <div class="cvv-tooltip-card">
+                                    <div class="cvv-tooltip-stripe"></div>
+                                    <div class="cvv-tooltip-sig">
+                                        <span class="cvv-tooltip-digits">123</span>
                                     </div>
-                                    <p>3-digit code on the<br>back of your card</p>
                                 </div>
-                            </span>
-                        </label>
-                        <div class="cvv-input-wrapper">
-                            <input type="password" id="card-cvv" class="card-input cvv-input" placeholder="•••" maxlength="4" oninput="validateCvv(this)" autocomplete="cc-csc">
-                            <span class="cvv-lock-icon">🔒</span>
-                        </div>
-                        <span id="card-cvv-error" class="card-error"></span>
+                                <p>3-digit code on the<br>back of your card</p>
+                            </div>
+                        </span>
+                    </label>
+                    <div class="cvv-input-wrapper">
+                        <input type="password" id="card-cvv" class="card-input cvv-input" placeholder="Enter your 3-digit CVV" maxlength="4" oninput="validateCvv(this)" autocomplete="cc-csc">
+                        <span class="cvv-lock-icon">🔒</span>
                     </div>
+                    <span id="card-cvv-error" class="card-error"></span>
                 </div>
                 <div class="card-secure-note">🔒 Your payment info is encrypted and secure</div>
                 <button class="card-pay-btn" onclick="submitCardPayment()">

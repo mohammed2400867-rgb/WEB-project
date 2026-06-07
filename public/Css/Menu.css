@@ -733,9 +733,10 @@
 }
 
 .cvv-input {
-    padding-right: 36px !important;
-    letter-spacing: 4px;
-    text-align: center;
+    padding-right: 44px !important;
+    letter-spacing: 2px;
+    text-align: left;
+    width: 100%;
 }
 
 .cvv-lock-icon {
