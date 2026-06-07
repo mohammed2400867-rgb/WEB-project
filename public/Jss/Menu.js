@@ -2,9 +2,12 @@ let currentCategory = 'all';
 let currentSort = 'none';
 let appliedDiscount = 0;
 let pointsToSpend = 0;
+let currentPage = 1;
+const ITEMS_PER_PAGE = 6;
 
 function filterItems(category, event) {
     currentCategory = category;
+    currentPage = 1; // reset to first page on filter change
     const btns = document.querySelectorAll('.filter-btn');
     if (btns.length > 0) {
         btns.forEach(btn => btn.classList.remove('active'));
@@ -15,7 +18,15 @@ function filterItems(category, event) {
 
 function sortMenu() {
     const sortSelect = document.getElementById('sort-price');
-    if (sortSelect) { currentSort = sortSelect.value; renderMenu(); }
+    if (sortSelect) { currentSort = sortSelect.value; currentPage = 1; renderMenu(); }
+}
+
+function goToPage(page) {
+    currentPage = page;
+    renderMenu();
+    // Scroll smoothly back to top of menu grid
+    const menuSection = document.querySelector('.menu-section');
+    if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 let allMenuItems = [];
@@ -32,9 +43,12 @@ async function fetchMenu() {
 function renderMenu() {
     const menuGrid = document.getElementById('main-menu');
     if (!menuGrid) return;
+
     let filtered = allMenuItems.filter(item => currentCategory === 'all' || item.category === currentCategory);
     if (currentSort === 'low-high') filtered.sort((a, b) => a.price - b.price);
     else if (currentSort === 'high-low') filtered.sort((a, b) => b.price - a.price);
+
+    // --- No results ---
     if (filtered.length === 0) {
         menuGrid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #888;">
@@ -42,11 +56,19 @@ function renderMenu() {
                 <p style="font-size: 1.2rem; color: var(--gold); margin-bottom: 8px;">No dishes found</p>
                 <p style="font-size: 0.95rem;">No items in this category yet. Try a different filter.</p>
             </div>`;
+        renderPagination(0, 0);
         return;
     }
-    menuGrid.innerHTML = filtered.map((item, idx) => `
+
+    // --- Pagination slice ---
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+    menuGrid.innerHTML = pageItems.map((item, idx) => `
         <div class="menu-card ${item.category || 'all'} show">
-            <div class="img-box"><img src="${item.image || `Pics/${(idx % 10) + 1}.jpeg`}" alt="${item.name}"></div>
+            <div class="img-box"><img src="${item.image || `Pics/${((start + idx) % 10) + 1}.jpeg`}" alt="${item.name}"></div>
             <div class="details">
                 <div class="details-header">
                     <h3>${item.name}</h3> <span class="price">$${item.price}</span>
@@ -56,6 +78,28 @@ function renderMenu() {
             </div>
         </div>
     `).join('');
+
+    renderPagination(totalPages, filtered.length);
+}
+
+function renderPagination(totalPages, totalItems) {
+    let container = document.getElementById('pagination-container');
+    if (!container) return;
+
+    if (totalPages <= 1) { container.innerHTML = ''; return; }
+
+    let html = `<div class="pagination">`;
+    html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Prev</button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+    }
+
+    html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next →</button>`;
+    html += `<span class="page-info">Page ${currentPage} of ${totalPages} &nbsp;·&nbsp; ${totalItems} dishes</span>`;
+    html += `</div>`;
+
+    container.innerHTML = html;
 }
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
