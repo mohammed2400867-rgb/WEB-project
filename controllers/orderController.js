@@ -3,9 +3,9 @@ const User = require('../models/User');
 const LoyaltyTransaction = require('../models/LoyaltyTransaction');
 const { broadcast } = require('../sse');
 
-const POINTS_PER_DOLLAR = 1;
-const POINTS_TO_REDEEM = 100;
-const REDEEM_VALUE = 5;
+const POINTS_PER_DOLLAR = 1;   // 1 point per EGP spent
+const POINTS_TO_REDEEM = 200;  // need 200 points to redeem
+const REDEEM_VALUE = 50;       // get EGP 50 off
 
 const getOrders = async (req, res) => {
     try {
@@ -65,7 +65,7 @@ const createOrder = async (req, res) => {
                 await user.save();
                 await LoyaltyTransaction.create({
                     userId, points: -actualPointsRedeemed, type: 'redeemed',
-                    description: `Redeemed ${actualPointsRedeemed} pts for $${discount} off`
+                    description: `Redeemed ${actualPointsRedeemed} pts for EGP ${discount} off`
                 });
             }
         }

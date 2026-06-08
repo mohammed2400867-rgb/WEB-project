@@ -75,7 +75,7 @@ async function loadLoyalty() {
             document.getElementById('points-bar-next').textContent =
                 points >= pointsRequired
                     ? `${Math.floor(points / pointsRequired)} redemption(s) available!`
-                    : `${remaining} more pts → $${redeemValue} off`;
+                    : `${remaining} more pts → EGP ${redeemValue} off`;
         }
 
         if (histRes.ok) {
@@ -123,8 +123,8 @@ async function loadOrders() {
         const totalSpent = orders.reduce((s, o) => s + (o.total || 0), 0);
         const totalSaved = orders.reduce((s, o) => s + (o.discount || 0), 0);
         document.getElementById('stat-orders').textContent = orders.length;
-        document.getElementById('stat-spent').textContent = `$${totalSpent.toFixed(0)}`;
-        document.getElementById('stat-saved').textContent = `$${totalSaved.toFixed(0)}`;
+        document.getElementById('stat-spent').textContent = `EGP ${totalSpent.toFixed(0)}`;
+        document.getElementById('stat-saved').textContent = `EGP ${totalSaved.toFixed(0)}`;
 
         renderOrders(orders);
     } catch (err) {
@@ -158,7 +158,7 @@ function renderOrders(orders) {
                     ${order.discount ? `<div style="color:#4CAF50; font-size:0.78rem;">Saved $${order.discount.toFixed(2)}</div>` : ''}
                 </div>
                 <div style="display:flex; align-items:center; gap:14px;">
-                    <span class="order-total">$${(order.total || 0).toFixed(2)}</span>
+                    <span class="order-total">EGP ${(order.total || 0).toFixed(2)}</span>
                     <a href="TrackOrder.html?id=${order.orderId}" class="track-btn">Track</a>
                 </div>
             </div>

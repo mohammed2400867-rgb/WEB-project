@@ -22,7 +22,7 @@ async function trackOrder() {
         const itemsHtml = (order.items || []).map(item => `
             <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 10px 0;">
                 <span>${item.name}</span>
-                <span style="color: var(--gold);">$${item.price.toFixed(2)}</span>
+                <span style="color: var(--gold);">EGP ${item.price.toFixed(2)}</span>
             </div>
         `).join('');
 
@@ -48,7 +48,7 @@ async function trackOrder() {
             ${itemsHtml}
             <div style="display: flex; justify-content: space-between; margin-top: 15px; font-weight: bold; font-size: 1.2rem;">
                 <span>Total:</span>
-                <span style="color: var(--gold);">$${(order.total || 0).toFixed(2)}</span>
+                <span style="color: var(--gold);">EGP ${(order.total || 0).toFixed(2)}</span>
             </div>
         `;
         resultDiv.classList.add('active');
@@ -78,7 +78,7 @@ async function loadActiveOrders() {
                         <span class="status-badge">${order.status}</span>
                     </div>
                     <div style="font-size: 0.9em; color: #999;">
-                        ${new Date(order.createdAt).toLocaleString()} &bull; $${(order.total || 0).toFixed(2)}
+                        ${new Date(order.createdAt).toLocaleString()} &bull; EGP ${(order.total || 0).toFixed(2)}
                     </div>
                     <div style="font-size: 0.85em; color: #777; margin-top: 5px;">
                         ${(order.items || []).map(i => i.name).join(', ')}

@@ -76,8 +76,12 @@
             <div class="booking-card" style="margin-bottom: 24px;">
                 <h2 class="form-heading">Check Reservation Status</h2>
                 <div class="form-group">
-                    <label>Your Reservation ID</label>
-                    <input type="text" id="checkResId" placeholder="e.g. RES-12345" style="text-transform:uppercase;">
+                    <label>Full Name</label>
+                    <input type="text" id="lookupName" placeholder="Name you used when booking">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="lookupPhone" placeholder="Phone number you used when booking">
                 </div>
                 <button class="submit-btn" onclick="checkReservationStatus()" style="margin-top:8px;">Check Status</button>
                 <div id="res-status-result" style="margin-top:18px;"></div>
