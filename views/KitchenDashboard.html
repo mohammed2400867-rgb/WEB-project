@@ -8,9 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="Css/AdminDashboard.css">
-    <link rel="stylesheet" href="Css/theme.css">
-    <script>
+    <link rel="stylesheet" href="Css/AdminDashboard.css">    <script>
         const kitchenUserStr = localStorage.getItem('currentUser');
         const kitchenUser = kitchenUserStr ? JSON.parse(kitchenUserStr) : null;
         if (!kitchenUser || (kitchenUser.role !== 'Kitchen' && kitchenUser.role !== 'Admin' && kitchenUser.role !== 'Staff')) {
@@ -53,8 +51,6 @@
     </main>
 
     <script src="Jss/toast.js"></script>
-    <script src="Jss/KitchenDashboard.js"></script>
-    <script src="Jss/theme.js"></script>
-</body>
+    <script src="Jss/KitchenDashboard.js"></script></body>
 
 </html>

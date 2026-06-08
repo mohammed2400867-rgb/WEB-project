@@ -8,9 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="Css/AdminDashboard.css">
-    <link rel="stylesheet" href="Css/theme.css">
-    <script>
+    <link rel="stylesheet" href="Css/AdminDashboard.css">    <script>
         const adminUserStr = localStorage.getItem('currentUser');
         const adminUser = adminUserStr ? JSON.parse(adminUserStr) : null;
         if (!adminUser || adminUser.role !== 'Admin') {
@@ -228,8 +226,6 @@
     </main>
 
     <script src="Jss/AdminDashboard.js"></script>
-    <script src="Jss/toast.js"></script>
-    <script src="Jss/theme.js"></script>
-</body>
+    <script src="Jss/toast.js"></script></body>
 
 </html>
