@@ -41,7 +41,16 @@ const getOrderById = async (req, res) => {
 const createOrder = async (req, res) => {
     try {
         const { items, total, payment, address, phone, userId, pointsToRedeem } = req.body;
-        if (!items || !items.length) return res.status(400).json({ message: 'No items in order' });
+
+        // --- Items required ---
+        if (!items || !items.length)
+            return res.status(400).json({ message: 'No items in order.' });
+
+        // --- Address: required and must contain at least one letter (not numbers-only) ---
+        if (!address || !address.trim())
+            return res.status(400).json({ message: 'Delivery address is required.' });
+        if (!/[a-zA-Z]/.test(address.trim()))
+            return res.status(400).json({ message: 'Please enter a valid delivery address (must include a street name, not just numbers).' });
 
         let discount = 0;
         let actualPointsRedeemed = 0;

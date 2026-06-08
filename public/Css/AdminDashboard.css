@@ -1,3 +1,22 @@
+  /* ── Image Upload ── */
+  .upload-wrapper {
+      display: flex; align-items: center; gap: 10px;
+  }
+  .upload-label {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 8px 14px;
+      background: #1a1a1a;
+      border: 1px dashed rgba(212,175,55,0.4);
+      border-radius: 6px;
+      color: var(--gold);
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      min-width: 140px;
+  }
+  .upload-label:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+
   :root {
       --gold: #d4af37;
       --carbon: #0a0a0a;

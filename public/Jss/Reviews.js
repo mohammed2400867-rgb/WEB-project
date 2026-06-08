@@ -60,11 +60,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ stars: rating, quote: quoteInput, name: nameInput, initials })
             });
-            if (!res.ok) { alert('Failed to submit review.'); return; }
-            alert("Thank you for your review!");
+            if (!res.ok) { showToast('Failed to submit review.', 'error'); return; }
+            showToast('Thank you for your review! 🌟', 'success');
             modal.style.display = "none";
             e.target.reset();
             await fetchReviews();
-        } catch (err) { alert('Server error. Please try again.'); }
+        } catch (err) { showToast('Server error. Please try again.', 'error'); }
     }
 });

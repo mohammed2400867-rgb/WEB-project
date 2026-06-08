@@ -46,4 +46,9 @@ const deleteMenuItem = async (req, res) => {
     }
 };
 
-module.exports = { getMenu, addMenuItem, updateMenuItem, deleteMenuItem };
+const uploadMenuImage = (req, res) => {
+    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+    res.json({ path: '/uploads/' + req.file.filename });
+};
+
+module.exports = { getMenu, addMenuItem, updateMenuItem, deleteMenuItem, uploadMenuImage };

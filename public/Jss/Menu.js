@@ -2,9 +2,12 @@ let currentCategory = 'all';
 let currentSort = 'none';
 let appliedDiscount = 0;
 let pointsToSpend = 0;
+let currentPage = 1;
+const ITEMS_PER_PAGE = 6;
 
 function filterItems(category, event) {
     currentCategory = category;
+    currentPage = 1; // reset to first page on filter change
     const btns = document.querySelectorAll('.filter-btn');
     if (btns.length > 0) {
         btns.forEach(btn => btn.classList.remove('active'));
@@ -15,7 +18,15 @@ function filterItems(category, event) {
 
 function sortMenu() {
     const sortSelect = document.getElementById('sort-price');
-    if (sortSelect) { currentSort = sortSelect.value; renderMenu(); }
+    if (sortSelect) { currentSort = sortSelect.value; currentPage = 1; renderMenu(); }
+}
+
+function goToPage(page) {
+    currentPage = page;
+    renderMenu();
+    // Scroll smoothly back to top of menu grid
+    const menuSection = document.querySelector('.menu-section');
+    if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 let allMenuItems = [];
@@ -32,12 +43,32 @@ async function fetchMenu() {
 function renderMenu() {
     const menuGrid = document.getElementById('main-menu');
     if (!menuGrid) return;
+
     let filtered = allMenuItems.filter(item => currentCategory === 'all' || item.category === currentCategory);
     if (currentSort === 'low-high') filtered.sort((a, b) => a.price - b.price);
     else if (currentSort === 'high-low') filtered.sort((a, b) => b.price - a.price);
-    menuGrid.innerHTML = filtered.map((item, idx) => `
+
+    // --- No results ---
+    if (filtered.length === 0) {
+        menuGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #888;">
+                <div style="font-size: 3rem; margin-bottom: 16px;">🍽️</div>
+                <p style="font-size: 1.2rem; color: var(--gold); margin-bottom: 8px;">No dishes found</p>
+                <p style="font-size: 0.95rem;">No items in this category yet. Try a different filter.</p>
+            </div>`;
+        renderPagination(0, 0);
+        return;
+    }
+
+    // --- Pagination slice ---
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+    menuGrid.innerHTML = pageItems.map((item, idx) => `
         <div class="menu-card ${item.category || 'all'} show">
-            <div class="img-box"><img src="${item.image || `Pics/${(idx % 10) + 1}.jpeg`}" alt="${item.name}"></div>
+            <div class="img-box"><img src="${item.image || `Pics/${((start + idx) % 10) + 1}.jpeg`}" alt="${item.name}"></div>
             <div class="details">
                 <div class="details-header">
                     <h3>${item.name}</h3> <span class="price">$${item.price}</span>
@@ -47,6 +78,28 @@ function renderMenu() {
             </div>
         </div>
     `).join('');
+
+    renderPagination(totalPages, filtered.length);
+}
+
+function renderPagination(totalPages, totalItems) {
+    let container = document.getElementById('pagination-container');
+    if (!container) return;
+
+    if (totalPages <= 1) { container.innerHTML = ''; return; }
+
+    let html = `<div class="pagination">`;
+    html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Prev</button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+    }
+
+    html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next →</button>`;
+    html += `<span class="page-info">Page ${currentPage} of ${totalPages} &nbsp;·&nbsp; ${totalItems} dishes</span>`;
+    html += `</div>`;
+
+    container.innerHTML = html;
 }
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -158,11 +211,11 @@ async function usePoints() {
             body: JSON.stringify({ units: 1 })
         });
         const data = await res.json();
-        if (!res.ok) { alert(data.message || 'Could not redeem points.'); return; }
+        if (!res.ok) { showToast(data.message || 'Could not redeem points.', 'error'); return; }
         appliedDiscount = data.discount;
         pointsToSpend = data.pointsToSpend;
         updateCartUI();
-    } catch (err) { alert('Server error. Please try again.'); }
+    } catch (err) { showToast('Server error. Please try again.', 'error'); }
 }
 
 function cancelRedeem() {
@@ -176,11 +229,25 @@ function toggleCart() {
 }
 
 async function placeOrder() {
-    if (cart.length === 0) { alert("Your cart is empty."); return; }
+    if (cart.length === 0) { showToast('Your cart is empty. Add items before ordering.', 'warning'); return; }
 
     const addressInput = document.getElementById('checkout-address');
-    if (addressInput && !addressInput.value.trim()) { alert("Please enter a delivery address."); return; }
-    if (window.phoneInput && !window.phoneInput.isValidNumber()) { alert("Please enter a valid phone number for the selected country."); return; }
+    const addressVal = addressInput ? addressInput.value.trim() : '';
+    if (!addressVal) {
+        showToast('Please enter a delivery address.', 'error');
+        if (addressInput) { addressInput.style.border = '1px solid #ff4d4d'; addressInput.focus(); }
+        return;
+    }
+    if (!/[a-zA-Z]/.test(addressVal)) {
+        showToast('Please enter a valid address (must include street name, not just numbers).', 'error');
+        if (addressInput) { addressInput.style.border = '1px solid #ff4d4d'; addressInput.focus(); }
+        return;
+    }
+    if (addressInput) addressInput.style.border = '';
+    if (window.phoneInput && !window.phoneInput.isValidNumber()) {
+        showToast('Please enter a valid phone number for the selected country.', 'error');
+        return;
+    }
 
     const paymentMethod = document.getElementById('payment-method').value;
 
@@ -190,10 +257,18 @@ async function placeOrder() {
         const finalTotal = Math.max(0, subtotal - appliedDiscount);
         document.getElementById('card-pay-amount').textContent = `$${finalTotal.toFixed(2)}`;
         document.getElementById('card-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // lock background scroll
         return;
     }
 
+    // Show spinner on button
+    const btn = document.querySelector('.checkout-btn');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Placing Order...'; }
+
     await submitOrder();
+
+    // Reset button
+    if (btn) { btn.disabled = false; btn.textContent = 'Place Online Order'; }
 }
 
 async function submitOrder() {
@@ -219,15 +294,20 @@ async function submitOrder() {
             })
         });
 
-        if (!res.ok) { alert("Failed to place order. Please try again."); return; }
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            console.error('[Order] POST failed:', res.status, errData);
+            showToast(`Failed to place order: ${errData.message || 'Unknown error'}`, 'error');
+            return;
+        }
 
         const order = await res.json();
+        console.log('[Order] Created successfully:', order);
 
-        if (order.pointsEarned > 0) {
-            const msg = appliedDiscount > 0
-                ? `Order placed! You saved $${appliedDiscount} and earned +${order.pointsEarned} loyalty points!`
-                : `Order placed! You earned +${order.pointsEarned} loyalty points!`;
-            setTimeout(() => alert(msg), 300);
+        if (!order.orderId) {
+            console.error('[Order] No orderId in response:', order);
+            showToast('Order placed but no ID returned. Please contact support.', 'warning');
+            return;
         }
 
         const myOrders = JSON.parse(localStorage.getItem('my_active_orders')) || [];
@@ -240,14 +320,55 @@ async function submitOrder() {
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartUI();
         document.getElementById('cart-drawer').classList.remove('active');
-        window.location.href = "TrackOrder.html";
-    } catch (err) { alert("Server error. Please try again."); }
+
+        // Show in-page success overlay then redirect
+        showOrderSuccess(order);
+    } catch (err) { showToast('Server error. Please try again.', 'error'); }
+}
+
+// ===================== ORDER SUCCESS OVERLAY =====================
+function showOrderSuccess(order) {
+    document.getElementById('order-success-code').textContent = order.orderId;
+
+    // Extra message for loyalty points
+    let extra = '';
+    if (order.pointsEarned > 0 && order.discount > 0)
+        extra = `🎉 You saved $${order.discount} and earned +${order.pointsEarned} loyalty points!`;
+    else if (order.pointsEarned > 0)
+        extra = `🎉 You earned +${order.pointsEarned} loyalty points!`;
+    else if (order.discount > 0)
+        extra = `🎉 You saved $${order.discount} with your loyalty points!`;
+    document.getElementById('order-success-extra').textContent = extra;
+
+    document.getElementById('order-success-overlay').style.display = 'flex';
+
+    // Countdown + progress bar
+    let seconds = 4;
+    const countdownEl = document.getElementById('order-countdown');
+    const barFill = document.getElementById('order-success-bar-fill');
+    countdownEl.textContent = seconds;
+
+    // Animate bar to 100% over (seconds * 1000)ms
+    requestAnimationFrame(() => {
+        barFill.style.transition = `width ${seconds}s linear`;
+        barFill.style.width = '100%';
+    });
+
+    const interval = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.href = `TrackOrder.html?id=${order.orderId}`;
+        }
+    }, 1000);
 }
 
 // ===================== CARD MODAL LOGIC =====================
 
 function closeCardModal() {
     document.getElementById('card-modal-overlay').style.display = 'none';
+    document.body.style.overflow = ''; // restore background scroll
     document.getElementById('card-number').value = '';
     document.getElementById('card-name').value = '';
     document.getElementById('card-expiry').value = '';
@@ -323,6 +444,16 @@ function formatExpiry(input) {
     }
 }
 
+function showCvvTip() {
+    const tip = document.getElementById('cvv-tooltip');
+    if (tip) tip.classList.add('visible');
+}
+
+function hideCvvTip() {
+    const tip = document.getElementById('cvv-tooltip');
+    if (tip) tip.classList.remove('visible');
+}
+
 function validateCvv(input) {
     const val = input.value.replace(/\D/g, '');
     input.value = val;
@@ -371,6 +502,7 @@ async function submitCardPayment() {
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     document.getElementById('card-modal-overlay').style.display = 'none';
+    document.body.style.overflow = ''; // restore background scroll
     await submitOrder();
 }
 

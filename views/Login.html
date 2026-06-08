@@ -55,6 +55,36 @@
         </div>
     </div>
 
+    <!-- Admin PIN Overlay -->
+    <div id="admin-pin-overlay" style="display:none;">
+        <div class="pin-modal" id="pin-modal">
+            <div class="pin-lock-icon">🔐</div>
+            <h2 class="pin-title">Staff Access</h2>
+            <p class="pin-subtitle" id="pin-subtitle">Enter your 4-digit PIN</p>
+            <div class="pin-dots">
+                <div class="pin-dot" id="pin-dot-0"></div>
+                <div class="pin-dot" id="pin-dot-1"></div>
+                <div class="pin-dot" id="pin-dot-2"></div>
+                <div class="pin-dot" id="pin-dot-3"></div>
+            </div>
+            <p class="pin-error" id="pin-error"></p>
+            <div class="pin-pad">
+                <button class="pin-key" onclick="pinPress('1')">1</button>
+                <button class="pin-key" onclick="pinPress('2')">2</button>
+                <button class="pin-key" onclick="pinPress('3')">3</button>
+                <button class="pin-key" onclick="pinPress('4')">4</button>
+                <button class="pin-key" onclick="pinPress('5')">5</button>
+                <button class="pin-key" onclick="pinPress('6')">6</button>
+                <button class="pin-key" onclick="pinPress('7')">7</button>
+                <button class="pin-key" onclick="pinPress('8')">8</button>
+                <button class="pin-key" onclick="pinPress('9')">9</button>
+                <button class="pin-key pin-key-cancel" onclick="closeAdminPin()">✕</button>
+                <button class="pin-key" onclick="pinPress('0')">0</button>
+                <button class="pin-key pin-key-del" onclick="pinDelete()">⌫</button>
+            </div>
+        </div>
+    </div>
+
     <script src="Jss/Login.js"></script>
 
 </body>
