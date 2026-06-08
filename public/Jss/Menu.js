@@ -1,7 +1,4 @@
-let currentCategory = 'all';
-let currentSort = 'none';
-let appliedDiscount = 0;
-let pointsToSpend = 0;
+
 let currentPage = 1;
 const ITEMS_PER_PAGE = 6;
 
