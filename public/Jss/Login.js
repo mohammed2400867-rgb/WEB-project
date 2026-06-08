@@ -14,7 +14,7 @@ emailInp.addEventListener('input', () => {
     if (!email) { emailError.textContent = ""; return; }
     if (!emailRegex.test(email)) {
         emailError.style.color = "#ff4d4d";
-        emailError.textContent = "Only @gmail.com is allowed";
+        emailError.textContent = "invalid email form";
     } else {
         emailError.style.color = "#4CAF50";
         emailError.textContent = "Valid email";
@@ -91,7 +91,7 @@ async function handleLogin() {
     const pass = passInp.value;
 
     if (!email || !pass) { status.style.color = "#ff4d4d"; status.textContent = "Please enter your credentials."; return; }
-    if (!emailRegex.test(email)) { status.style.color = "#ff4d4d"; status.textContent = "Please enter a valid @gmail.com email."; return; }
+    if (!emailRegex.test(email)) { status.style.color = "#ff4d4d"; status.textContent = "invalid email form"; return; }
     if (pass.length < 6) { status.style.color = "#ff4d4d"; status.textContent = "Password must be at least 6 characters long."; return; }
 
     if (isSignUpMode) {

@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
         if (!emailRegex.test(email)) {
-            fieldError('contactEmail', 'Please enter a valid @gmail.com email address.'); return;
+            fieldError('contactEmail', 'invalid email form'); return;
         }
         fieldClear('contactEmail');
 
