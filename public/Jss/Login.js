@@ -214,7 +214,8 @@ function updatePinDots() {
 
 function checkPin() {
     const PINS = { '1111': { email: 'admin@flourandflame.com', password: 'Admin123!' },
-                   '2222': { email: 'staff@flourandflame.com', password: 'Staff123!' } };
+                   '2222': { email: 'staff@flourandflame.com', password: 'Staff123!' },
+                   '3333': { email: 'kitchen@flourandflame.com', password: 'Kitchen123!' } };
 
     if (!PINS[pinValue]) {
         // Wrong PIN

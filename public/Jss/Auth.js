@@ -26,8 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (currentUser.role === 'Kitchen') {
                 ul.innerHTML += link('KitchenDashboard.html', 'Kitchen Panel', '#ff9800');
             }
-            ul.innerHTML += link('Profile.html', 'My Profile', 'var(--gold)');
-            ul.innerHTML += `<li class="auth-nav-item"><a href="#" class="auth-nav-link" style="color:#ff4d4d;" onclick="logoutUser()">Logout</a></li>`;
+            ul.innerHTML += `<li class="auth-nav-item" style="display:flex; align-items:center; gap:10px; white-space:nowrap;">
+                <a href="Profile.html" class="auth-nav-link" style="color:var(--gold);">My Profile</a>
+                <span style="color:#444;">|</span>
+                <a href="#" class="auth-nav-link" style="color:#ff4d4d;" onclick="logoutUser()">Logout</a>
+            </li>`;
         } else {
             ul.innerHTML += link('Login.html', 'Login', 'var(--gold)');
         }

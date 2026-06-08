@@ -24,6 +24,34 @@ function init() {
     badge.style.borderColor = roleColors[role] || '#d4af37';
     badge.style.color = roleColors[role] || '#d4af37';
 
+    const isStaffRole = ['Admin', 'Staff', 'Kitchen'].includes(role);
+
+    if (isStaffRole) {
+        // Hide customer-only sections
+        document.getElementById('points-panel').style.display = 'none';
+        document.querySelector('.panel:last-of-type').style.display = 'none';
+        document.querySelector('.stats-row').style.display = 'none';
+
+        // Show staff quick-access panel
+        const dashMap = {
+            Admin:   { href: 'AdminDashboard.html',   label: 'Go to Admin Dashboard',   icon: '🛠️' },
+            Staff:   { href: 'StaffDashboard.html',   label: 'Go to Staff Dashboard',   icon: '📋' },
+            Kitchen: { href: 'KitchenDashboard.html', label: 'Go to Kitchen Dashboard', icon: '👨‍🍳' }
+        };
+        const dash = dashMap[role];
+        const staffPanel = document.createElement('div');
+        staffPanel.className = 'panel';
+        staffPanel.style.textAlign = 'center';
+        staffPanel.innerHTML = `
+            <div style="font-size:3rem; margin-bottom:12px;">${dash.icon}</div>
+            <h2 style="margin-bottom:8px;">${role} Account</h2>
+            <p style="color:#aaa; margin-bottom:24px;">This account is reserved for internal use. Customer features are not available.</p>
+            <a href="${dash.href}" style="display:inline-block; background:var(--gold); color:#000; font-weight:700; padding:12px 28px; border-radius:6px; text-decoration:none; font-size:0.95rem;">${dash.label}</a>
+        `;
+        document.querySelector('.profile-wrapper').appendChild(staffPanel);
+        return;
+    }
+
     loadLoyalty();
     loadOrders();
 }
@@ -47,7 +75,7 @@ async function loadLoyalty() {
             document.getElementById('points-bar-next').textContent =
                 points >= pointsRequired
                     ? `${Math.floor(points / pointsRequired)} redemption(s) available!`
-                    : `${remaining} more pts → $${redeemValue} off`;
+                    : `${remaining} more pts → EGP ${redeemValue} off`;
         }
 
         if (histRes.ok) {
@@ -95,8 +123,8 @@ async function loadOrders() {
         const totalSpent = orders.reduce((s, o) => s + (o.total || 0), 0);
         const totalSaved = orders.reduce((s, o) => s + (o.discount || 0), 0);
         document.getElementById('stat-orders').textContent = orders.length;
-        document.getElementById('stat-spent').textContent = `$${totalSpent.toFixed(0)}`;
-        document.getElementById('stat-saved').textContent = `$${totalSaved.toFixed(0)}`;
+        document.getElementById('stat-spent').textContent = `EGP ${totalSpent.toFixed(0)}`;
+        document.getElementById('stat-saved').textContent = `EGP ${totalSaved.toFixed(0)}`;
 
         renderOrders(orders);
     } catch (err) {
@@ -130,7 +158,7 @@ function renderOrders(orders) {
                     ${order.discount ? `<div style="color:#4CAF50; font-size:0.78rem;">Saved $${order.discount.toFixed(2)}</div>` : ''}
                 </div>
                 <div style="display:flex; align-items:center; gap:14px;">
-                    <span class="order-total">$${(order.total || 0).toFixed(2)}</span>
+                    <span class="order-total">EGP ${(order.total || 0).toFixed(2)}</span>
                     <a href="TrackOrder.html?id=${order.orderId}" class="track-btn">Track</a>
                 </div>
             </div>

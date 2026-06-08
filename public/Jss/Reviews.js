@@ -40,30 +40,68 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("reviewForm").onsubmit = async function (e) {
         e.preventDefault();
 
+        const nameInput = document.getElementById('review-name-input');
+        const quoteInput = document.getElementById('review-quote-input');
+        const nameError = document.getElementById('name-error');
+        const quoteError = document.getElementById('quote-error');
+
+        const ratingError = document.getElementById('rating-error');
+
+        // Clear previous errors
+        nameError.textContent = '';
+        quoteError.textContent = '';
+        ratingError.textContent = '';
+        nameInput.classList.remove('input-error');
+        quoteInput.classList.remove('input-error');
+
+        const name = nameInput.value.trim();
+        const quote = quoteInput.value.trim();
+        const words = name.split(/\s+/).filter(w => w.length > 0);
+
+        let hasError = false;
+
+        if (!name) {
+            nameError.textContent = 'Please enter your full name.';
+            nameInput.classList.add('input-error');
+            hasError = true;
+        } else if (words.length < 2) {
+            nameError.textContent = 'Please enter both your first and last name.';
+            nameInput.classList.add('input-error');
+            hasError = true;
+        }
+
+        if (!quote) {
+            quoteError.textContent = 'Please write your review before submitting.';
+            quoteInput.classList.add('input-error');
+            hasError = true;
+        }
+
         const ratingInputs = document.getElementsByName("rating");
-        let rating = 5;
+        let rating = 0;
         for (let input of ratingInputs) { if (input.checked) { rating = parseInt(input.value); break; } }
 
-        const formInputs = e.target.querySelectorAll("input[type='text'], textarea");
-        const nameInput = formInputs[0].value.trim();
-        const quoteInput = formInputs[1].value.trim();
-        if (!nameInput || !quoteInput) return;
+        if (!rating) {
+            ratingError.textContent = 'Please select a star rating before submitting.';
+            hasError = true;
+        }
 
-        const words = nameInput.split(" ").filter(w => w.length > 0);
-        let initials = "";
-        if (words.length === 1) initials = words[0].substring(0, 2).toUpperCase();
-        else if (words.length > 1) initials = (words[0][0] + words[words.length - 1][0]).toUpperCase();
+        if (hasError) return;
+
+        const initials = (words[0][0] + words[words.length - 1][0]).toUpperCase();
 
         try {
             const res = await fetch('/api/reviews', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ stars: rating, quote: quoteInput, name: nameInput, initials })
+                body: JSON.stringify({ stars: rating, quote, name, initials })
             });
             if (!res.ok) { showToast('Failed to submit review.', 'error'); return; }
             showToast('Thank you for your review! 🌟', 'success');
             modal.style.display = "none";
             e.target.reset();
+            nameError.textContent = '';
+            quoteError.textContent = '';
+            ratingError.textContent = '';
             await fetchReviews();
         } catch (err) { showToast('Server error. Please try again.', 'error'); }
     }

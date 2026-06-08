@@ -71,7 +71,7 @@ function renderMenu() {
             <div class="img-box"><img src="${item.image || `Pics/${((start + idx) % 10) + 1}.jpeg`}" alt="${item.name}"></div>
             <div class="details">
                 <div class="details-header">
-                    <h3>${item.name}</h3> <span class="price">$${item.price}</span>
+                    <h3>${item.name}</h3> <span class="price">EGP ${item.price}</span>
                 </div>
                 <p class="desc">Freshly prepared with authentic ingredients.</p>
                 <button class="add-to-cart-btn" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price})">Add to Cart</button>
@@ -131,7 +131,7 @@ function updateCartUI() {
     const cartItemsContainer = document.getElementById('cart-items');
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = '<p style="text-align: center; color: var(--gold); padding: 20px;">Your cart is empty.</p>';
-        document.getElementById('cart-total').innerText = `$0.00`;
+        document.getElementById('cart-total').innerText = `EGP 0.00`;
         updateLoyaltyWidget(subtotal);
         return;
     }
@@ -140,7 +140,7 @@ function updateCartUI() {
         <div class="cart-item">
             <div>
                 <strong style="color: var(--cream);">${item.name}</strong>
-                <div style="color: var(--gold); font-size: 0.9em;">$${item.price.toFixed(2)}</div>
+                <div style="color: var(--gold); font-size: 0.9em;">EGP ${item.price.toFixed(2)}</div>
             </div>
             <button onclick="removeFromCart(${item.id})" style="background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.2em;">&times;</button>
         </div>
@@ -148,9 +148,9 @@ function updateCartUI() {
 
     if (appliedDiscount > 0) {
         document.getElementById('cart-total').innerHTML =
-            `<span style="text-decoration:line-through; color:#666; font-size:0.9em;">$${subtotal.toFixed(2)}</span> <span style="color:#4CAF50;">$${finalTotal.toFixed(2)}</span>`;
+            `<span style="text-decoration:line-through; color:#666; font-size:0.9em;">EGP ${subtotal.toFixed(2)}</span> <span style="color:#4CAF50;">EGP ${finalTotal.toFixed(2)}</span>`;
     } else {
-        document.getElementById('cart-total').innerText = `$${subtotal.toFixed(2)}`;
+        document.getElementById('cart-total').innerText = `EGP ${subtotal.toFixed(2)}`;
     }
 
     updateLoyaltyWidget(subtotal);
@@ -192,9 +192,15 @@ async function updateLoyaltyWidget(subtotal) {
                         ? `<button onclick="usePoints()" style="width:100%; background:transparent; border:1px solid var(--gold); color:var(--gold); padding:8px; border-radius:6px; cursor:pointer; font-size:0.82rem; letter-spacing:1px; text-transform:uppercase; transition:all 0.2s;"
                                onmouseover="this.style.background='var(--gold)';this.style.color='#000'"
                                onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">
-                               Redeem ${pointsRequired} pts → -$${redeemValue}
+                               Redeem ${pointsRequired} pts → -EGP ${redeemValue}
                            </button>`
-                        : `<div style="color:#555; font-size:0.78rem; text-align:center;">${pointsRequired - points} more pts needed to redeem $${redeemValue}</div>`
+                        : (() => {
+                            const afterOrder = points + pointsEarnable;
+                            const stillNeeded = Math.max(0, pointsRequired - afterOrder);
+                            return stillNeeded === 0
+                                ? `<div style="color:#4CAF50; font-size:0.78rem; text-align:center;">🎉 You'll be able to redeem after this order!</div>`
+                                : `<div style="color:#555; font-size:0.78rem; text-align:center;">${stillNeeded} more pts needed to redeem EGP ${redeemValue} <span style="color:#444;">(after this order)</span></div>`;
+                          })()
                 }
             </div>
         `;
@@ -255,7 +261,7 @@ async function placeOrder() {
     if (paymentMethod === 'Credit Card') {
         const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
         const finalTotal = Math.max(0, subtotal - appliedDiscount);
-        document.getElementById('card-pay-amount').textContent = `$${finalTotal.toFixed(2)}`;
+        document.getElementById('card-pay-amount').textContent = `EGP ${finalTotal.toFixed(2)}`;
         document.getElementById('card-modal-overlay').style.display = 'flex';
         document.body.style.overflow = 'hidden'; // lock background scroll
         return;

@@ -1,9 +1,9 @@
 const User = require('../models/User');
 const LoyaltyTransaction = require('../models/LoyaltyTransaction');
 
-const POINTS_PER_DOLLAR = 1;
-const POINTS_TO_REDEEM = 100;
-const REDEEM_VALUE = 5;
+const POINTS_PER_DOLLAR = 1;   // 1 point per EGP spent
+const POINTS_TO_REDEEM = 200;  // need 200 points to redeem
+const REDEEM_VALUE = 50;       // get EGP 50 off
 
 const getBalance = async (req, res) => {
     try {

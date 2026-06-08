@@ -62,4 +62,54 @@ const updateReservation = async (req, res) => {
     }
 };
 
-module.exports = { getReservations, createReservation, updateReservation };
+const getReservationById = async (req, res) => {
+    try {
+        const reservation = await Reservation.findOne({ reservationId: req.params.id });
+        if (!reservation) return res.status(404).json({ message: 'Reservation not found. Please check your ID.' });
+        res.json({
+            reservationId: reservation.reservationId,
+            name: reservation.name,
+            date: reservation.date,
+            guests: reservation.guests,
+            status: reservation.status,
+            requests: reservation.requests,
+            createdAt: reservation.createdAt
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const lookupReservation = async (req, res) => {
+    try {
+        const { phone, name } = req.body;
+        if (!phone || !name)
+            return res.status(400).json({ message: 'Please provide both your name and phone number.' });
+
+        // Strip all non-digit characters for flexible matching
+        const digitsOnly = phone.trim().replace(/\D/g, '');
+
+        const reservations = await Reservation.find({
+            name: { $regex: new RegExp('^' + name.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') }
+        }).then(results =>
+            results.filter(r => r.phone.replace(/\D/g, '').endsWith(digitsOnly) || digitsOnly.endsWith(r.phone.replace(/\D/g, '')))
+        );
+
+        if (!reservations.length)
+            return res.status(404).json({ message: 'No reservations found for that name and phone number.' });
+
+        res.json(reservations.map(r => ({
+            reservationId: r.reservationId,
+            name: r.name,
+            date: r.date,
+            guests: r.guests,
+            status: r.status,
+            requests: r.requests,
+            createdAt: r.createdAt
+        })));
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+module.exports = { getReservations, createReservation, updateReservation, getReservationById, lookupReservation };

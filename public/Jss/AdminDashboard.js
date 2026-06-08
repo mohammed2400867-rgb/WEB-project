@@ -69,7 +69,7 @@ async function renderOrders() {
             <tr>
                 <td>${order.orderId}</td>
                 <td>${new Date(order.createdAt).toLocaleString()}</td>
-                <td>$${(order.total || 0).toFixed(2)}</td>
+                <td>EGP ${(order.total || 0).toFixed(2)}</td>
                 <td><span class="status-badge">${order.status}</span></td>
             </tr>
         `).join('');
@@ -94,7 +94,7 @@ async function renderAnalytics() {
         if (elTotal) elTotal.innerText = totalOrders;
         if (elPending) elPending.innerText = pendingOrders;
         if (elDelivered) elDelivered.innerText = deliveredOrders;
-        if (elRevenue) elRevenue.innerText = `$${totalRevenue.toFixed(2)}`;
+        if (elRevenue) elRevenue.innerText = `EGP ${totalRevenue.toFixed(2)}`;
     } catch (err) {}
 }
 
@@ -145,7 +145,7 @@ function renderMenu() {
     container.innerHTML = menuItems.map(item => `
         <tr>
             <td>${item.name}</td>
-            <td>$${Number(item.price).toFixed(2)}</td>
+            <td>EGP ${Number(item.price).toFixed(2)}</td>
             <td>
                 <button class="btn-action" onclick="editMenuItem('${item._id}')" style="background: transparent; color: var(--gold); border: 1px solid var(--gold); margin-right: 5px;">Edit</button>
                 <button class="btn-action" onclick="removeMenuItem('${item._id}')">Delete</button>
@@ -361,7 +361,7 @@ function renderOrderHistory(orders) {
     const delEl = document.getElementById('oh-delivered');
     const pendEl = document.getElementById('oh-pending');
     if (countEl) countEl.innerText = orders.length;
-    if (revEl) revEl.innerText = `$${totalRevenue.toFixed(2)}`;
+    if (revEl) revEl.innerText = `EGP ${totalRevenue.toFixed(2)}`;
     if (delEl) delEl.innerText = delivered;
     if (pendEl) pendEl.innerText = pending;
 
@@ -378,7 +378,7 @@ function renderOrderHistory(orders) {
             <td>${new Date(order.createdAt).toLocaleString()}</td>
             <td style="color:#ccc; font-size:0.85rem;">${(order.items || []).map(i => i.name).join(', ') || '—'}</td>
             <td style="text-transform:capitalize;">${order.payment || 'N/A'}</td>
-            <td style="color:#4CAF50; font-weight:600;">$${(order.total || 0).toFixed(2)}</td>
+            <td style="color:#4CAF50; font-weight:600;">EGP ${(order.total || 0).toFixed(2)}</td>
             <td><span class="status-badge" style="color:${statusColors[order.status] || '#fff'}; border-color:${statusColors[order.status] || '#fff'}; background:${statusColors[order.status] || '#fff'}18;">${order.status}</span></td>
         </tr>
     `).join('');
@@ -402,7 +402,7 @@ function exportOrdersCSV() {
         new Date(o.createdAt).toLocaleString(),
         `"${(o.items || []).map(i => i.name).join(', ')}"`,
         o.payment || 'N/A',
-        `$${(o.total || 0).toFixed(2)}`,
+        `EGP ${(o.total || 0).toFixed(2)}`,
         o.status
     ].join(','));
 

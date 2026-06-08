@@ -678,12 +678,15 @@
 }
 
 .card-preview-number {
-    font-size: 1.3rem;
-    letter-spacing: 4px;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
     color: var(--cream);
     font-family: 'Courier New', monospace;
     margin: 14px 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
 }
 
 .card-preview-bottom {
