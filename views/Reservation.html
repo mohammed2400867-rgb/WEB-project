@@ -71,6 +71,18 @@
         </section>
 
         <section class="contact-form-section">
+
+            <!-- Check Reservation Status -->
+            <div class="booking-card" style="margin-bottom: 24px;">
+                <h2 class="form-heading">Check Reservation Status</h2>
+                <div class="form-group">
+                    <label>Your Reservation ID</label>
+                    <input type="text" id="checkResId" placeholder="e.g. RES-12345" style="text-transform:uppercase;">
+                </div>
+                <button class="submit-btn" onclick="checkReservationStatus()" style="margin-top:8px;">Check Status</button>
+                <div id="res-status-result" style="margin-top:18px;"></div>
+            </div>
+
             <div class="booking-card">
                 <h2 class="form-heading">Make a Reservation</h2>
                 <form id="reservationForm" action="#">
@@ -109,6 +121,7 @@
                     <button type="submit" class="submit-btn">Confirm Availability</button>
                 </form>
             </div>
+
         </section>
     </main>
 

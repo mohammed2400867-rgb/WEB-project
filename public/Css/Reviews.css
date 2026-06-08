@@ -69,14 +69,44 @@
         .close-modal { position: absolute; right: 20px; top: 15px; color: var(--gold); font-size: 2rem; cursor: pointer; }
 
         /* --- STAR RATING --- */
-        .rating-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 10px; margin-bottom: 20px; }
+        .rating-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 6px; margin-bottom: 20px; }
         .rating-input input { display: none; }
-        .rating-input label { font-size: 2rem; color: #333; cursor: pointer; transition: 0.3s; }
-        .rating-input label:hover, .rating-input label:hover ~ label, .rating-input input:checked ~ label { color: var(--gold); }
+        .rating-input label {
+            font-size: 2.2rem;
+            color: #333;
+            cursor: pointer;
+            transition: color 0.2s, text-shadow 0.2s, transform 0.15s;
+        }
+        /* Hover: glow all stars up to hovered one */
+        .rating-input label:hover,
+        .rating-input label:hover ~ label {
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.8), 0 0 20px rgba(212, 175, 55, 0.4);
+            transform: scale(1.2);
+        }
+        /* Checked: glow all stars up to selected one */
+        .rating-input input:checked ~ label {
+            color: var(--gold);
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.9), 0 0 24px rgba(212, 175, 55, 0.5);
+        }
 
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 0.8rem; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; font-family: 'Poppins', sans-serif; }
+
+        .field-error {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.78rem;
+            color: #ff4d4d;
+            min-height: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input.input-error,
+        .form-group textarea.input-error {
+            border-color: #ff4d4d !important;
+        }
 
         .btn {
             display: inline-block; padding: 15px 40px; border: 1px solid var(--gold);

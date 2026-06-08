@@ -394,3 +394,9 @@
     white-space: nowrap;
 }
 .auth-nav-link:hover { opacity: 1; }
+
+/* --- Dropdown options: always dark background with light text --- */
+select option {
+    background-color: #1a1a1a;
+    color: #f4f1ea;
+}

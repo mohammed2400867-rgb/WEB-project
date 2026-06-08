@@ -43,6 +43,10 @@
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
   }
 
   .sidebar h2 {
@@ -234,7 +238,7 @@
       background: rgba(212, 175, 55, 0.1);
   }
 /* Utility classes from inline styles */
-.view-website-btn { margin-top: auto; border: 1px solid var(--gold); }
+.view-website-btn { margin-top: 8px; border: 1px solid var(--gold); }
 .date-display { color: var(--gold); font-weight: 600; }
 .mb-30 { margin-bottom: 30px; }
 .flex-between-mb20 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }

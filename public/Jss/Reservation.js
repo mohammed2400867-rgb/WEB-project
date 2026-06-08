@@ -1,4 +1,47 @@
+// ── Reservation Status Checker ──
+async function checkReservationStatus() {
+    const input = document.getElementById('checkResId');
+    const resultBox = document.getElementById('res-status-result');
+    const id = input.value.trim().toUpperCase();
+
+    if (!id) { resultBox.innerHTML = `<p style="color:#ff4d4d;">Please enter a reservation ID.</p>`; return; }
+
+    resultBox.innerHTML = `<p style="color:#aaa;">Looking up ${id}...</p>`;
+
+    try {
+        const res = await fetch(`/api/reservations/${id}`);
+        const data = await res.json();
+        if (!res.ok) { resultBox.innerHTML = `<p style="color:#ff4d4d;">${data.message}</p>`; return; }
+
+        const statusColors = { Pending: '#d4af37', Confirmed: '#4CAF50', Declined: '#ff4d4d' };
+        const statusIcons  = { Pending: '⏳', Confirmed: '✅', Declined: '❌' };
+        const color = statusColors[data.status] || '#aaa';
+        const icon  = statusIcons[data.status]  || '❓';
+        const date  = new Date(data.date).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
+        resultBox.innerHTML = `
+            <div style="background:#111; border:1px solid ${color}; border-radius:10px; padding:20px; margin-top:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <span style="font-weight:700; color:#f4f1ea; font-size:1rem;">${data.reservationId}</span>
+                    <span style="background:${color}22; color:${color}; border:1px solid ${color}; border-radius:20px; padding:4px 14px; font-size:0.82rem; font-weight:700;">${icon} ${data.status}</span>
+                </div>
+                <p style="color:#bbb; font-size:0.85rem; margin:4px 0;">👤 ${data.name}</p>
+                <p style="color:#bbb; font-size:0.85rem; margin:4px 0;">📅 ${date}</p>
+                <p style="color:#bbb; font-size:0.85rem; margin:4px 0;">👥 ${data.guests} Guest(s)</p>
+                ${data.requests ? `<p style="color:#888; font-size:0.82rem; margin-top:8px; font-style:italic;">"${data.requests}"</p>` : ''}
+            </div>`;
+    } catch (err) {
+        resultBox.innerHTML = `<p style="color:#ff4d4d;">Server error. Please try again.</p>`;
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    // Auto-fill last reservation ID from localStorage
+    const saved = JSON.parse(localStorage.getItem('my_reservations') || '[]');
+    if (saved.length) {
+        const checkInput = document.getElementById('checkResId');
+        if (checkInput) checkInput.value = saved[saved.length - 1];
+    }
     const resForm = document.getElementById("reservationForm");
     if (!resForm) return;
 
@@ -109,12 +152,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, phone, date, guests, requests })
             });
+            const resData = await res.json();
             if (!res.ok) {
-                const data = await res.json();
-                showToast(data.message || 'Failed to submit reservation.', 'error');
+                showToast(resData.message || 'Failed to submit reservation.', 'error');
                 return;
             }
-            showToast('Reservation submitted! We will confirm shortly.', 'success');
+            const resId = resData.reservationId || '';
+            // Save to localStorage so guest can check status later
+            const saved = JSON.parse(localStorage.getItem('my_reservations') || '[]');
+            if (resId && !saved.includes(resId)) { saved.push(resId); localStorage.setItem('my_reservations', JSON.stringify(saved)); }
+            // Pre-fill the check status input
+            if (resId) {
+                const checkInput = document.getElementById('checkResId');
+                if (checkInput) checkInput.value = resId;
+            }
+            showToast(`Reservation submitted! Your ID: ${resId} — We will confirm shortly.`, 'success', 6000);
             resForm.reset();
         } catch (err) {
             showToast('Server error. Please try again.', 'error');

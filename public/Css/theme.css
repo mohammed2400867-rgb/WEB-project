@@ -224,6 +224,54 @@ body.light-mode .review-form-section {
     background: #faf8f5 !important;
 }
 
+/* --- Sidebar: always keep gold title on black background --- */
+body.light-mode .sidebar {
+    background: #000 !important;
+}
+
+body.light-mode .sidebar h2 {
+    color: var(--gold) !important;
+}
+
+body.light-mode .sidebar .nav-item {
+    color: #f4f1ea !important;
+}
+
+body.light-mode .sidebar .nav-item:hover,
+body.light-mode .sidebar .nav-item.active {
+    background: var(--gold) !important;
+    color: #000 !important;
+}
+
+/* --- Kitchen Dashboard: keep dark kanban cards with light text --- */
+body.light-mode .kanban-card {
+    background: #111 !important;
+    color: #f4f1ea !important;
+    border-color: rgba(212, 175, 55, 0.3) !important;
+}
+
+body.light-mode .kanban-card h4 {
+    color: #ffffff !important;
+}
+
+body.light-mode .kanban-card p {
+    color: #aaaaaa !important;
+}
+
+body.light-mode .kanban-card div[style] {
+    color: #cccccc !important;
+}
+
+body.light-mode .kanban-col {
+    background: rgba(0, 0, 0, 0.06) !important;
+    border-color: #ccc !important;
+}
+
+body.light-mode .kanban-col h3 {
+    color: var(--gold) !important;
+    border-bottom-color: #ccc !important;
+}
+
 /* --- Admin / Staff / Kitchen dashboards --- */
 body.light-mode .dashboard-container,
 body.light-mode .dashboard-card,
