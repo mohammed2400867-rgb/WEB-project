@@ -10,6 +10,10 @@ function showSection(sectionId, event) {
     const navs = document.querySelectorAll('.sidebar .nav-item');
     navs.forEach(nav => nav.classList.remove('active'));
     if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    if (sectionId === 'dashboard') {
+        renderOrders();
+        renderAnalytics();
+    }
     if (sectionId === 'orders') loadOrderHistory();
     if (sectionId === 'reservations') renderReservations();
 }
@@ -416,8 +420,40 @@ function exportOrdersCSV() {
     URL.revokeObjectURL(url);
 }
 
+function connectSSE() {
+    const evtSource = new EventSource('/api/events');
+
+    evtSource.onmessage = (e) => {
+        try {
+            const data = JSON.parse(e.data);
+            if (data.type === 'new_order') {
+                showToast(`New order placed: ${data.orderId} (EGP ${Number(data.total).toFixed(2)})`, 'info');
+                renderOrders();
+                renderAnalytics();
+                const ordersSection = document.getElementById('section-orders');
+                if (ordersSection && ordersSection.style.display !== 'none') {
+                    loadOrderHistory();
+                }
+            } else if (data.type === 'status_update') {
+                renderOrders();
+                renderAnalytics();
+                const ordersSection = document.getElementById('section-orders');
+                if (ordersSection && ordersSection.style.display !== 'none') {
+                    loadOrderHistory();
+                }
+            }
+        } catch (err) {}
+    };
+
+    evtSource.onerror = () => {
+        evtSource.close();
+        setTimeout(connectSSE, 5000);
+    };
+}
+
 renderOrders();
 renderAnalytics();
 fetchAdminMenu();
 fetchStaff();
 renderReservations();
+connectSSE();

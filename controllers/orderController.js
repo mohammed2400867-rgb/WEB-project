@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Order = require('../models/Order');
 const User = require('../models/User');
 const LoyaltyTransaction = require('../models/LoyaltyTransaction');
@@ -52,11 +53,14 @@ const createOrder = async (req, res) => {
         if (!/[a-zA-Z]/.test(address.trim()))
             return res.status(400).json({ message: 'Please enter a valid delivery address (must include a street name, not just numbers).' });
 
+        // Sanitize userId to prevent Mongoose CastErrors
+        const sanitizedUserId = (userId && mongoose.Types.ObjectId.isValid(userId)) ? userId : null;
+
         let discount = 0;
         let actualPointsRedeemed = 0;
 
-        if (userId && pointsToRedeem > 0) {
-            const user = await User.findById(userId);
+        if (sanitizedUserId && pointsToRedeem > 0) {
+            const user = await User.findById(sanitizedUserId);
             if (user && user.loyaltyPoints >= pointsToRedeem) {
                 const redeemUnits = Math.floor(pointsToRedeem / POINTS_TO_REDEEM);
                 actualPointsRedeemed = redeemUnits * POINTS_TO_REDEEM;
@@ -64,26 +68,26 @@ const createOrder = async (req, res) => {
                 user.loyaltyPoints -= actualPointsRedeemed;
                 await user.save();
                 await LoyaltyTransaction.create({
-                    userId, points: -actualPointsRedeemed, type: 'redeemed',
+                    userId: sanitizedUserId, points: -actualPointsRedeemed, type: 'redeemed',
                     description: `Redeemed ${actualPointsRedeemed} pts for EGP ${discount} off`
                 });
             }
         }
 
-        const finalTotal = Math.max(0, Number(total) - discount);
+        const finalTotal = Math.max(0, (Number(total) || 0) - discount);
         const pointsEarned = Math.floor(finalTotal * POINTS_PER_DOLLAR);
         const orderId = 'ORD-' + Math.floor(Math.random() * 90000 + 10000);
 
         const order = await Order.create({
             orderId, items, total: finalTotal, discount, pointsEarned,
             pointsRedeemed: actualPointsRedeemed, payment, address, phone,
-            userId: userId || null
+            userId: sanitizedUserId
         });
 
-        if (userId && pointsEarned > 0) {
-            await User.findByIdAndUpdate(userId, { $inc: { loyaltyPoints: pointsEarned } });
+        if (sanitizedUserId && pointsEarned > 0) {
+            await User.findByIdAndUpdate(sanitizedUserId, { $inc: { loyaltyPoints: pointsEarned } });
             await LoyaltyTransaction.create({
-                userId, points: pointsEarned, type: 'earned',
+                userId: sanitizedUserId, points: pointsEarned, type: 'earned',
                 description: `Earned ${pointsEarned} pts on order ${orderId}`,
                 orderId
             });
@@ -97,7 +101,7 @@ const createOrder = async (req, res) => {
             payment: order.payment
         });
 
-        res.status(201).json({ ...order.toObject(), pointsEarned, discount, newLoyaltyBalance: userId ? (await User.findById(userId).select('loyaltyPoints')).loyaltyPoints : null });
+        res.status(201).json({ ...order.toObject(), pointsEarned, discount, newLoyaltyBalance: sanitizedUserId ? (await User.findById(sanitizedUserId).select('loyaltyPoints')).loyaltyPoints : null });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
