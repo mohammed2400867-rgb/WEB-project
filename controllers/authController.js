@@ -8,8 +8,8 @@ const register = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) return res.status(400).json({ message: 'Email and password are required' });
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-            return res.status(400).json({ message: 'Invalid email format' });
+        if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(email))
+            return res.status(400).json({ message: 'Only @gmail.com emails are allowed' });
         if (password.length < 6) return res.status(400).json({ message: 'Password must be at least 6 characters' });
  
         const exists = await User.findOne({ email: email.toLowerCase() });

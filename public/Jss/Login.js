@@ -7,14 +7,14 @@ const toggleBtn = document.getElementById('togglePass');
 const emailError = document.getElementById('emailError');
 const passStrengthBar = document.getElementById('passStrengthBar');
 const passStrengthText = document.getElementById('passStrengthText');
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|flourandflame\.com)$/i;
 
 emailInp.addEventListener('input', () => {
     const email = emailInp.value.trim();
     if (!email) { emailError.textContent = ""; return; }
     if (!emailRegex.test(email)) {
         emailError.style.color = "#ff4d4d";
-        emailError.textContent = "Invalid email format";
+        emailError.textContent = "Only @gmail.com is allowed";
     } else {
         emailError.style.color = "#4CAF50";
         emailError.textContent = "Valid email";
@@ -91,7 +91,7 @@ async function handleLogin() {
     const pass = passInp.value;
 
     if (!email || !pass) { status.style.color = "#ff4d4d"; status.textContent = "Please enter your credentials."; return; }
-    if (!emailRegex.test(email)) { status.style.color = "#ff4d4d"; status.textContent = "Please enter a valid email format."; return; }
+    if (!emailRegex.test(email)) { status.style.color = "#ff4d4d"; status.textContent = "Please enter a valid @gmail.com email."; return; }
     if (pass.length < 6) { status.style.color = "#ff4d4d"; status.textContent = "Password must be at least 6 characters long."; return; }
 
     if (isSignUpMode) {

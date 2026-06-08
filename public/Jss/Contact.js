@@ -38,9 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!email) {
             fieldError('contactEmail', 'Please enter your email address.'); return;
         }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
         if (!emailRegex.test(email)) {
-            fieldError('contactEmail', 'Please enter a valid email address (e.g. name@example.com).'); return;
+            fieldError('contactEmail', 'Please enter a valid @gmail.com email address.'); return;
         }
         fieldClear('contactEmail');
 
