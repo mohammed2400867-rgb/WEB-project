@@ -81,18 +81,33 @@
         .contact-form-section {
             flex: 1;
             min-width: 400px;
-            padding: 80px 6%;
+            padding: 80px 4%;
             background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
             display: flex;
-            align-items: center;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 24px;
         }
 
         .booking-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            padding: 50px;
+            padding: 35px;
             border: 1px solid rgba(212, 175, 55, 0.1);
             width: 100%;
+        }
+
+        /* Check status card: smaller, fixed width */
+        .booking-card.check-status-card {
+            flex: 0 0 300px;
+            min-width: 260px;
+            padding: 28px;
+            align-self: flex-start;
+        }
+
+        /* Reservation form card: takes remaining space */
+        .booking-card.reservation-form-card {
+            flex: 1;
         }
 
         .form-group {
@@ -160,6 +175,18 @@
             letter-spacing: 3px;
         }
 
+        @media (max-width: 900px) {
+            .contact-form-section {
+                flex-direction: column;
+            }
+
+            .booking-card.check-status-card {
+                flex: none;
+                width: 100%;
+                position: static;
+            }
+        }
+
         @media (max-width: 768px) {
 
             .contact-info-section,
@@ -167,9 +194,9 @@
                 min-width: 100%;
                 padding: 60px 20px;
             }
-            
+
             .contact-info-section {
-                padding-top: 220px !important; /* Push down further below the mobile header */
+                padding-top: 220px !important;
             }
 
             .booking-card {
