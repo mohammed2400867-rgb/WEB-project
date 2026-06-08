@@ -4,18 +4,18 @@ const Review = require('./models/Review');
 const Staff = require('./models/Staff');
 
 const defaultMenuItems = [
-    { name: "Spaghetti Carbonara", price: 19, category: "pasta", image: "Pics/1.jpeg" },
-    { name: "Vesuvius Pomodoro", price: 17, category: "pasta", image: "Pics/2.jpeg" },
-    { name: "Lasagna verdi", price: 23, category: "pasta", image: "Pics/Lasan.jpeg" },
-    { name: "Margherita DOC", price: 18, category: "pizza", image: "Pics/Seg.jpeg" },
-    { name: "Bianca al Tartufo", price: 25, category: "pizza", image: "Pics/3.jpeg" },
-    { name: "The Garden Flame", price: 21, category: "pizza", image: "Pics/5.jpeg" },
-    { name: "Sicilian Sunset", price: 10, category: "drinks", image: "Pics/6.jpeg" },
-    { name: "Limonata Zenzero", price: 9, category: "drinks", image: "Pics/7.jpeg" },
-    { name: "Espresso Tonic", price: 8, category: "drinks", image: "Pics/8.jpeg" },
-    { name: "Classic Tiramisù", price: 13, category: "dessert", image: "Pics/Cake.jpeg" },
-    { name: "Vanilla Panna Cotta", price: 11, category: "dessert", image: "Pics/9.jpeg" },
-    { name: "Sicilian Cannoli", price: 12, category: "dessert", image: "Pics/10.jpeg" }
+    { name: "Spaghetti Carbonara", price: 110, category: "pasta", image: "Pics/1.jpeg" },
+    { name: "Vesuvius Pomodoro", price: 120, category: "pasta", image: "Pics/2.jpeg" },
+    { name: "Lasagna verdi", price: 150, category: "pasta", image: "Pics/Lasan.jpeg" },
+    { name: "Margherita DOC", price: 130, category: "pizza", image: "Pics/Seg.jpeg" },
+    { name: "Bianca al Tartufo", price: 180, category: "pizza", image: "Pics/3.jpeg" },
+    { name: "The Garden Flame", price: 145, category: "pizza", image: "Pics/5.jpeg" },
+    { name: "Sicilian Sunset", price: 65, category: "drinks", image: "Pics/6.jpeg" },
+    { name: "Limonata Zenzero", price: 55, category: "drinks", image: "Pics/7.jpeg" },
+    { name: "Espresso Tonic", price: 50, category: "drinks", image: "Pics/8.jpeg" },
+    { name: "Classic Tiramisù", price: 85, category: "dessert", image: "Pics/Cake.jpeg" },
+    { name: "Vanilla Panna Cotta", price: 75, category: "dessert", image: "Pics/9.jpeg" },
+    { name: "Sicilian Cannoli", price: 80, category: "dessert", image: "Pics/10.jpeg" }
 ];
 
 const defaultReviews = [
