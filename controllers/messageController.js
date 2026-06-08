@@ -13,6 +13,8 @@ const addMessage = async (req, res) => {
     try {
         const { name, email, subject, message } = req.body;
         if (!name || !email || !message) return res.status(400).json({ message: 'Name, email, and message are required' });
+        if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(email))
+            return res.status(400).json({ message: 'invalid email form' });
         const msgId = 'MSG-' + Math.floor(Math.random() * 90000 + 10000);
         const msg = await Message.create({ msgId, name, email, subject: subject || '', message });
         res.status(201).json(msg);
