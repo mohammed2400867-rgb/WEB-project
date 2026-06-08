@@ -136,4 +136,5 @@ function addToCartMain(name, price) {
     }
     
     showToast(`${name} added to cart! 🛒`, 'success', 2500);
+    
 }
