@@ -105,4 +105,5 @@ document.addEventListener("DOMContentLoaded", async () => {
             await fetchReviews();
         } catch (err) { showToast('Server error. Please try again.', 'error'); }
     }
+    
 });

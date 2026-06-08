@@ -1,4 +1,4 @@
- :root {
+:root {
             --gold: #d4af37;
             --carbon: #0a0a0a;
             --cream: #f4f1ea;
@@ -147,4 +147,5 @@
     transition: opacity 0.2s, color 0.2s;
     white-space: nowrap;
 }
+
 .auth-nav-link:hover { opacity: 1; }
